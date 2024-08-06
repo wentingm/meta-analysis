@@ -1,0 +1,21 @@
+<form [formGroup]="picoFormGroup" (ngSubmit)="searchInputParser()">
+    <div class="wrapper-div">
+        <div class="search-bar-div">
+            <h3>Population</h3>
+            <input type="text" class="search-bar" [formControl]="picoFormGroup.controls.populationFormControl">
+        </div>
+        <div class="search-bar-div" [formControl]="picoFormGroup.controls.interventionFormControl">
+            <h3>Intervention</h3>
+            <input type="text" class="search-bar">
+        </div>
+        <div class="search-bar-div" [formControl]="picoFormGroup.controls.comparisonFormControl">
+            <h3>Comparison</h3>
+            <input type="text" class="search-bar">
+        </div>
+        <div class="search-bar-div" [formControl]="picoFormGroup.controls.outcomeFormControl">
+            <h3>Outcome</h3>
+            <input type="text" class="search-bar">
+        </div>
+    </div>
+    <button type="submit"> <p>Search</p> <img src="../../assets/icons8-search-48.png" class="search-icon"> </button>
+</form>
