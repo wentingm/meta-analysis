@@ -1,13 +1,13 @@
 import { TestBed } from '@angular/core/testing';
+import { ConfigHandlerService } from './config-handler.service';
 
-import { SigninMockService } from './signin-mock.service';
 
-describe('SigninMockService', () => {
-  let service: SigninMockService;
+describe('ConfigHandlerService', () => {
+  let service: ConfigHandlerService;
 
   beforeEach(() => {
     TestBed.configureTestingModule({});
-    service = TestBed.inject(SigninMockService);
+    service = TestBed.inject(ConfigHandlerService);
   });
 
   it('should be created', () => {
