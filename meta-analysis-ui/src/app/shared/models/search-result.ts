@@ -1,9 +1,5 @@
 export interface SearchResult {
-    paperID: string;
-    externalIds: {
-        MAG: string;
-        CorpusID: number;
-    };
+    paperId: string;
     title: string;
     abstract: string;
     year: number;
