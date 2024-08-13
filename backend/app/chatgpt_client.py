@@ -86,3 +86,18 @@ def get_chatgpt_response(docs, OPENAI_API_KEY, population, intervention, compari
         #     print(f"Error decoding JSON for question: {question}. Response was: {response}")
 
     return 1
+
+
+from langchain.document_loaders import PyMuPDFLoader
+from langchain.document_loaders import UnstructuredFileLoader
+# load the file into a list file
+def file_load(filename, filetype):
+   if filetype == "PDF":
+      return PyMuPDFLoader(filename).load()
+   else:
+      return UnstructuredFileLoader(filename).load()
+
+
+
+   
+    
