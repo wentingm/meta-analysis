@@ -9,10 +9,10 @@ from config import Config
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 CORS(app)
-# Initialize the SQLAlchemy database connection
-db = SQLAlchemy(app)
 
-from models import YourModel
+# Initialize the SQLAlchemy database connection
+# db = SQLAlchemy(app)
+# from models import YourModel
 
 # Route to process JSON data sent from the frontend
 @app.route('/process_json', methods=['POST'])

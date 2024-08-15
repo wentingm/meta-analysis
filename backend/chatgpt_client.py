@@ -67,7 +67,7 @@ def get_chatgpt_response(docs, OPENAI_API_KEY, population, intervention, compari
 
         response_data = json.loads(response)
         if response_data["response"]== "No":
-          return 0
+            return 0
         
 
         # try:
