@@ -1,4 +1,4 @@
-from flask import Flask, Blueprint, request, render_template, redirect, url_for, session, jsonify
+from flask import Flask, request, render_template, redirect, url_for, session, jsonify
 from flask_cors import CORS
 import json
 from api_client import fetch_data
@@ -60,4 +60,4 @@ def filter_results():
     return jsonify(selected_papers)
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, host='127.0.0.1', port=5000 )
