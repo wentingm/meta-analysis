@@ -1,5 +1,5 @@
 <div class="home-page-div">
-    <app-keyword-search-bars (onSubmitEvent)="recievePicoSearchQuery($event)"></app-keyword-search-bars>
+    <app-keyword-search-bars (onSubmitEvent)="startPicoSearch($event)"></app-keyword-search-bars>
     <app-search-results *ngIf="currentConfig.isSearchResultAvailable"
     [searchResults]="searchResults"></app-search-results>
 </div>
