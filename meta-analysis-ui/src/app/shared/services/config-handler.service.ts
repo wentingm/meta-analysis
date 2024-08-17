@@ -20,13 +20,13 @@ export class ConfigHandlerService {
         this.configSubject.next(this.configStorage);
     }
 
-    updateUserValidationStatus() {
-        this.configStorage.isUserAuthenticated = !this.configStorage.isUserAuthenticated;
+    updateUserValidationStatus(userAuthStatus: boolean) {
+        this.configStorage.isUserAuthenticated = userAuthStatus;
         this.configSubject.next(this.configStorage);
     }
 
-    updateSearchResultAvailabilityStatus() {
-        this.configStorage.isSearchResultAvailable = !this.configStorage.isSearchResultAvailable;
+    updateSearchResultAvailabilityStatus(resultAvailiabilityStatus: boolean) {
+        this.configStorage.isSearchResultAvailable = resultAvailiabilityStatus;
         this.configSubject.next(this.configStorage);
     }
 }

@@ -1,3 +1,11 @@
 <div class="search-results-wrapper">
-    
+    <div class="search-result" *ngFor="let searchResult of searchResults">
+        <div class="paper-title">
+            <b>{{ searchResult.title }} - {{ searchResult.year }}</b>
+        </div>
+        <div class="paper-abstract">
+            {{ searchResult.abstract }}
+        </div>
+        <br>
+    </div>
 </div>

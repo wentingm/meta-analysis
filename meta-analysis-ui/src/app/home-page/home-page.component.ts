@@ -4,6 +4,7 @@ import { ConfigHandlerService } from '../shared/services/config-handler.service'
 import { SessionConfig } from '../shared/models/session-config';
 import { SearchService } from '../shared/services/search.service';
 import { PicoSearchQuery } from '../shared/models/search-params';
+import { SearchResult } from '../shared/models/search-result';
 
 @Component({
   selector: 'app-home-page',
@@ -11,9 +12,8 @@ import { PicoSearchQuery } from '../shared/models/search-params';
   styleUrl: './home-page.component.css'
 })
 export class HomePageComponent implements OnInit{
-    searchResults = MOCK_SEARCH_RESULTS;
+    searchResults!: SearchResult[];
     currentConfig!: SessionConfig;
-    picoSearchQuery!: PicoSearchQuery;
 
     constructor(private configService: ConfigHandlerService,
         private searchService: SearchService
@@ -25,7 +25,12 @@ export class HomePageComponent implements OnInit{
         })
     }
 
-    recievePicoSearchQuery(input: PicoSearchQuery) {
-        this.picoSearchQuery = input;
+    startPicoSearch(input: PicoSearchQuery) {
+        this.configService.updateSearchResultAvailabilityStatus(false);
+        this.searchService.sendPicoSearchParams(input);
+        this.searchService.fetchSearchResults().subscribe((data) => {
+            this.searchResults = data;
+            this.configService.updateSearchResultAvailabilityStatus(true);
+        });
     }
 }
