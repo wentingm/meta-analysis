@@ -1,0 +1,11 @@
+requests==2.29.0
+flake8==6.0.0
+Flask==2.2.2
+langchain==0.2.14
+langchain-community==0.2.12
+langchain-core==0.2.32
+langchain-text-splitters==0.2.2
+chromadb==0.5.5
+openai==1.40.8
+PyMuPDF==1.24.9
+tiktoken==0.7.0
