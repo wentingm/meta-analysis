@@ -1,21 +1,21 @@
 import { Injectable } from '@angular/core';
-import { MOCK_SEARCH_RESULTS } from '../mock-data';
 import { PicoSearchQuery } from '../models/search-params';
-import { Observable, of } from 'rxjs';
+import { firstValueFrom, Observable, of } from 'rxjs';
 import { SearchResult } from '../models/search-result';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SearchService {
 
-    constructor() { }
+    private backendURL!: string;
+    constructor(private httpClient: HttpClient) {
+        this.backendURL = 'http://localhost:5000/process_json';
+    }
 
     sendPicoSearchParams(searchParams: PicoSearchQuery) {
         //TODO: Launch and connect with the backend and, send the searchParams
-    }
-
-    fetchSearchResults(): Observable<SearchResult[]> {
-      return of(MOCK_SEARCH_RESULTS);
+        return this.httpClient.post(this.backendURL, searchParams);
     }
 }

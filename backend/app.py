@@ -2,6 +2,7 @@ from flask import Flask, request, render_template, redirect, url_for, session, j
 from flask_cors import CORS
 import json
 from api_client import fetch_data
+from chatgpt_client import get_chatgpt_response
 from utils import get_paper_content_from_db
 from flask_sqlalchemy import SQLAlchemy  # Import SQLAlchemy
 from config import Config
@@ -21,10 +22,10 @@ def process_json():
     data = request.get_json()
 
     # Extract values from the JSON data
-    population = data.get('population')
-    intervention = data.get('intervention')
-    comparison = data.get('comparison')
-    outcome = data.get('outcome')
+    population = data.get('populationKeywords')
+    intervention = data.get('interventionKeywords')
+    comparison = data.get('comparisonKeywords')
+    outcome = data.get('outcomeKeywords')
     
     # Process and save the data
     raw_data = fetch_data(population, intervention, comparison, outcome)
