@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-import { MOCK_SEARCH_RESULTS } from '../shared/mock-data';
 import { ConfigHandlerService } from '../shared/services/config-handler.service';
 import { SessionConfig } from '../shared/models/session-config';
 import { SearchService } from '../shared/services/search.service';
@@ -27,9 +26,9 @@ export class HomePageComponent implements OnInit{
 
     startPicoSearch(input: PicoSearchQuery) {
         this.configService.updateSearchResultAvailabilityStatus(false);
-        this.searchService.sendPicoSearchParams(input);
-        this.searchService.fetchSearchResults().subscribe((data) => {
-            this.searchResults = data;
+        this.searchService.sendPicoSearchParams(input)
+        .subscribe((data: any) => {
+            this.searchResults = JSON.parse(data) as SearchResult[];
             this.configService.updateSearchResultAvailabilityStatus(true);
         });
     }

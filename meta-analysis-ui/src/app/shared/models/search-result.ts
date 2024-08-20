@@ -1,6 +1,8 @@
 export interface SearchResult {
-    paperId: string;
+    url: string;
     title: string;
+    year: string;
+    authors: string;
     abstract: string;
-    year: number;
+    journal: string;
 }
