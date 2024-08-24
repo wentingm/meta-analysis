@@ -1,4 +1,4 @@
-import { Component, Input, OnChanges, SimpleChanges } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SearchResult } from '../../shared/models/search-result';
 
 @Component({
@@ -6,13 +6,7 @@ import { SearchResult } from '../../shared/models/search-result';
   templateUrl: './search-results.component.html',
   styleUrl: './search-results.component.css'
 })
-export class SearchResultsComponent implements OnChanges{
+export class SearchResultsComponent {
 
     @Input() searchResults!: SearchResult[];
-
-    ngOnChanges(changes: SimpleChanges): void {
-        if(changes) {
-            console.log({ changes });
-        }
-    }
 }

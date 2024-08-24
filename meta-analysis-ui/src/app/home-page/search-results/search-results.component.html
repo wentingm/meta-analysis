@@ -1,11 +1,17 @@
-<div class="search-results-wrapper">
-    <div class="search-result" *ngFor="let searchResult of searchResults">
-        <div class="paper-title">
-            <b>{{ searchResult.title }} - {{ searchResult.year }}</b>
+<section class="search-results-section">
+    <div class="search-results-wrapper col-12 border border-black border-3">
+        <div class="search-result p-2 border border-black border-2" *ngFor="let searchResult of searchResults">
+            <div class="col-9 p-2">
+                <b>{{ searchResult.title }} - {{ searchResult.year }}</b>
+                <div class="text-truncate col-12 p-2">
+                    {{ searchResult.abstract }}
+                </div>
+            </div>
+            <div class="link-wrapper">
+                <a [href]="searchResult.url" [title]="'Link to ' + searchResult.title + ' published ' + searchResult.year">
+                    <img src="../../../assets/hyperlink.svg" alt="hyperlink">
+                </a>
+            </div>
         </div>
-        <div class="paper-abstract">
-            {{ searchResult.abstract }}
-        </div>
-        <br>
     </div>
-</div>
+</section>
