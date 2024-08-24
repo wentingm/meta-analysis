@@ -1,15 +1,26 @@
-.paper-abstract {
-    width: inherit;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
 .search-result {
-    width: 900px;
+    width: 50.25em;
+    margin-left: 1.5em;
+    margin-top: 1em;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
 }
 
 .search-results-wrapper {
-    height: 500px;
+    height: 31.25em;
     overflow-y: scroll;
+    margin-top: 1em;
+}
+
+img {
+    width: 2em;
+    height: 2em;
+}
+
+.link-wrapper {
+    height: max-content;
+    align-self: center;
+    margin-right: 2em;
 }

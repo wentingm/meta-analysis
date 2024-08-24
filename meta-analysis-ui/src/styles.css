@@ -1,5 +1,13 @@
 /* You can add global styles to this file, and also import other style files */
-app-login-page {
-    display: grid;
-    justify-content: center;
+html, body {
+    margin: 0%;
+    height: 100%;
+}
+
+app-root {
+    display: flex;
+    height: inherit;
+    width: inherit;
+    flex-direction: column;
+    align-items: center;
 }

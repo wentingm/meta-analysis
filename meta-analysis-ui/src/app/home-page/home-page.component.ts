@@ -4,6 +4,7 @@ import { SessionConfig } from '../shared/models/session-config';
 import { SearchService } from '../shared/services/search.service';
 import { PicoSearchQuery } from '../shared/models/search-params';
 import { SearchResult } from '../shared/models/search-result';
+import { MOCK_SEARCH_RESULTS } from '../shared/mock-data';
 
 @Component({
   selector: 'app-home-page',
@@ -13,6 +14,10 @@ import { SearchResult } from '../shared/models/search-result';
 export class HomePageComponent implements OnInit{
     searchResults!: SearchResult[];
     currentConfig!: SessionConfig;
+    wasSearchClicked: boolean = false;
+
+    //TODO: Remove for prod
+    private devMode = true;
 
     constructor(private configService: ConfigHandlerService,
         private searchService: SearchService
@@ -25,11 +30,27 @@ export class HomePageComponent implements OnInit{
     }
 
     startPicoSearch(input: PicoSearchQuery) {
+        this.wasSearchClicked = true;
         this.configService.updateSearchResultAvailabilityStatus(false);
-        this.searchService.sendPicoSearchParams(input)
-        .subscribe((data: any) => {
-            this.searchResults = JSON.parse(data) as SearchResult[];
-            this.configService.updateSearchResultAvailabilityStatus(true);
-        });
+
+        if(!this.devMode) {
+            this.searchService.sendPicoSearchParams(input)
+            .subscribe((data: any) => {
+                this.searchResults = JSON.parse(data) as SearchResult[];
+                this.configService.updateSearchResultAvailabilityStatus(true);
+            });
+        }
+
+        //For testing purposes only
+        else {
+            setTimeout(() => {
+                this.searchResults = MOCK_SEARCH_RESULTS;
+                this.configService.updateSearchResultAvailabilityStatus(true);
+            }, 10);
+        }
+    }
+
+    uploadPapers() {
+        
     }
 }
