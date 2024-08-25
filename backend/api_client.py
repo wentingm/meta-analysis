@@ -43,7 +43,7 @@ def fetch_data(population, intervention, comparison, outcome):
                     # check whether paper in local database
                     paper_in_database = 0
                     paper_in_database = check_paper_title_in_database(title)
-                    paper["avaiable_in_database"] = paper_in_database
+                    paper["available_in_database"] = paper_in_database
                     
                     # check whether paper pdf avilable through API
                     pdf_link = extract_pdf_link(paper)
