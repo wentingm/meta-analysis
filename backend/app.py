@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, redirect, url_for, session, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
 from api_client import fetch_data
