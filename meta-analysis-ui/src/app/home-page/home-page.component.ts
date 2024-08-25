@@ -17,7 +17,7 @@ export class HomePageComponent implements OnInit{
     wasSearchClicked: boolean = false;
 
     //TODO: Remove for prod
-    private devMode = true;
+    private devMode = false;
 
     constructor(private configService: ConfigHandlerService,
         private searchService: SearchService
@@ -51,6 +51,6 @@ export class HomePageComponent implements OnInit{
     }
 
     uploadPapers() {
-        
+
     }
 }
