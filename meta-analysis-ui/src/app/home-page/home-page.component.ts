@@ -15,7 +15,7 @@ export class HomePageComponent implements OnInit{
     searchResults!: SearchResult[];
     currentConfig!: SessionConfig;
     wasSearchClicked: boolean = false;
-    errorMessage!: string;
+    errorMessage!: string | undefined;
 
     //TODO: Remove for prod
     private devMode = false;
@@ -40,6 +40,7 @@ export class HomePageComponent implements OnInit{
                 next: data => {
                     this.searchResults = JSON.parse(data as string) as SearchResult[];
                     this.configService.updateSearchResultAvailabilityStatus(true);
+                    this.errorMessage = undefined;
                 },
                 error: error => {
                     this.errorMessage = error.message;
