@@ -23,10 +23,10 @@ export class KeywordSearchBarsComponent {
 
     ngOnInit(): void {
         this.picoSearchQuery = {
-            populationKeywords: '',
-            interventionKeywords: '',
-            comparisonKeywords: '',
-            outcomeKeywords: ''
+            population: '',
+            intervention: '',
+            comparison: '',
+            outcome: ''
         };
     }
 
@@ -36,10 +36,10 @@ export class KeywordSearchBarsComponent {
     }
 
     private searchInputParser() {
-        this.picoSearchQuery.populationKeywords = this.formatKeywordString(this.picoFormGroup.controls.populationFormControl.value!);
-        this.picoSearchQuery.interventionKeywords = this.formatKeywordString(this.picoFormGroup.controls.interventionFormControl.value!);
-        this.picoSearchQuery.comparisonKeywords = this.formatKeywordString(this.picoFormGroup.controls.comparisonFormControl.value!);
-        this.picoSearchQuery.outcomeKeywords = this.formatKeywordString(this.picoFormGroup.controls.outcomeFormControl.value!);
+        this.picoSearchQuery.population = this.formatKeywordString(this.picoFormGroup.controls.populationFormControl.value!);
+        this.picoSearchQuery.intervention = this.formatKeywordString(this.picoFormGroup.controls.interventionFormControl.value!);
+        this.picoSearchQuery.comparison = this.formatKeywordString(this.picoFormGroup.controls.comparisonFormControl.value!);
+        this.picoSearchQuery.outcome = this.formatKeywordString(this.picoFormGroup.controls.outcomeFormControl.value!);
     }
 
     private formatKeywordString(input: string) {

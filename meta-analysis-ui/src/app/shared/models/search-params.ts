@@ -1,6 +1,6 @@
 export interface PicoSearchQuery {
-    populationKeywords: string;
-    interventionKeywords: string;
-    comparisonKeywords: string;
-    outcomeKeywords: string;
+    population: string;
+    intervention: string;
+    comparison: string;
+    outcome: string;
 }

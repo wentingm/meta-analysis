@@ -11,7 +11,7 @@ export class SearchService {
 
     private backendURL!: string;
     constructor(private httpClient: HttpClient) {
-        this.backendURL = 'http://20.9.141.201:5000/process_json';
+        this.backendURL = 'http://51.141.166.11:5000/process_json';
     }
 
     sendPicoSearchParams(searchParams: PicoSearchQuery) {
