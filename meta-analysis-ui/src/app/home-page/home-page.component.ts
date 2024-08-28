@@ -36,15 +36,16 @@ export class HomePageComponent implements OnInit{
 
         if(!this.devMode) {
             this.searchService.sendPicoSearchParams(input)
-            .subscribe((data: any) => {
-                this.searchResults = JSON.parse(data) as SearchResult[];
-                this.configService.updateSearchResultAvailabilityStatus(true);
-            },
-            (error: Error) => {
-                this.errorMessage = error.message;
-                console.log({error});
-            }
-        );
+            .subscribe({
+                next: data => {
+                    this.searchResults = JSON.parse(data as string) as SearchResult[];
+                    this.configService.updateSearchResultAvailabilityStatus(true);
+                },
+                error: error => {
+                    this.errorMessage = error.message;
+                    console.log({error});
+                }
+            });
         }
 
         //For testing purposes only
