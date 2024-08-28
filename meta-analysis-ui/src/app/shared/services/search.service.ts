@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PicoSearchQuery } from '../models/search-params';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { catchError, firstValueFrom, Observable, of } from 'rxjs';
 import { SearchResult } from '../models/search-result';
 import { HttpClient } from '@angular/common/http';
 
@@ -16,6 +16,10 @@ export class SearchService {
 
     sendPicoSearchParams(searchParams: PicoSearchQuery) {
         //TODO: Launch and connect with the backend and, send the searchParams
-        return this.httpClient.post(this.backendURL, searchParams);
+        return this.httpClient.post(this.backendURL, searchParams).pipe(
+            catchError((error) => {
+                return of(error);
+            })
+        );
     }
 }

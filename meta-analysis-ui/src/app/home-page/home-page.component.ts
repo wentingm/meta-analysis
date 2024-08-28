@@ -15,9 +15,10 @@ export class HomePageComponent implements OnInit{
     searchResults!: SearchResult[];
     currentConfig!: SessionConfig;
     wasSearchClicked: boolean = false;
+    errorMessage!: string;
 
     //TODO: Remove for prod
-    private devMode = true;
+    private devMode = false;
 
     constructor(private configService: ConfigHandlerService,
         private searchService: SearchService
@@ -38,7 +39,12 @@ export class HomePageComponent implements OnInit{
             .subscribe((data: any) => {
                 this.searchResults = JSON.parse(data) as SearchResult[];
                 this.configService.updateSearchResultAvailabilityStatus(true);
-            });
+            },
+            (error: Error) => {
+                this.errorMessage = error.message;
+                console.log({error});
+            }
+        );
         }
 
         //For testing purposes only
