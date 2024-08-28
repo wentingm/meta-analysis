@@ -17,7 +17,7 @@ export class HomePageComponent implements OnInit{
     wasSearchClicked: boolean = false;
 
     //TODO: Remove for prod
-    private devMode = false;
+    private devMode = true;
 
     constructor(private configService: ConfigHandlerService,
         private searchService: SearchService
