@@ -17,3 +17,14 @@ def get_paper_content_from_db(title):
         return result[0]  # Assuming full_text is in the first column
     else:
         return None
+    
+def check_paper_title_in_database(title):
+    return 0
+
+def extract_pdf_link(paper):
+    link = paper.get('openAccessPdf', None)
+    if link:
+        pdf_weblink = link.get('url', None)
+    else:
+        pdf_weblink = None
+    return pdf_weblink
