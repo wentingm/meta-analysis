@@ -4,16 +4,19 @@
 
         <div class="form-elements-div" [ngClass]="{'col-md-8' : currentConfig.isSearchResultAvailable}">
             <app-keyword-search-bars (onSubmitEvent)="startPicoSearch($event)"></app-keyword-search-bars>
-            <div class="upload-button-wrapper" *ngIf="currentConfig.isSearchResultAvailable">
-                <button type="submit" (click)="uploadPapers()" class="btn btn-primary">Upload</button>
+            <div class="mb-3" *ngIf="currentConfig.isSearchResultAvailable">
+                <input type="file" accept=".pdf" class="form-control" multiple>
             </div>
         </div>
         <app-search-results *ngIf="currentConfig.isSearchResultAvailable"
         [searchResults]="searchResults"></app-search-results>
-        <div class="spinner-div" *ngIf="!currentConfig.isSearchResultAvailable && wasSearchClicked">
+        <div class="spinner-div" *ngIf="!currentConfig.isSearchResultAvailable && wasSearchClicked && !errorMessage">
             <div class="spinner-border text-primary" role="status">
             </div>
         </div>
-
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            Oops! Service isn't currently available.<br>
+            Reason: {{ errorMessage }}
+        </div>
     </div>
 </section>

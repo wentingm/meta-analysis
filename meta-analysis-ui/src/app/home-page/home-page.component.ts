@@ -15,6 +15,7 @@ export class HomePageComponent implements OnInit{
     searchResults!: SearchResult[];
     currentConfig!: SessionConfig;
     wasSearchClicked: boolean = false;
+    errorMessage!: string | undefined;
 
     //TODO: Remove for prod
     private devMode = false;
@@ -35,9 +36,16 @@ export class HomePageComponent implements OnInit{
 
         if(!this.devMode) {
             this.searchService.sendPicoSearchParams(input)
-            .subscribe((data: any) => {
-                this.searchResults = JSON.parse(data) as SearchResult[];
-                this.configService.updateSearchResultAvailabilityStatus(true);
+            .subscribe({
+                next: data => {
+                    this.searchResults = JSON.parse(data as string) as SearchResult[];
+                    this.configService.updateSearchResultAvailabilityStatus(true);
+                    this.errorMessage = undefined;
+                },
+                error: error => {
+                    this.errorMessage = error.message;
+                    console.log({error});
+                }
             });
         }
 

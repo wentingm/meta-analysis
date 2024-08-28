@@ -2,16 +2,21 @@
     width: 50.25em;
     margin-left: 1.5em;
     margin-top: 1em;
+    margin-right: 1.5em;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
 }
 
+.search-result:last-child {
+    margin-bottom: 1em;
+}
 .search-results-wrapper {
     height: 31.25em;
     overflow-y: scroll;
     margin-top: 1em;
+    margin-bottom: 1em;
 }
 
 img {

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { PicoSearchQuery } from '../models/search-params';
-import { firstValueFrom, Observable, of } from 'rxjs';
+import { catchError, firstValueFrom, map, Observable, of } from 'rxjs';
 import { SearchResult } from '../models/search-result';
 import { HttpClient } from '@angular/common/http';
 
