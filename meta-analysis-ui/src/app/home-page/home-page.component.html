@@ -4,8 +4,8 @@
 
         <div class="form-elements-div" [ngClass]="{'col-md-8' : currentConfig.isSearchResultAvailable}">
             <app-keyword-search-bars (onSubmitEvent)="startPicoSearch($event)"></app-keyword-search-bars>
-            <div class="upload-button-wrapper" *ngIf="currentConfig.isSearchResultAvailable">
-                <button type="submit" (click)="uploadPapers()" class="btn btn-primary">Upload</button>
+            <div class="mb-3" *ngIf="currentConfig.isSearchResultAvailable">
+                <input type="file" accept=".pdf" class="form-control" multiple>
             </div>
         </div>
         <app-search-results *ngIf="currentConfig.isSearchResultAvailable"
