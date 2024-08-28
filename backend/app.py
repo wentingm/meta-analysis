@@ -1,15 +1,21 @@
-from flask import Flask, request, render_template, redirect, url_for, session, jsonify
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 import json
+import os
 from api_client import fetch_data
 from chatgpt_client import get_chatgpt_response
 from utils import get_paper_content_from_db
 from flask_sqlalchemy import SQLAlchemy  # Import SQLAlchemy
 from config import Config
+from werkzeug.utils import secure_filename
+from db_connection import get_db_connection
+from pdf_utils import extract_pdf_metadata
+
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 CORS(app)
+
 
 # Initialize the SQLAlchemy database connection
 # db = SQLAlchemy(app)
@@ -59,6 +65,58 @@ def filter_results():
     
     # Return the filtered results as a JSON response
     return jsonify(selected_papers)
+
+
+@app.route('/upload_pdf', methods=['POST'])
+def upload_pdf():
+    # Check if a file is part of the POST request
+    if 'pdf' not in request.files:
+        return jsonify({"error": "No file provided"}), 400
+
+    file = request.files['pdf']
+
+    # Ensure the file is a PDF
+    if file.filename == '' or not file.filename.endswith('.pdf'):
+        return jsonify({"error": "Invalid file type, must be a PDF"}), 400
+
+    # Save the uploaded PDF file
+    filename = secure_filename(file.filename)
+    filepath = os.path.join('uploads', filename)
+    os.makedirs(os.path.dirname(filepath), exist_ok=True)
+    file.save(filepath)
+
+    # Extract metadata and content from the PDF
+    text_content, metadata = extract_pdf_metadata(filepath)
+
+    # Store the metadata and content in the database
+    if metadata or text_content:
+        conn = get_db_connection()
+        if conn:
+            try:
+                cursor = conn.cursor()
+                insert_query = """
+                INSERT INTO paperAnalysis (paper_title, metadata, paperContent)
+                VALUES (?, ?, ?)
+                """
+                cursor.execute(insert_query, (metadata.get('/Title', 'Untitled'), str(metadata), text_content))
+                conn.commit()
+
+                # Return the full metadata as part of the JSON response
+                return jsonify({
+                    "message": "Metadata and content extracted and stored successfully!",
+                    "metadata": metadata,
+                    "content_snippet": text_content[:]  # Return the full content
+                }), 200
+            except Exception as e:
+                print("An error occurred while inserting data:", e)
+                return jsonify({"error": "Failed to store metadata and content"}), 500
+            finally:
+                conn.close()
+        else:
+            return jsonify({"error": "Database connection failed"}), 500
+    else:
+        return jsonify({"error": "No metadata or content found in PDF"}), 400
+    
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000 )
