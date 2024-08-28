@@ -12,9 +12,14 @@
     margin-top: 1.5em;
 }
 
-.form-elements-div {
+.home-page-div-res-available .form-elements-div {
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+    width: -webkit-fill-available;
+}
+
+.alert {
+    margin-top: 1em;
 }
