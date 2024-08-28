@@ -22,10 +22,10 @@ def process_json():
     data = request.get_json()
 
     # Extract values from the JSON data
-    population = data.get('populationKeywords')
-    intervention = data.get('interventionKeywords')
-    comparison = data.get('comparisonKeywords')
-    outcome = data.get('outcomeKeywords')
+    population = data.get('population')
+    intervention = data.get('intervention')
+    comparison = data.get('comparison')
+    outcome = data.get('outcome')
     
     # Process and save the data
     raw_data = fetch_data(population, intervention, comparison, outcome)
