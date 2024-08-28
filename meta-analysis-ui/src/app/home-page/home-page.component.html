@@ -10,13 +10,10 @@
         </div>
         <app-search-results *ngIf="currentConfig.isSearchResultAvailable"
         [searchResults]="searchResults"></app-search-results>
-        <div class="spinner-div" *ngIf="!currentConfig.isSearchResultAvailable && wasSearchClicked && !errorMessage">
+        <div class="spinner-div" *ngIf="!currentConfig.isSearchResultAvailable && wasSearchClicked">
             <div class="spinner-border text-primary" role="status">
             </div>
         </div>
-        <div *ngIf="errorMessage" class="alert alert-danger">
-            Oops! Service isn't currently available.<br>
-            Reason: {{ errorMessage }}
-        </div>
+
     </div>
 </section>
