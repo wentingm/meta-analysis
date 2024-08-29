@@ -9,4 +9,5 @@ import { SearchResult } from '../../shared/models/search-result';
 export class SearchResultsComponent {
 
     @Input() searchResults!: SearchResult[];
+
 }

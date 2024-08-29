@@ -15,14 +15,18 @@ export class HomePageComponent implements OnInit{
     searchResults!: SearchResult[];
     currentConfig!: SessionConfig;
     wasSearchClicked: boolean = false;
-    errorMessage!: string | undefined;
+    errorMessage: string | undefined ;
 
     //TODO: Remove for prod
-    private devMode = false;
+    devMode = true;
 
     constructor(private configService: ConfigHandlerService,
         private searchService: SearchService
     ) {}
+    //TODO: Remove for prod
+    toggleDevMode() {
+        this.devMode = !this.devMode;
+    }
 
     ngOnInit(): void {
         this.configService.config$.subscribe((config) => {
@@ -44,7 +48,7 @@ export class HomePageComponent implements OnInit{
                 },
                 error: error => {
                     this.errorMessage = error.message;
-                    console.log({error});
+                    // console.log({error});
                 }
             });
         }
