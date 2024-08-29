@@ -2,11 +2,12 @@
     width: 50.25em;
     margin-left: 1.5em;
     margin-top: 1em;
-    margin-right: 1.5em;
+    margin-right: 1em;
 
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    align-items: center;
 }
 
 .search-result:last-child {
@@ -27,10 +28,10 @@ img {
 .link-wrapper {
     height: max-content;
     align-self: center;
-    margin-right: 2em;
+    margin-right: 1em;
 }
 
 .available-in-db-indicator {
     align-self: center;
-    margin-right: 2em
+    margin-right: 1em
 }

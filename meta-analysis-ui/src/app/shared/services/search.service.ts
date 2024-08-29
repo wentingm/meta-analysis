@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { PicoSearchQuery } from '../models/search-params';
-import { catchError, firstValueFrom, Observable, of } from 'rxjs';
-import { SearchResult } from '../models/search-result';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -10,16 +9,21 @@ import { HttpClient } from '@angular/common/http';
 export class SearchService {
 
     private backendURL!: string;
-    constructor(private httpClient: HttpClient) {
-        this.backendURL = 'http://51.141.166.11:5000/process_json';
+    private httpHeader!: HttpHeaders;
+
+    constructor(private httpClient: HttpClient, private router: Router) {
+        this.backendURL = 'http://51.1.166.11:5000/process_json';
+        this.httpHeader = new HttpHeaders({
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
+            "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept, x-client-key, x-client-token, x-client-secret, Authorization"
+        })
     }
 
     sendPicoSearchParams(searchParams: PicoSearchQuery) {
         //TODO: Launch and connect with the backend and, send the searchParams
-        return this.httpClient.post(this.backendURL, searchParams).pipe(
-            catchError((error) => {
-                return of(error);
-            })
-        );
+        return this.httpClient.post(this.backendURL, searchParams, {
+            headers: this.httpHeader
+        });
     }
 }

@@ -1,13 +1,6 @@
 <section class="search-results-section">
-    <div class="search-results-wrapper col-12 border border-black border-3">
-        <!-- <div class="header-div">
-            <header>
-                <span><b>Paper</b></span>
-                <span><b>Link</b></span>
-                <span><b>Available in database</b></span>
-            </header>
-        </div> -->
-        <div class="search-result p-2 border border-black border-2" *ngFor="let searchResult of searchResults">
+    <div class="search-results-wrapper col-15 border border-black border-3">
+        <div class="search-result p-2 col-12 border border-black border-2" *ngFor="let searchResult of searchResults">
             <div class="col-9 p-2">
                 <b>{{ searchResult.title }} - {{ searchResult.year }}</b>
                 <div class="text-truncate col-12 p-2">
@@ -22,6 +15,13 @@
             <div class="available-in-db-indicator">
                 <img [src]="searchResult.available_in_database === 1 ? '../../../assets/available.svg' : '../../../assets/unavailable.svg'"
                     [title]="'Paper is ' + (searchResult.available_in_database === 0 ? 'not available' : 'available') + ' in the database.'">
+            </div>
+            <div class="me-2">
+                <input type="file" accept=".pdf" style="display: none;" id="selectedFile">
+                <input type="button" value="Choose file"
+                class="btn btn-primary btn-sm me-6"
+                [disabled]="searchResult.available_in_database === 0"
+                onclick="document.getElementById('selectedFile').click();"/>
             </div>
         </div>
     </div>
