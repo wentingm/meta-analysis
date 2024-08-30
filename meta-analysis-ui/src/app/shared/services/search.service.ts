@@ -12,7 +12,7 @@ export class SearchService {
     private httpHeader!: HttpHeaders;
 
     constructor(private httpClient: HttpClient, private router: Router) {
-        this.backendURL = 'http://51.1.166.11:5000/process_json';
+        this.backendURL = 'http://20.9.141.201:5000/process_json';
         this.httpHeader = new HttpHeaders({
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET,HEAD,OPTIONS,POST,PUT",
