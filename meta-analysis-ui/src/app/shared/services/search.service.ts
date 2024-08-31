@@ -12,7 +12,7 @@ export class SearchService {
     private httpHeader!: HttpHeaders;
 
     constructor(private httpClient: HttpClient, private router: Router) {
-        this.backendURL = 'https://backendapi-gxa9frakd5g4ejew.eastus-01.azurewebsites.net:5000/process_json';
+        this.backendURL = 'https://backendapi-gxa9frakd5g4ejew.eastus-01.azurewebsites.net/process_json';
     }
 
     sendPicoSearchParams(searchParams: PicoSearchQuery) {
