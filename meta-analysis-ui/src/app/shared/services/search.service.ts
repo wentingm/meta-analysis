@@ -12,7 +12,7 @@ export class SearchService {
     private httpHeader!: HttpHeaders;
 
     constructor(private httpClient: HttpClient, private router: Router) {
-        this.backendURL = 'https://20.9.141.201:5000/process_json';
+        this.backendURL = 'http://20.9.141.201:5000/process_json';
     }
 
     sendPicoSearchParams(searchParams: PicoSearchQuery) {
