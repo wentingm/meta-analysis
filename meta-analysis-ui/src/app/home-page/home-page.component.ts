@@ -18,7 +18,7 @@ export class HomePageComponent implements OnInit{
     errorMessage: string | undefined ;
 
     //TODO: Remove for prod
-    devMode = true;
+    devMode = false;
 
     constructor(private configService: ConfigHandlerService,
         private searchService: SearchService
@@ -48,7 +48,7 @@ export class HomePageComponent implements OnInit{
                 },
                 error: error => {
                     this.errorMessage = error.message;
-                    // console.log({error});
+                    console.log({error});
                 }
             });
         }
