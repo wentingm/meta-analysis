@@ -1,0 +1,23 @@
+<section class="pico-search-section">
+    <form [formGroup]="picoFormGroup" (ngSubmit)="onSubmit()">
+        <div class="wrapper-div">
+            <div class="col-md-12">
+                <label class="form-label" for="populationFormControl"><b>Population</b></label>
+                <input type="text" class="form-control" id="populationFormControl" [formControl]="picoFormGroup.controls.populationFormControl">
+            </div>
+            <div class="col-md-12">
+                <label class="form-label" for="interventionFormControl"><b>Intervention</b></label>
+                <input type="text" class="form-control" id="interventionFormControl" [formControl]="picoFormGroup.controls.interventionFormControl">
+            </div>
+            <div class="col-md-12">
+                <label class="form-label" for="comparisonFormControl"><b>Comparison</b></label>
+                <input type="text" class="form-control" id="comparisonFormControl" [formControl]="picoFormGroup.controls.comparisonFormControl">
+            </div>
+            <div class="col-md-12">
+                <label class="form-label" for="outcomeFormControl"><b>Outcome</b></label>
+                <input type="text" class="form-control" id="outcomeFormControl" [formControl]="picoFormGroup.controls.outcomeFormControl">
+            </div>
+            <button type="submit" class="btn btn-primary">Search</button>
+        </div>
+    </form>
+</section>

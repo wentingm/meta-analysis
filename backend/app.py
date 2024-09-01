@@ -3,6 +3,7 @@ from flask_cors import CORS
 import json
 import os
 from api_client import fetch_data
+from chatgpt_client import get_chatgpt_response
 from utils import get_paper_content_from_db
 from flask_sqlalchemy import SQLAlchemy  # Import SQLAlchemy
 from config import Config

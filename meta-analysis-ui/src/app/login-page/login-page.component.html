@@ -1,0 +1,12 @@
+<div class="login-wrapper-div">
+    <form [formGroup]="loginFormGroup" (ngSubmit)="onSignIn()">
+        <div class="form-wrapper-div">
+            <input type="text" [formControl]="loginFormGroup.controls.username">
+            <input type="password" [formControl]="loginFormGroup.controls.username">
+            <button type="submit">Sign in</button>
+        </div>
+    </form>
+    <button type="submit" [routerLink]="['sign-up']">Sign up</button>
+</div>
+
+<router-outlet></router-outlet>

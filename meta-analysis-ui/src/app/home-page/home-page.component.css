@@ -1,0 +1,21 @@
+.home-page-div-res-available{
+    display: grid;
+    justify-items: start;
+}
+
+.home-page-div-res-not-avail {
+    display: grid;
+    justify-items: center;
+}
+
+.spinner-div {
+    margin-top: 1.5em;
+}
+
+.home-page-div-res-available .form-elements-div {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: -webkit-fill-available;
+}
