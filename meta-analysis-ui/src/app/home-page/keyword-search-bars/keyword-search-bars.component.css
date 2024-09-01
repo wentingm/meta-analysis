@@ -1,0 +1,9 @@
+.wrapper-div {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+}
+
+.col-md-12, .btn-primary {
+    margin-top: 1em;
+}
