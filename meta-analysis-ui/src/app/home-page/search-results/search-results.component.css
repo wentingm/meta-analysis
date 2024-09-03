@@ -17,6 +17,7 @@
 .search-result:last-child {
     margin-bottom: 1em;
 }
+
 .search-results-wrapper {
     height: 31.25em;
     overflow-y: scroll;

@@ -1,0 +1,36 @@
+section {
+    display: flex;
+    justify-content: space-around;
+}
+
+img:hover {
+    cursor: pointer;
+}
+
+img {
+    margin-left: 1em;
+}
+
+.prompt-input-wrapper {
+    display: flex;
+}
+
+.wrapper-div {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    overflow-y: auto;
+    height: 16em;
+    /* width: 24em; */
+}
+
+.col-md-12, .btn-primary {
+    margin-top: 1em;
+}
+
+.selected-titles-wrapper {
+    height: 16em;
+    overflow-y: auto;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}

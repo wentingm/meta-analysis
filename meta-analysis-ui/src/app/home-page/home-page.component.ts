@@ -62,7 +62,13 @@ export class HomePageComponent implements OnInit{
         }
     }
 
-    uploadPapers() {
+    uploadAllPapers() {
+        let selectedTitles = [];
 
+        for(let searchResult of this.searchResults) {
+            selectedTitles.push(searchResult.title)
+        }
+        localStorage.setItem("selectedTitles", JSON.stringify(selectedTitles))
+        window.location.href += '/phase-two'
     }
 }

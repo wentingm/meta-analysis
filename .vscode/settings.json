@@ -1,5 +1,0 @@
-{
-    "appService.showBuildDuringDeployPrompt": false,
-    "appService.defaultWebAppToDeploy": "/subscriptions/8288d21a-95cc-4b00-9e21-5d88f9236ddc/resourceGroups/backend_group/providers/Microsoft.Web/sites/BackendAPI",
-    "appService.deploySubpath": "backend"
-}

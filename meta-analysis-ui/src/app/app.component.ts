@@ -7,4 +7,5 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'meta-analysis-ui';
+  currentPath = window.location.href;
 }

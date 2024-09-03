@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SearchResult } from '../../shared/models/search-result';
 
 @Component({
@@ -9,5 +9,4 @@ import { SearchResult } from '../../shared/models/search-result';
 export class SearchResultsComponent {
 
     @Input() searchResults!: SearchResult[];
-
 }

@@ -8,15 +8,18 @@ import { Router } from '@angular/router';
 })
 export class SearchService {
 
-    private backendURL!: string;
+    private baseURL!: string;
     private httpHeader!: HttpHeaders;
 
     constructor(private httpClient: HttpClient, private router: Router) {
-        this.backendURL = 'https://backendapi-gxa9frakd5g4ejew.eastus-01.azurewebsites.net/process_json';
+        this.baseURL = 'https://backendapi-gxa9frakd5g4ejew.eastus-01.azurewebsites.net';
     }
 
     sendPicoSearchParams(searchParams: PicoSearchQuery) {
-        //TODO: Launch and connect with the backend and, send the searchParams
-        return this.httpClient.post(this.backendURL, searchParams);
+        return this.httpClient.post(this.baseURL + '/process_json', searchParams);
+    }
+
+    sendSelectedTitlesForFiltering(selectedTitles: string[]) {
+        return this.httpClient.post(this.baseURL + '/filters', selectedTitles);
     }
 }

@@ -1,15 +1,19 @@
 <!-- //TODO: Remove for prod -->
-<!-- <button type="submit" (click)="toggleDevMode()"
+<button type="submit" (click)="toggleDevMode()"
 class="btn"
 [ngClass]="{'btn-success': devMode,'btn-danger': !devMode}"
->Dev mode: {{ devMode }}</button> -->
+>Dev mode: {{ devMode }}</button>
 
 <section class="home-page-section">
     <div [ngClass]="{'home-page-div-res-available' : currentConfig.isSearchResultAvailable,
     'home-page-div-res-not-avail' : !currentConfig.isSearchResultAvailable}">
-
         <div class="form-elements-div" [ngClass]="{'col-md-8' : currentConfig.isSearchResultAvailable}">
             <app-keyword-search-bars (onSubmitEvent)="startPicoSearch($event)"></app-keyword-search-bars>
+        </div>
+        <div class="upload-all-papers-wrapper">
+            <input type="button" value="Add all files"
+            class="btn btn-primary" *ngIf="currentConfig.isSearchResultAvailable"
+            (click)="uploadAllPapers()"/>
         </div>
         <app-search-results *ngIf="currentConfig.isSearchResultAvailable"
         [searchResults]="searchResults"></app-search-results>

@@ -26,7 +26,7 @@
                 <input type="file" accept=".pdf" style="display: none;" id="selectedFile">
                 <input type="button" value="Add file"
                 class="btn btn-primary btn-sm me-6"
-                [disabled]="searchResult.available_in_database === 0"
+                [disabled]="!searchResult.pdf_link"
                 onclick="document.getElementById('selectedFile').click();"/>
             </div>
         </div>
