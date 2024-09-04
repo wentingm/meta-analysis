@@ -47,19 +47,24 @@ def filter_results():
     if not processed_data:
         return jsonify({"error": "No data provided"}), 400
 
+    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+    
     # Initialize an empty list to store selected papers
     selected_papers = []
     
     # Iterate through each candidate paper's title
     for paper in processed_data:
         title = paper.get('title')  # Assuming 'title' is a key in your processed_data
-        
+        population = paper.get('population')
+        intervention = paper.get('intervention')
+        comparison = paper.get('comparison')
+        outcome = paper.get('outcome')
         # Load the paper content from the SQLite database using the title
         paper_content = get_paper_content_from_db(title)
         
         # If the paper content is found, process it
         if paper_content:
-            if get_chatgpt_response(paper_content):
+            if get_chatgpt_response(paper_content, OPENAI_API_KEY, population, intervention, comparison, outcome):
                 # If the paper meets the criteria, add its title to the selected_papers list
                 selected_papers.append(title)
     
