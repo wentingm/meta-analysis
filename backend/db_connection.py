@@ -36,3 +36,6 @@ def get_db_connection():
     except pyodbc.Error as e:
         print("Error in connection:", e)
         return None
+
+if __name__ == '__main__':
+    get_db_connection()
