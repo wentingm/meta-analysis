@@ -1,13 +1,13 @@
-section {
+.prompts-and-filter {
     display: flex;
     justify-content: space-around;
 }
 
-img:hover {
-    cursor: pointer;
+.wrapper-section {
+    display: grid;
 }
 
-img {
+button:not(.btn-primary) {
     margin-left: 1em;
 }
 
@@ -24,7 +24,7 @@ img {
     /* width: 24em; */
 }
 
-.col-md-12, .btn-primary {
+.col-md-12 {
     margin-top: 1em;
 }
 

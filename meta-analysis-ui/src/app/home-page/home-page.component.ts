@@ -36,6 +36,7 @@ export class HomePageComponent implements OnInit{
 
     startPicoSearch(input: PicoSearchQuery) {
         this.wasSearchClicked = true;
+        localStorage.setItem("picoSearchQuery", JSON.stringify(input));
         this.configService.updateSearchResultAvailabilityStatus(false);
 
         if(!this.devMode) {

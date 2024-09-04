@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchService } from '../../shared/services/search.service';
 import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { PicoSearchQuery } from '../../shared/models/search-params';
 
 @Component({
   selector: 'app-post-search',
@@ -19,6 +20,17 @@ export class PostSearchComponent implements OnInit{
     promptsFormGroup = this.fb.group({
         prompts: this.fb.array([])
     });
+    picoSearchQuery: PicoSearchQuery = JSON.parse(localStorage.getItem('picoSearchQuery')!);
+
+    predefinedPrompts = [
+        'Does the article discuss an original structured investigation in the form of experiments, trials, or treatments?',
+        'Is this a randomized controlled trials or cohort studies or case-control study',
+        'Does this study split participants into groups for comparison',
+        'Assessed treatment outcomes after participants interact with ' + this.picoSearchQuery.intervention,
+        'Compared' + this.picoSearchQuery.outcome + ' of ' + this.picoSearchQuery.intervention + ' from the experiment group with outcomes from a non-treatment mode from the control/comparison group',
+        'Reported sufficient data (larger than 30 sample) to calculate effect size.',
+        'Reported measurable outcomes that can be further analyzed.'
+    ];
 
     ngOnInit(): void {
         this.selectedTitles = JSON.parse(localStorage.getItem("selectedTitles")!);
@@ -28,15 +40,16 @@ export class PostSearchComponent implements OnInit{
 
     filterSelectedPapers() {
         this.areRecommendationAvailable = true;
-        // this.searchService.sendSelectedTitlesForFiltering(this.selectedTitles).subscribe({
-        //     next: (data) => {
-        //         this.areRecommendationAvailable = true;
-        //     },
-        //     error: (err) => {
-        //         console.log({err})
-        //         this.areRecommendationAvailable = false;
-        //     }
-        // })
+        this.searchService.sendSelectedTitlesForFiltering(this.selectedTitles).subscribe({
+            next: (data) => {
+                this.areRecommendationAvailable = true;
+                console.log({data});
+            },
+            error: (err) => {
+                console.log({err})
+                this.areRecommendationAvailable = false;
+            }
+        })
     }
 
     get prompts(): FormArray {

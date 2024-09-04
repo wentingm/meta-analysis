@@ -1,36 +1,41 @@
-<section>
-    <form [formGroup]="promptsFormGroup" (ngSubmit)="filterSelectedPapers()">
-        <div class="wrapper-div">
-            <div formArrayName="prompts">
-                <div *ngFor="let promptInput of prompts.controls; let idx = index">
-                    <div [formGroupName]="idx" class="col-md-12">
-                        <label class="form-label" for="prompt-{{ idx }}">Prompt {{ idx+1 }}</label>
-                        <div class="prompt-input-wrapper">
-                            <input type="text" class="form-control" id="prompt-{{ idx }}" formControlName="prompt">
-                            <button (click)="addPrompt()" *ngIf="prompts.length < maxPrompts">
-                                <img src="../../../assets/add-icon.svg" title="Add prompt">
-                            </button>
-                            <button (click)="removePrompt(idx)" *ngIf="prompts.length > 1">
-                                <img src="../../../assets/delete-icon.svg" title="Delete prompt">
-                            </button>
+<section class="wrapper-section">
+    <section class="prompts-and-filter">
+        <form [formGroup]="promptsFormGroup" class="col-5 d-flex align-items-center flex-column justify-content-between">
+            <div class="wrapper-div">
+                <div formArrayName="prompts">
+                    <div *ngFor="let promptInput of prompts.controls; let idx = index">
+                        <div [formGroupName]="idx" class="col-md-12">
+                            <label class="form-label" for="prompt-{{ idx }}"><b>Prompt {{ idx+1 }}</b></label>
+                            <div class="prompt-input-wrapper">
+                                <input type="text" class="form-control border border-dark" id="prompt-{{ idx }}" formControlName="prompt" 
+                                [placeholder]="predefinedPrompts[idx]">
+                                <button (click)="addPrompt()" *ngIf="prompts.length < maxPrompts">
+                                    <img src="../../../assets/add-icon.svg" title="Add prompt">
+                                </button>
+                                <button (click)="removePrompt(idx)" *ngIf="prompts.length > 1">
+                                    <img src="../../../assets/delete-icon.svg" title="Delete prompt">
+                                </button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-        </div>
-        <button type="submit" class="btn btn-primary">Filter</button>
-    </form>
-    <div class="mt-5">
-        <header>
-            <h4>The following titles will be further filtered.</h4>
-        </header>
-        <div class="selected-titles-wrapper">
-            <div *ngFor="let title of selectedTitles" class="mt-3">
-                <div class="text-wrap">{{ title }}</div>
+            <button type="submit" class="btn btn-primary" (click)="filterSelectedPapers()">Filter</button>
+        </form>
+        <div class="col-7">
+            <header>
+                <h4>The following titles will be further filtered.</h4>
+            </header>
+            <div class="selected-titles-wrapper">
+                <div *ngFor="let title of selectedTitles" class="mt-3">
+                    <div class="text-wrap">{{ title }}</div>
+                </div>
             </div>
         </div>
-    </div>
-    <div *ngIf="areRecommendationAvailable">
-        Recommendations are available
-    </div>
+    </section>
+    <section class="container text-center">
+        <div *ngIf="areRecommendationAvailable">
+            Recommendations are available
+        </div>
+    </section>
 </section>
