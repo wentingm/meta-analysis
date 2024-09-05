@@ -1,14 +1,21 @@
 .prompts-and-filter {
     display: flex;
-    justify-content: space-around;
+    width: 100%;
+    justify-content: center;
 }
 
-.wrapper-section {
-    display: grid;
+section.container:first-child {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+form {
+    width: 75%;
 }
 
 button:not(.btn-primary) {
-    margin-left: 1em;
+    margin-left: 1rem;
 }
 
 .prompt-input-wrapper {
@@ -16,21 +23,29 @@ button:not(.btn-primary) {
 }
 
 .wrapper-div {
-    display: grid;
+    display: flex;
     justify-content: center;
     align-items: center;
     overflow-y: auto;
     height: 16em;
-    /* width: 24em; */
+    width: 100%;
 }
 
 .col-md-12 {
-    margin-top: 1em;
+    margin-top: 1rem;
 }
 
 .selected-titles-wrapper {
     height: 16em;
     overflow-y: auto;
-    margin-top: 1em;
-    margin-bottom: 1em;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+}
+
+.btn-primary {
+    width: 25%;
+}
+
+.table-responsive {
+    height: 20rem;
 }

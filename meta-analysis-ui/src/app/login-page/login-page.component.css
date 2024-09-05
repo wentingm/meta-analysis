@@ -5,18 +5,18 @@
     justify-items: center;
     align-content: space-evenly;
 
-    height: 15em;
-    width: 25em;
+    height: 15rem;
+    width: 25rem;
     background-color: #9c2323;
-    border: 0.125em solid #000;
-    border-radius: 2em;
+    border: 0.125rem solid #000;
+    border-radius: 2rem;
 }
 
 button {
-    height: 3em;
-    width: 8em;
-    font-size: 1.1em;
-    border-radius: 1em;
+    height: 3rem;
+    width: 8rem;
+    font-size: 1.1rem;
+    border-radius: 1rem;
 }
 
 button:hover, button:focus {

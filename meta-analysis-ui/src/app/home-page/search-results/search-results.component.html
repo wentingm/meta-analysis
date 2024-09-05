@@ -1,14 +1,15 @@
 <section class="search-results-section w-auto">
-    <div class="search-results-wrapper col-20 border border-black border-3">
+    <div class="search-results-wrapper col-20 border border-black border-3 d-grid">
+        <span class="text-center mt-3">Search returned <b>{{ searchResults.length + 1 }}</b> results</span>
         <header class="container text-center d-flex mt-3">
             <span class="col-7"><b>Paper</b></span>
             <span class="col-1"><b>Link</b></span>
             <span class="col-1 ms-1 me-4"><b>In database?</b></span>
             <span class="col-2"><b>Add for meta-analysis</b></span>
         </header>
-        <div class="search-result p-2 col-12 border border-black border-2" *ngFor="let searchResult of searchResults">
+        <div class="search-result p-2 col-12 border border-black border-2" *ngFor="let searchResult of searchResults; index as idx">
             <div class="col-7 p-2">
-                <b>{{ searchResult.title }} - {{ searchResult.year }}</b>
+                <b>{{ idx + 1 }}. {{ searchResult.title }} - {{ searchResult.year }}</b>
                 <div class="text-truncate col-12 p-2">
                     {{ searchResult.abstract }}
                 </div>

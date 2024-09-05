@@ -10,6 +10,13 @@ import { PicoSearchQuery } from '../../shared/models/search-params';
 })
 export class PostSearchComponent implements OnInit{
 
+    mockEffectSizeList: {title: string, effectSize: number}[] = [
+       {title: "Cognitive E-learning in Preschool", effectSize: 0.6397725657355339},
+        {title: "Java Sensei Learning Improvement", effectSize: 0.35498900235103537},
+        {title: "Cognitive Processes in Preparation for Problem Solving", effectSize: 41.44309548328089},
+        {title: "Adaptive Cytopathology Tutorials", effectSize: -0.33538880771466223}
+    ]
+
     constructor(private searchService: SearchService,
         private fb: FormBuilder) {}
 
@@ -40,16 +47,25 @@ export class PostSearchComponent implements OnInit{
 
     filterSelectedPapers() {
         this.areRecommendationAvailable = true;
-        this.searchService.sendSelectedTitlesForFiltering(this.selectedTitles).subscribe({
-            next: (data) => {
-                this.areRecommendationAvailable = true;
-                console.log({data});
-            },
-            error: (err) => {
-                console.log({err})
-                this.areRecommendationAvailable = false;
-            }
-        })
+        // this.searchService.sendSelectedTitlesForFiltering(this.selectedTitles).subscribe({
+        //     next: (data) => {
+        //         this.areRecommendationAvailable = true;
+        //         console.log({data});
+        //     },
+        //     error: (err) => {
+        //         console.log({err})
+        //         this.areRecommendationAvailable = false;
+        //     }
+        // })
+    }
+
+    calculateTotalEffectSize(): number {
+        let sum = 0
+        for (let entry of this.mockEffectSizeList) {
+            sum += entry.effectSize as unknown as number;
+        }
+
+        return sum;
     }
 
     get prompts(): FormArray {

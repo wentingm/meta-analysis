@@ -7,6 +7,7 @@ import { LoginPageModule } from './login-page/login-page.module';
 import { HomePageModule } from './home-page/home-page.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ConfigHandlerService } from './shared/services/config-handler.service';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { ConfigHandlerService } from './shared/services/config-handler.service';
     FormsModule,
     ReactiveFormsModule,
     LoginPageModule,
-    HomePageModule
+    HomePageModule,
+    CommonModule
   ],
   providers: [
     ConfigHandlerService
