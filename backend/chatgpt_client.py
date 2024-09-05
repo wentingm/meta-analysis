@@ -16,19 +16,19 @@ class Document:
 # for each file, split it and save into vectordatabase, return a judgement whether the file is a postive or negatvie pick
 def get_chatgpt_response(docs, OPENAI_API_KEY, population, intervention, comparison, outcome):
     print("Starting a fresh conversation")
-    # text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
 
-    # # Ensure docs is handled as a string
-    # if isinstance(docs, str):
-    #     document = Document(page_content=docs, metadata={})
-    #     split_docs = text_splitter.split_documents([document])  # Pass wrapped document object in a list
-    # else:
-    #     raise TypeError("The 'docs' parameter must be a string.")
+    # Ensure docs is handled as a string
+    if isinstance(docs, str):
+        document = Document(page_content=docs, metadata={})
+        split_docs = text_splitter.split_documents([document])  # Pass wrapped document object in a list
+    else:
+        raise TypeError("The 'docs' parameter must be a string.")
 
-    # # print(split_docs)
+    # print(split_docs)
 
-    # embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY, model="text-embedding-3-small")
-    # vectorstore = Chroma.from_documents(split_docs, embeddings)
+    embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY, model="text-embedding-3-small")
+    vectorstore = Chroma.from_documents(split_docs, embeddings)
 
     # Define the system prompt
     system_prompt = """
@@ -74,13 +74,12 @@ def get_chatgpt_response(docs, OPENAI_API_KEY, population, intervention, compari
 
     # Process each question
     for question in prompts:
-        # retrieval_docs = vectorstore.similarity_search(question, 10)  # Fetch relevant documents
-        # Convert the documents to a suitable format for the prompt (e.g., text)
-        # input_docs_text = "\n".join([doc.page_content for doc in retrieval_docs])  # Assuming each document has a 'content' attribute
+        retrieval_docs = vectorstore.similarity_search(question, 10)  # Fetch relevant documents
+        input_docs_text = "\n".join([doc.page_content for doc in retrieval_docs])  # Assuming each document has a 'content' attribute
 
 
-        # version without vector search
-        input_docs_text = docs
+        # # version without vector search
+        # input_docs_text = docs
 
         response = llm_chain.run(question=question, input_documents=input_docs_text)  # Pass both question and documents
         response = response.strip()
