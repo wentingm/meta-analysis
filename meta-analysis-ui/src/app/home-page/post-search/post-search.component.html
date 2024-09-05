@@ -28,36 +28,36 @@
             <button type="submit" class="btn btn-primary mt-3" (click)="filterSelectedPapers()">Filter</button>
         </form>
     </section>
-    <section class="container d-flex mt-5">
-        <div class="selected-titles-wrapper mt-5">
-            <header class="text-start">
-                <h5><b>The following titles were selected:</b></h5>
-            </header>
-            <div *ngFor="let title of selectedTitles" class="mt-3">
-                <div class="text-wrap">{{ title }}</div>
-            </div>
+</section>
+<section class="container d-flex mt-5 mx-2 justify-content-between" style="min-width: 112.5rem;">
+    <div class="selected-titles-wrapper mt-5">
+        <header class="text-start">
+            <h5><b>The following titles were selected:</b></h5>
+        </header>
+        <div *ngFor="let title of selectedTitles" class="mt-3">
+            <div class="text-wrap">{{ title }}</div>
         </div>
-        <div *ngIf="areRecommendationAvailable" class="ms-5 table-responsive">
-            <table class="table table-striped">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">Effect size</th>
-                    </tr>
-                </thead>
-                <tbody class="table-group-divider">
-                    <tr *ngFor="let entry of mockEffectSizeList; index as idx">
-                        <th scope="row">{{ idx + 1 }}</th>
-                        <td>{{ entry.title }}</td>
-                        <td>{{ entry.effectSize }}</td>
-                    </tr>
-                    <tr>
-                        <th colspan="2" scope="row">Total</th>
-                        <td>{{ calculateTotalEffectSize() }}</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </section>
+    </div>
+    <div *ngIf="areRecommendationAvailable" class="ms-5 table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Title</th>
+                    <th scope="col">Effect size</th>
+                </tr>
+            </thead>
+            <tbody class="table-group-divider">
+                <tr *ngFor="let entry of mockEffectSizeList; index as idx">
+                    <th scope="row">{{ idx + 1 }}</th>
+                    <td>{{ entry.title }}</td>
+                    <td>{{ entry.effectSize }}</td>
+                </tr>
+                <tr>
+                    <th colspan="2" scope="row">Average effect size</th>
+                    <td>{{ calculateAvgEffectSize() }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </section>

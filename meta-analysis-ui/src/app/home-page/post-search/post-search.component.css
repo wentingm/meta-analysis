@@ -40,6 +40,8 @@ button:not(.btn-primary) {
     overflow-y: auto;
     margin-top: 1rem;
     margin-bottom: 1rem;
+
+    /* min-width: 112.5rem !important; */
 }
 
 .btn-primary {

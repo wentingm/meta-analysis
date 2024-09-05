@@ -13,8 +13,13 @@ export class PostSearchComponent implements OnInit{
     mockEffectSizeList: {title: string, effectSize: number}[] = [
        {title: "Cognitive E-learning in Preschool", effectSize: 0.6397725657355339},
         {title: "Java Sensei Learning Improvement", effectSize: 0.35498900235103537},
-        {title: "Cognitive Processes in Preparation for Problem Solving", effectSize: 41.44309548328089},
-        {title: "Adaptive Cytopathology Tutorials", effectSize: -0.33538880771466223}
+        {title: "Cognitive Processes in Preparation for Problem Solving", effectSize: 0.4244309548328089},
+        {title: "Adaptive Cytopathology Tutorials", effectSize: -0.33538880771466223},
+        {title: "E-Learning Consequences of the Declining Interest in Engineering Studies in Europe", effectSize: -0.011400202533785209},
+        {title: "Assessing Teacher Technology Skills", effectSize: 0.10066169597590496},
+        {title: "Cognitive Processes in Preparation for Problem Solving", effectSize: -0.2883028703597375},
+        {title: "Adaptive Cytopathology Tutorials", effectSize: 0.11288292516111359},
+        {title: "Googling for Schools: Do K-12 School Districts Purchase Adwords to Drive Website Traffic?", effectSize: -0.2618307242506062},
     ]
 
     constructor(private searchService: SearchService,
@@ -59,13 +64,13 @@ export class PostSearchComponent implements OnInit{
         // })
     }
 
-    calculateTotalEffectSize(): number {
+    calculateAvgEffectSize(): number {
         let sum = 0
         for (let entry of this.mockEffectSizeList) {
             sum += entry.effectSize as unknown as number;
         }
 
-        return sum;
+        return sum/this.mockEffectSizeList.length;
     }
 
     get prompts(): FormArray {
