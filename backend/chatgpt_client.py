@@ -5,13 +5,30 @@ import os
 import json
 from langchain import LLMChain, PromptTemplate
 from langchain.chat_models import ChatOpenAI
+import gc
+from dataclasses import dataclass
+
+@dataclass
+class Document:
+    page_content: str
+    metadata: dict
 
 # for each file, split it and save into vectordatabase, return a judgement whether the file is a postive or negatvie pick
 def get_chatgpt_response(docs, OPENAI_API_KEY, population, intervention, comparison, outcome):
-    text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
-    split_docs = text_splitter.split_documents(docs)
-    embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY, model="text-embedding-3-small")
-    vectorstore = Chroma.from_documents(split_docs, embeddings)
+    print("Starting a fresh conversation")
+    # text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=0)
+
+    # # Ensure docs is handled as a string
+    # if isinstance(docs, str):
+    #     document = Document(page_content=docs, metadata={})
+    #     split_docs = text_splitter.split_documents([document])  # Pass wrapped document object in a list
+    # else:
+    #     raise TypeError("The 'docs' parameter must be a string.")
+
+    # # print(split_docs)
+
+    # embeddings = OpenAIEmbeddings(openai_api_key=OPENAI_API_KEY, model="text-embedding-3-small")
+    # vectorstore = Chroma.from_documents(split_docs, embeddings)
 
     # Define the system prompt
     system_prompt = """
@@ -29,6 +46,7 @@ def get_chatgpt_response(docs, OPENAI_API_KEY, population, intervention, compari
 
     """
 
+
     # Initialize the language model
     llm = ChatOpenAI(temperature=0, openai_api_key=OPENAI_API_KEY, model_name="gpt-4o-mini-2024-07-18")
 
@@ -42,7 +60,7 @@ def get_chatgpt_response(docs, OPENAI_API_KEY, population, intervention, compari
     )
 
     # Define your prompts
-    prompt1 = "Does the article discuss an original structured investigation in the form of experiments, trials, or treatments?"
+    prompt1 = "Does the article in the form of experiments, trials, or treatments?"
     prompt2 = "Is this a randomized controlled trials or cohort studies or case-control study"
     prompt3 = f"Does this study split participants into groups for comparison"
     prompt4 = f"Assessed treatment outcomes after participants interact with {intervention}"
@@ -56,35 +74,31 @@ def get_chatgpt_response(docs, OPENAI_API_KEY, population, intervention, compari
 
     # Process each question
     for question in prompts:
-        retrieval_docs = vectorstore.similarity_search(question, 10)  # Fetch relevant documents
+        # retrieval_docs = vectorstore.similarity_search(question, 10)  # Fetch relevant documents
         # Convert the documents to a suitable format for the prompt (e.g., text)
-        input_docs_text = "\n".join([doc.page_content for doc in retrieval_docs])  # Assuming each document has a 'content' attribute
+        # input_docs_text = "\n".join([doc.page_content for doc in retrieval_docs])  # Assuming each document has a 'content' attribute
 
-        # Get the model's response using the question and documents
+
+        # version without vector search
+        input_docs_text = docs
+
         response = llm_chain.run(question=question, input_documents=input_docs_text)  # Pass both question and documents
-        print(response)
         response = response.strip()
 
         response_data = json.loads(response)
         if response_data["response"]== "No":
+            del llm
+            del llm_chain
+            del vectorstore
+            gc.collect()
+            print("Conversation ended cleanly")
             return 0
-        
 
-        # try:
-        #     # Parse the JSON response
-        #     response_data = json.loads(response)
-
-        #     # Store the response in a structured format
-        #     answers.append({
-        #         "question": question,
-        #         "research": response_data["research"],
-        #         "assessment": response_data["assessment"],
-        #         "response": response_data["response"],  # Yes or No
-        #         "confidence": response_data["confidence"]
-        #     })
-        # except json.JSONDecodeError:
-        #     print(f"Error decoding JSON for question: {question}. Response was: {response}")
-
+    del llm
+    del vectorstore
+    del llm_chain
+    gc.collect()
+    print("Conversation ended cleanly")
     return 1
 
 
