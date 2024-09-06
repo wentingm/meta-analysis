@@ -52,16 +52,16 @@ export class PostSearchComponent implements OnInit{
 
     filterSelectedPapers() {
         this.areRecommendationAvailable = true;
-        // this.searchService.sendSelectedTitlesForFiltering(this.selectedTitles).subscribe({
-        //     next: (data) => {
-        //         this.areRecommendationAvailable = true;
-        //         console.log({data});
-        //     },
-        //     error: (err) => {
-        //         console.log({err})
-        //         this.areRecommendationAvailable = false;
-        //     }
-        // })
+        this.searchService.sendSelectedTitlesForFiltering(this.selectedTitles).subscribe({
+            next: (data) => {
+                this.areRecommendationAvailable = true;
+                console.log({data});
+            },
+            error: (err) => {
+                console.log({err})
+                this.areRecommendationAvailable = false;
+            }
+        })
     }
 
     calculateAvgEffectSize(): number {

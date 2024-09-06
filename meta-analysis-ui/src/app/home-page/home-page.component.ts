@@ -4,7 +4,7 @@ import { SessionConfig } from '../shared/models/session-config';
 import { SearchService } from '../shared/services/search.service';
 import { PicoSearchQuery } from '../shared/models/search-params';
 import { SearchResult } from '../shared/models/search-result';
-import { MOCK_SEARCH_RESULTS } from '../shared/mock-data';
+import { MOCK_SEARCH_RESULTS, MOCK_SELECTED_TITLES } from '../shared/mock-data';
 
 @Component({
   selector: 'app-home-page',
@@ -64,12 +64,12 @@ export class HomePageComponent implements OnInit{
     }
 
     uploadAllPapers() {
-        let selectedTitles = [];
+        // let selectedTitles = [];
 
-        for(let searchResult of this.searchResults) {
-            selectedTitles.push(searchResult.title)
-        }
-        localStorage.setItem("selectedTitles", JSON.stringify(selectedTitles))
+        // for(let searchResult of this.searchResults) {
+        //     selectedTitles.push(searchResult.title)
+        // }
+        localStorage.setItem("selectedTitles", JSON.stringify(MOCK_SELECTED_TITLES))
         window.location.href += '/phase-two'
     }
 }

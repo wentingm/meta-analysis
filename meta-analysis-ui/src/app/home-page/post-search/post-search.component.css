@@ -1,33 +1,15 @@
-.prompts-and-filter {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-}
-
-section.container:first-child {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 form {
     width: 75%;
+    max-height: inherit;
 }
 
 button:not(.btn-primary) {
     margin-left: 1rem;
 }
 
-.prompt-input-wrapper {
-    display: flex;
-}
-
 .wrapper-div {
-    display: flex;
-    justify-content: center;
-    align-items: center;
     overflow-y: auto;
-    height: 16em;
+    max-height: 16rem;
     width: 100%;
 }
 
@@ -37,17 +19,15 @@ button:not(.btn-primary) {
 
 .selected-titles-wrapper {
     height: 16em;
-    overflow-y: auto;
     margin-top: 1rem;
     margin-bottom: 1rem;
-
-    /* min-width: 112.5rem !important; */
-}
-
-.btn-primary {
-    width: 25%;
 }
 
 .table-responsive {
-    height: 20rem;
+    height: 16rem;
+}
+
+thead, header.text-start {
+    position: sticky;
+    top: 0;
 }
