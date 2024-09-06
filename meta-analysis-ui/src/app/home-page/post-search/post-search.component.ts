@@ -14,12 +14,12 @@ export class PostSearchComponent implements OnInit{
        {title: "Cognitive E-learning in Preschool", effectSize: 0.6397725657355339},
         {title: "Java Sensei Learning Improvement", effectSize: 0.35498900235103537},
         {title: "Cognitive Processes in Preparation for Problem Solving", effectSize: 0.4244309548328089},
-        {title: "Adaptive Cytopathology Tutorials", effectSize: -0.33538880771466223},
-        {title: "E-Learning Consequences of the Declining Interest in Engineering Studies in Europe", effectSize: -0.011400202533785209},
-        {title: "Assessing Teacher Technology Skills", effectSize: 0.10066169597590496},
-        {title: "Cognitive Processes in Preparation for Problem Solving", effectSize: -0.2883028703597375},
-        {title: "Adaptive Cytopathology Tutorials", effectSize: 0.11288292516111359},
-        {title: "Googling for Schools: Do K-12 School Districts Purchase Adwords to Drive Website Traffic?", effectSize: -0.2618307242506062},
+        {title: "Adaptive Cytopathology Tutorials", effectSize: -0.001538880771466223},
+        {title: "E-Learning Consequences of the Declining Interest in Engineering Studies in Europe", effectSize: -0.001400202533785209},
+        {title: "Assessing Teacher Technology Skills", effectSize: 0.69066169597590496},
+        {title: "Cognitive Processes in Preparation for Problem Solving", effectSize: -0.0883028703597375},
+        {title: "Adaptive Cytopathology Tutorials", effectSize: 0.31288292516111359},
+        {title: "Googling for Schools: Do K-12 School Districts Purchase Adwords to Drive Website Traffic?", effectSize: -0.0718307242506062},
     ]
 
     constructor(private searchService: SearchService,
@@ -28,6 +28,10 @@ export class PostSearchComponent implements OnInit{
     areRecommendationAvailable = false;
     selectedTitles!: string[];
     maxPrompts = 7;
+
+    devMode!: boolean;
+    displaySummary: boolean = false;
+
     promptInput!: FormGroup;
     promptsFormGroup = this.fb.group({
         prompts: this.fb.array([])
@@ -46,22 +50,25 @@ export class PostSearchComponent implements OnInit{
 
     ngOnInit(): void {
         this.selectedTitles = JSON.parse(localStorage.getItem("selectedTitles")!);
+        this.devMode = JSON.parse(localStorage.getItem("devMode")!)
         //add guardrail here to check if no papers were selected
         this.addPrompt();
     }
 
     filterSelectedPapers() {
         this.areRecommendationAvailable = true;
-        this.searchService.sendSelectedTitlesForFiltering(this.selectedTitles).subscribe({
-            next: (data) => {
-                this.areRecommendationAvailable = true;
-                console.log({data});
-            },
-            error: (err) => {
-                console.log({err})
-                this.areRecommendationAvailable = false;
-            }
-        })
+        if(!this.devMode) {
+            this.searchService.sendSelectedTitlesForFiltering(this.selectedTitles).subscribe({
+                next: (data) => {
+                    this.areRecommendationAvailable = true;
+                    console.log({data});
+                },
+                error: (err) => {
+                    console.log({err})
+                    this.areRecommendationAvailable = false;
+                }
+            })
+        }
     }
 
     calculateAvgEffectSize(): number {
@@ -86,5 +93,9 @@ export class PostSearchComponent implements OnInit{
 
     removePrompt(idx: number) {
         this.prompts.removeAt(idx)
+    }
+
+    updateDisplaySummary() {
+        this.displaySummary = true;
     }
 }

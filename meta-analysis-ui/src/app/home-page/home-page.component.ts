@@ -69,6 +69,7 @@ export class HomePageComponent implements OnInit{
         // for(let searchResult of this.searchResults) {
         //     selectedTitles.push(searchResult.title)
         // }
+        localStorage.setItem("devMode", JSON.stringify(this.devMode))
         localStorage.setItem("selectedTitles", JSON.stringify(MOCK_SELECTED_TITLES))
         window.location.href += '/phase-two'
     }
