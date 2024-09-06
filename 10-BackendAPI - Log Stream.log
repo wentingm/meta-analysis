@@ -1,0 +1,100 @@
+Connecting to log stream...
+2024-09-06T05:22:05  Welcome, you are now connected to log-streaming service.
+Starting Log Tail -n 10 of existing logs ----
+/appsvctmp/volatile/logs/runtime/49ca420615f85cf918a32317a310530fbcf9bdc52f384a90a86d2e158802350a.log 
+2024-09-06T04:55:23.649039789Z: [INFO]  {'paperId': 'ffb87354a3c5e14c679f1d976cf30b5a3ee55559', 'url': 'https://www.semanticscholar.org/paper/ffb87354a3c5e14c679f1d976cf30b5a3ee55559', 'title': "Teacher Perceptions of ESOL Students' Greatest Challenges in Academic English Skills: A K-12 Perspective", 'abstract': 'Introduction The number of English-to-speakers-of-other-languages (ESOL) students has more than doubled since 1980s and has recently grown significantly at North American schools (CBIE, 2002; U.S. Department of Education, 2008). Research in second language education has begun to show that ESOL students have considerable challenges in their academic studies at North American schools and one of the challenges is their inadequate English proficiency (Braine, 2002; Cho & Reich, 2008; Ferris & Tagg, 1996b; Huang, 2005; Huang & Klinger, 2006; Huang & Rinaldo, 2009; Kim, 2008; Watt, Roessingh, & Bosetti, 1996). Research into English for Academic Purposes (EAP) has also shown that ESOL students need to be competent in academic language skills in order to cope with academic demands at North American schools (Cassanave & Hubbard, 1992; Cho & Reich, 2008; Ferris & Tagg, 1996a; Huang, 2004; Huang & Klinger, 2006; Roessingh, 2004; Watt et al., 1996; Zamel, 1995). Language skills are defined at two different levels: Basic interpersonal communication skills (BICS) and cognitive academic language proficiency (CALP) (Cummins, 1979). BICS is defined as the language skills that are needed for social situations. CALP refers to academic language that is used in learning or classroom situations. BICS does not require specialized language and much less cognitively demanding than CALP (Kinnison, Stephens, Stager, & Rueter, 2007; Huang & Finn, 2009). Academic language skills are, therefore, listening, speaking, reading, and writing skills about a specific subject area or topic; and these are important skills that students must achieve in order to be successful at schools (Kinnison et al., 2007; Huang & Finn, 2009). ESOL students have challenges in all academic language skills at North American schools. They have difficulty in understanding academic lectures; they find it challenging to participate in classroom discussions and make oral presentations; and they have considerable challenges in academic reading and writing (Casanave & Hubbard 1992; Cho & Reich, 2008; Kim, 2008; Hinkel, 2006; Huang, 2005; Huang & Klinger, 2006; Huang & Rinaldo, 2009). These challenges have important impact on their academic learning at North American schools. However, in most studies, their challenges in academic language skills are reported by ESOL students. It is believed that their teachers perceive these challenges better than ESOL students, K12 ESOL students in particular. Therefore, the examination of teacher perceptions of K-12 ESOL students\' greatest challenges in academic English skills, the nature of these challenges, and what impact they have on their academic learning can have important educational implications for both classroom teachers and K-12 schools. Literature Review In this section, ESOL students\' challenges in academic language skills are reviewed. Specifically, their challenges in academic listening, followed by their challenges in academic speaking, reading, and writing at North American schools and universities are discussed. ESOL Students\' Challenges in Academic Listening Academic listening is a very important academic language skill. It is the first stage of academic language development; and it leads to the development of other academic language skills. However, it is also a challenging language skill for ESOL students (Huang, 2004, 2005; Huang & Finn, 2009). Brown (1994) suggests that there are three linguistic sources that would make academic listening difficult for ESOL students. They are the use of colloquial language, the use of reduced forms, and the "prosodic features" of the English language. Colloquial language, or informal language, is difficult because ESOL students tend to be introduced to English in the written form (e.g., in textbooks) and are not familiar with the expressions used by many individuals who speak the language. ???', 'year': 2010, 'openAccessPdf': None, 'journal': {'name': '', 'pages': '68', 'volume': '8'}, 'authors': [{'authorId': '47513136', 'name': 'Jinyan Huang'}, {'authorId': '2055015431', 'name': 'J. Cunningham'}, {'authorId': '50817658', 'name': 'Amanda E Finn'}], 'available_in_database': 0, 'pdf_link': None}
+2024-09-06T04:55:23.649113691Z: [INFO]  Done! Retrieved 904 papers total
+2024-09-06T04:55:23.649121391Z: [INFO]  Done! 195 papers's pdf available
+2024-09-06T04:55:23.649127791Z: [INFO]  169.254.130.7 - - [06/Sep/2024:04:55:23 +0000] "POST /process_json HTTP/1.1" 200 2565903 "https://metaanalysis-erg2dvbsbrdjgfh6.eastus-01.azurewebsites.net/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+Ending Log Tail of existing logs ---
+Starting Live Log Stream ---
+2024-09-06T05:23:05  No new trace in the past 1 min(s).
+2024-09-06T05:23:33.313459437Z: [ERROR]  /tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/langchain_core/_api/deprecation.py:141: LangChainDeprecationWarning: The class `OpenAIEmbeddings` was deprecated in LangChain 0.0.9 and will be removed in 0.3.0. An updated version of the class exists in the langchain-openai package and should be used instead. To use it run `pip install -U langchain-openai` and import as `from langchain_openai import OpenAIEmbeddings`.
+2024-09-06T05:23:33.313532938Z: [ERROR]    warn_deprecated(
+2024-09-06T05:23:40.531083045Z: [ERROR]  [2024-09-06 05:23:40,517] ERROR in app: Exception on /filters [POST]
+2024-09-06T05:23:40.531127645Z: [ERROR]  Traceback (most recent call last):
+2024-09-06T05:23:40.531135045Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
+2024-09-06T05:23:40.531147346Z: [ERROR]      response = self.full_dispatch_request()
+2024-09-06T05:23:40.531152246Z: [ERROR]                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:40.531156746Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask/app.py", line 882, in full_dispatch_request
+2024-09-06T05:23:40.531162246Z: [ERROR]      rv = self.handle_user_exception(e)
+2024-09-06T05:23:40.531166846Z: [ERROR]           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:40.531171446Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask_cors/extension.py", line 178, in wrapped_function
+2024-09-06T05:23:40.531176446Z: [ERROR]      return cors_after_request(app.make_response(f(*args, **kwargs)))
+2024-09-06T05:23:40.531181146Z: [ERROR]                                                  ^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:40.531186246Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask/app.py", line 880, in full_dispatch_request
+2024-09-06T05:23:40.531191546Z: [ERROR]      rv = self.dispatch_request()
+2024-09-06T05:23:40.531196246Z: [ERROR]           ^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:40.531200947Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask/app.py", line 865, in dispatch_request
+2024-09-06T05:23:40.531205847Z: [ERROR]      return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+2024-09-06T05:23:40.531210647Z: [ERROR]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:40.531215347Z: [ERROR]    File "/tmp/8dcce214fcb4c75/app.py", line 67, in filter_results
+2024-09-06T05:23:40.531220147Z: [ERROR]      if get_chatgpt_response(paper_content, OPENAI_API_KEY, population, intervention, comparison, outcome):
+2024-09-06T05:23:40.531224947Z: [ERROR]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:40.531229747Z: [ERROR]    File "/tmp/8dcce214fcb4c75/chatgpt_client.py", line 31, in get_chatgpt_response
+2024-09-06T05:23:40.531234547Z: [ERROR]      vectorstore = Chroma.from_documents(split_docs, embeddings)
+2024-09-06T05:23:40.531239247Z: [ERROR]                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:40.531243947Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/langchain_community/vectorstores/chroma.py", line 878, in from_documents
+2024-09-06T05:23:40.531248847Z: [ERROR]      return cls.from_texts(
+2024-09-06T05:23:40.531253447Z: [ERROR]             ^^^^^^^^^^^^^^^
+2024-09-06T05:23:40.531257947Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/langchain_community/vectorstores/chroma.py", line 814, in from_texts
+2024-09-06T05:23:40.531271848Z: [ERROR]      chroma_collection = cls(
+2024-09-06T05:23:40.531276648Z: [ERROR]                          ^^^^
+2024-09-06T05:23:40.531281348Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/langchain_core/_api/deprecation.py", line 205, in warn_if_direct_instance
+2024-09-06T05:23:40.531286148Z: [ERROR]      return wrapped(self, *args, **kwargs)
+2024-09-06T05:23:40.531290748Z: [ERROR]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:40.531295248Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/langchain_community/vectorstores/chroma.py", line 83, in __init__
+2024-09-06T05:23:40.531300048Z: [ERROR]      import chromadb
+2024-09-06T05:23:40.531304548Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/chromadb/__init__.py", line 86, in <module>
+2024-09-06T05:23:40.531309848Z: [ERROR]      raise RuntimeError(
+2024-09-06T05:23:40.531314248Z: [ERROR]  RuntimeError: Your system has an unsupported version of sqlite3. Chroma                     requires sqlite3 >= 3.35.0.
+2024-09-06T05:23:40.531319249Z: [ERROR]  Please visit                     https://docs.trychroma.com/troubleshooting#sqlite to learn how                     to upgrade.
+2024-09-06T05:23:40.545190282Z: [INFO]  Error in connection: ('HYT00', '[HYT00] [Microsoft][ODBC Driver 18 for SQL Server]Login timeout expired (0) (SQLDriverConnect)')
+2024-09-06T05:23:40.545251983Z: [INFO]  Database connection failed
+2024-09-06T05:23:40.545259983Z: [INFO]  Connection successful!
+2024-09-06T05:23:40.545264983Z: [INFO]  Starting a fresh conversation
+2024-09-06T05:23:40.545270283Z: [INFO]  169.254.130.7 - - [06/Sep/2024:05:23:40 +0000] "POST /filters HTTP/1.1" 500 265 "https://metaanalysis-erg2dvbsbrdjgfh6.eastus-01.azurewebsites.net/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+2024-09-06T05:23:41.502496876Z: [ERROR]  [2024-09-06 05:23:41,501] ERROR in app: Exception on /filters [POST]
+2024-09-06T05:23:41.502567377Z: [ERROR]  Traceback (most recent call last):
+2024-09-06T05:23:41.502574377Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask/app.py", line 1473, in wsgi_app
+2024-09-06T05:23:41.502579977Z: [ERROR]      response = self.full_dispatch_request()
+2024-09-06T05:23:41.502585277Z: [ERROR]                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:41.502590077Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask/app.py", line 882, in full_dispatch_request
+2024-09-06T05:23:41.502601877Z: [ERROR]      rv = self.handle_user_exception(e)
+2024-09-06T05:23:41.502606777Z: [ERROR]           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:41.502615878Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask_cors/extension.py", line 178, in wrapped_function
+2024-09-06T05:23:41.502620878Z: [ERROR]      return cors_after_request(app.make_response(f(*args, **kwargs)))
+2024-09-06T05:23:41.502625578Z: [ERROR]                                                  ^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:41.502630378Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask/app.py", line 880, in full_dispatch_request
+2024-09-06T05:23:41.502648278Z: [ERROR]      rv = self.dispatch_request()
+2024-09-06T05:23:41.502653078Z: [ERROR]           ^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:41.502657578Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/flask/app.py", line 865, in dispatch_request
+2024-09-06T05:23:41.502662578Z: [ERROR]      return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)  # type: ignore[no-any-return]
+2024-09-06T05:23:41.502667378Z: [ERROR]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:41.502672179Z: [ERROR]    File "/tmp/8dcce214fcb4c75/app.py", line 67, in filter_results
+2024-09-06T05:23:41.502676979Z: [ERROR]      if get_chatgpt_response(paper_content, OPENAI_API_KEY, population, intervention, comparison, outcome):
+2024-09-06T05:23:41.502681679Z: [ERROR]         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:41.502686479Z: [ERROR]    File "/tmp/8dcce214fcb4c75/chatgpt_client.py", line 31, in get_chatgpt_response
+2024-09-06T05:23:41.502691279Z: [ERROR]      vectorstore = Chroma.from_documents(split_docs, embeddings)
+2024-09-06T05:23:41.502695979Z: [ERROR]                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:41.502700779Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/langchain_community/vectorstores/chroma.py", line 878, in from_documents
+2024-09-06T05:23:41.502705779Z: [ERROR]      return cls.from_texts(
+2024-09-06T05:23:41.502710279Z: [ERROR]             ^^^^^^^^^^^^^^^
+2024-09-06T05:23:41.502714879Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/langchain_community/vectorstores/chroma.py", line 814, in from_texts
+2024-09-06T05:23:41.502721479Z: [ERROR]      chroma_collection = cls(
+2024-09-06T05:23:41.502725979Z: [ERROR]                          ^^^^
+2024-09-06T05:23:41.502730580Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/langchain_core/_api/deprecation.py", line 205, in warn_if_direct_instance
+2024-09-06T05:23:41.502735480Z: [ERROR]      return wrapped(self, *args, **kwargs)
+2024-09-06T05:23:41.502739980Z: [ERROR]             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2024-09-06T05:23:41.502744580Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/langchain_community/vectorstores/chroma.py", line 83, in __init__
+2024-09-06T05:23:41.502749380Z: [ERROR]      import chromadb
+2024-09-06T05:23:41.502753780Z: [ERROR]    File "/tmp/8dcce214fcb4c75/antenv/lib/python3.11/site-packages/chromadb/__init__.py", line 86, in <module>
+2024-09-06T05:23:41.502759280Z: [ERROR]      raise RuntimeError(
+2024-09-06T05:23:41.502763780Z: [ERROR]  RuntimeError: Your system has an unsupported version of sqlite3. Chroma                     requires sqlite3 >= 3.35.0.
+2024-09-06T05:23:41.502768780Z: [ERROR]  Please visit                     https://docs.trychroma.com/troubleshooting#sqlite to learn how                     to upgrade.
+2024-09-06T05:23:41.547924739Z: [INFO]  Connection successful!
+2024-09-06T05:23:41.547974240Z: [INFO]  Paper not found
+2024-09-06T05:23:41.547981140Z: [INFO]  Connection successful!
+2024-09-06T05:23:41.547986440Z: [INFO]  Starting a fresh conversation
+2024-09-06T05:23:41.547991740Z: [INFO]  169.254.130.7 - - [06/Sep/2024:05:23:41 +0000] "POST /filters HTTP/1.1" 500 265 "https://metaanalysis-erg2dvbsbrdjgfh6.eastus-01.azurewebsites.net/" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36 Edg/128.0.0.0"
+2024-09-06T05:25:05  No new trace in the past 1 min(s).
