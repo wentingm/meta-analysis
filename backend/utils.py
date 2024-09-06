@@ -3,6 +3,7 @@ from db_connection import get_db_connection
 # get_paper_content_from_db()
 def get_paper_content_from_db(title):
     conn = get_db_connection()
+    print(f"{conn}\n")
     if conn:
         try:
             cursor = conn.cursor()
