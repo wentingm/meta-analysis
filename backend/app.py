@@ -1,5 +1,6 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, session, redirect, url_for
 from flask_cors import CORS
+from login import login_bp
 import json
 import os
 from api_client import fetch_data
@@ -10,13 +11,30 @@ from config import Config
 from werkzeug.utils import secure_filename
 from db_connection import get_db_connection
 from pdf_utils import extract_pdf_metadata
+from dotenv import load_dotenv
+load_dotenv()
 
 
 app = Flask(__name__)
-app.config.from_pyfile('config.py')
+app.config.from_object(Config)
+app.secret_key = app.config['FLASK_SECRET_KEY']
+
 CORS(app)
+app.register_blueprint(login_bp)
 
 
+
+# @app.route('/protected')
+# def protected():
+#     if 'user' not in session:
+#         return redirect(url_for('login.login'))
+#     return 'This is a protected page.'
+@app.route('/')
+def index():
+    if 'user' in session:
+        return f"Hello, {session['user'].get('name', 'User')}!"
+    else:
+        return redirect(url_for('login.login'))
 # Initialize the SQLAlchemy database connection
 # db = SQLAlchemy(app)
 # from models import YourModel
@@ -24,6 +42,8 @@ CORS(app)
 # Route to process JSON data sent from the frontend
 @app.route('/process_json', methods=['POST'])
 def process_json():
+    if 'user' not in session:
+        return redirect(url_for('login.login'))
     # Get the JSON data from the request
     data = request.get_json()
 
@@ -42,6 +62,8 @@ def process_json():
 # Route to filter results from the processed data
 @app.route('/filters', methods=['POST'])
 def filter_results():
+    if 'user' not in session:
+        return redirect(url_for('login.login'))
     # Retrieve the processed data from the incoming JSON file
     processed_data = request.get_json()
     if not processed_data:
@@ -74,6 +96,8 @@ def filter_results():
 
 @app.route('/upload_pdf', methods=['POST'])
 def upload_pdf():
+    if 'user' not in session:
+        return redirect(url_for('login.login'))
     # Check if a file is part of the POST request
     if 'pdf' not in request.files:
         return jsonify({"error": "No file provided"}), 400
