@@ -1,12 +1,18 @@
-<div class="login-wrapper-div">
+<div class="login-wrapper">
     <form [formGroup]="loginFormGroup" (ngSubmit)="onSignIn()">
-        <div class="form-wrapper-div">
-            <input type="text" [formControl]="loginFormGroup.controls.username">
-            <input type="password" [formControl]="loginFormGroup.controls.username">
-            <button type="submit">Sign in</button>
+        <div class="form-wrapper">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" [formControl]="loginFormGroup.controls.username">
+        </div>
+        <div class="form-wrapper">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" [formControl]="loginFormGroup.controls.username">
+        </div>
+        <div class="form-wrapper">
+            <button class="btn btn-primary" type="submit">Sign in</button>
         </div>
     </form>
-    <button type="submit" [routerLink]="['sign-up']">Sign up</button>
+    <button class="btn btn-primary" type="submit" [routerLink]="['sign-up']">Sign up</button>
 </div>
 
 <router-outlet></router-outlet>
