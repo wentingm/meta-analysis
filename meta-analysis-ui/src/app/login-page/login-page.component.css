@@ -1,33 +1,98 @@
-/* browser font size used for dev - 16px */
-
-.login-wrapper-div {
-    display: grid;
-    justify-items: center;
-    align-content: space-evenly;
-
-    height: 15em;
-    width: 25em;
-    background-color: #9c2323;
-    border: 0.125em solid #000;
-    border-radius: 2em;
-}
-
-button {
-    height: 3em;
-    width: 8em;
-    font-size: 1.1em;
-    border-radius: 1em;
-}
-
-button:hover, button:focus {
+/* Centering the login container */
+.login-wrapper {
+    width: 100%;
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #f7f7f7;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    font-family: 'Arial', sans-serif;
+  }
+  
+  .login-wrapper h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #333;
+  }
+  
+  /* Styling the form group */
+  .form-wrapper {
+    margin-bottom: 20px;
+  }
+  
+  .form-wrapper label {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #555;
+  }
+  
+  /* Styling the input fields */
+  .form-control {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    transition: all 0.3s ease;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.2);
+  }
+  
+  /* Button styling */
+  .btn-primary {
+    width: 100%;
+    padding: 10px;
+    font-size: 18px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
     cursor: pointer;
-    background: #251377;
-    color: #fff;
-}
-
-.form-wrapper-div {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-}
+    transition: background-color 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #0056b3;
+  }
+  
+  .btn-primary:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+  }
+  
+  /* Error message styling */
+  .text-danger {
+    color: #dc3545;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+  
+  .form-group input.ng-invalid.ng-touched {
+    border-color: #dc3545;
+  }
+  
+  .form-group input.ng-valid.ng-touched {
+    border-color: #28a745;
+  }
+  
+  /* Making the form responsive */
+  @media (max-width: 500px) {
+    .login-container {
+      padding: 20px;
+      margin: 20px;
+    }
+  
+    .btn-primary {
+      font-size: 16px;
+    }
+  }
+  
