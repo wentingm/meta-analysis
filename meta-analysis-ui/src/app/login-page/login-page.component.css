@@ -30,6 +30,14 @@
     color: #555;
   }
   
+  .form-wrapper input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
   /* Styling the input fields */
   .form-control {
     width: 100%;
@@ -76,17 +84,17 @@
     margin-top: 5px;
   }
   
-  .form-group input.ng-invalid.ng-touched {
+  .form-wrapper input.ng-invalid.ng-touched {
     border-color: #dc3545;
   }
   
-  .form-group input.ng-valid.ng-touched {
+  .form-wrapper input.ng-valid.ng-touched {
     border-color: #28a745;
   }
   
   /* Making the form responsive */
   @media (max-width: 500px) {
-    .login-container {
+    .login-wrapper {
       padding: 20px;
       margin: 20px;
     }
@@ -94,5 +102,5 @@
     .btn-primary {
       font-size: 16px;
     }
-  }
+}
   
