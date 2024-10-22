@@ -26,15 +26,6 @@
           </div>
         </div>
       
-        <!-- Username -->
-        <div class="form-wrapper">
-          <label for="username">Username</label>
-          <input type="text" id="username" formControlName="username" />
-          <div *ngIf="signupForm.get('username')?.invalid && signupForm.get('username')?.touched" class="error">
-            Username is required.
-          </div>
-        </div>
-      
         <!-- Email -->
         <div class="form-wrapper">
           <label for="email">Email</label>
@@ -43,54 +34,53 @@
             Valid email is required.
           </div>
         </div>
-      
-        <!-- Phone -->
-        <div class="form-wrapper">
+        
+        <!-- <div class="form-wrapper">
           <label for="phone">Phone</label>
           <input type="tel" id="phone" formControlName="phone" />
           <div *ngIf="signupForm.get('phone')?.invalid && signupForm.get('phone')?.touched" class="error">
             Valid phone number is required.
           </div>
-        </div>
+        </div> -->
       
         <!-- Address -->
-        <div class="form-wrapper">
+        <!-- <div class="form-wrapper">
           <label for="address">Address</label>
           <input type="text" id="address" formControlName="address" />
           <div *ngIf="signupForm.get('address')?.invalid && signupForm.get('address')?.touched" class="error">
             Address is required.
           </div>
-        </div>
+        </div> -->
       
         <!-- City -->
-        <div class="form-wrapper">
+        <!-- <div class="form-wrapper">
           <label for="city">City</label>
           <input type="text" id="city" formControlName="city" />
           <div *ngIf="signupForm.get('city')?.invalid && signupForm.get('city')?.touched" class="error">
             City is required.
           </div>
-        </div>
+        </div> -->
       
         <!-- State -->
-        <div class="form-wrapper">
+        <!-- <div class="form-wrapper">
           <label for="state">State</label>
           <input type="text" id="state" formControlName="state" />
           <div *ngIf="signupForm.get('state')?.invalid && signupForm.get('state')?.touched" class="error">
             State is required.
           </div>
-        </div>
+        </div> -->
       
         <!-- Zip -->
-        <div class="form-wrapper">
+        <!-- <div class="form-wrapper">
           <label for="zip">Zip Code</label>
           <input type="text" id="zip" formControlName="zip" />
           <div *ngIf="signupForm.get('zip')?.invalid && signupForm.get('zip')?.touched" class="error">
             Zip code is required.
           </div>
-        </div>
+        </div> -->
       
         <!-- Country -->
-        <div class="form-wrapper">
+        <!-- <div class="form-wrapper">
             <label for="country">Country</label>
             <select id="country" formControlName="country">
               <option value="">Select your country</option>
@@ -99,7 +89,7 @@
             <div *ngIf="signupForm.get('country')?.invalid && signupForm.get('country')?.touched" class="error">
               Country is required.
             </div>
-        </div>
+        </div> -->
       
         <!-- Password -->
         <div class="form-wrapper">
@@ -111,11 +101,20 @@
         </div>
       
         <!-- Confirm Password -->
-        <div class="form-wrapper">
+        <!-- <div class="form-wrapper">
           <label for="confirmPassword">Confirm Password</label>
           <input type="password" id="confirmPassword" formControlName="confirmPassword" />
           <div *ngIf="signupForm.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched" class="error">
             Passwords do not match.
+          </div>
+        </div> -->
+
+        <!-- Verification Code -->
+        <div class="form-wrapper">
+          <label for="verification">Verification Code</label>
+          <input type="text" id="verification" formControlName="verification" />
+          <div *ngIf="signupForm.get('verification')?.invalid && signupForm.get('verification')?.touched" class="error">
+            Verification code is required.
           </div>
         </div>
       

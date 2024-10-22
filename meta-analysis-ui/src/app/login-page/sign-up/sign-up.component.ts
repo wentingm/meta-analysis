@@ -15,14 +15,15 @@ export class SignUpComponent implements OnInit{
     middleName: FormControl<string | null>;
     lastName: FormControl<string | null>;
     email: FormControl<string | null>;
-    phone: FormControl<string | null>;
-    country: FormControl<string | null>;
-    address: FormControl<string | null>;
-    city: FormControl<string | null>;
-    state: FormControl<string | null>;
-    zip: FormControl<string | null>;
+    // phone: FormControl<string | null>;
+    // country: FormControl<string | null>;
+    // address: FormControl<string | null>;
+    // city: FormControl<string | null>;
+    // state: FormControl<string | null>;
+    // zip: FormControl<string | null>;
     password: FormControl<string | null>;
-    confirmPassword: FormControl<string | null>;
+    // confirmPassword: FormControl<string | null>;
+    verificationCode: FormControl<string | null>;
   }>;
 
   countries: string[] = [];
@@ -33,14 +34,15 @@ export class SignUpComponent implements OnInit{
       middleName: new FormControl<string | null>(null),
       lastName: new FormControl<string | null>(null, [Validators.required]),
       email: new FormControl<string | null>(null, [Validators.required, Validators.email]),
-      phone: new FormControl<string | null>(null, [Validators.required, Validators.pattern('^[0-9]*$')]),
-      country: new FormControl<string | null>(null, [Validators.required]),
-      address: new FormControl<string | null>(null, [Validators.required]),
-      city: new FormControl<string | null>(null, [Validators.required]),
-      state: new FormControl<string | null>(null, [Validators.required]),
-      zip: new FormControl<string | null>(null, [Validators.required, Validators.pattern('^[0-9]*$')]),
+      // phone: new FormControl<string | null>(null, [Validators.required, Validators.pattern('^[0-9]*$')]),
+      // country: new FormControl<string | null>(null, [Validators.required]),
+      // address: new FormControl<string | null>(null, [Validators.required]),
+      // city: new FormControl<string | null>(null, [Validators.required]),
+      // state: new FormControl<string | null>(null, [Validators.required]),
+      // zip: new FormControl<string | null>(null, [Validators.required, Validators.pattern('^[0-9]*$')]),
       password: new FormControl<string | null>(null, [Validators.required, Validators.minLength(6)]),
-      confirmPassword: new FormControl<string | null>(null, [Validators.required])
+      // confirmPassword: new FormControl<string | null>(null, [Validators.required]),
+      verificationCode: new FormControl<string | null>(null, [Validators.required])
     }, { validators: this.passwordMatchValidator });
   }
 
@@ -62,7 +64,7 @@ export class SignUpComponent implements OnInit{
         console.error('Error fetching country list:', error);
       });
   }
-  
+
   // Handle Google Login
   // loginWithGoogle(): void {
   //   this.authService.signIn(GoogleLoginProvider.PROVIDER_ID).then(user => {
