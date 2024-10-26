@@ -1,15 +1,19 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_file
 from flask_cors import CORS
 import json
 import os
 from api_client import fetch_data
 from chatgpt_client import get_chatgpt_response
 from utils import get_paper_content_from_db
-from flask_sqlalchemy import SQLAlchemy  # Import SQLAlchemy
-from config import Config
 from werkzeug.utils import secure_filename
 from db_connection import get_db_connection
 from pdf_utils import extract_pdf_metadata
+from utils import get_paper_content_from_db  
+from paper_processing import process_paper_and_store_responses
+from document import Document 
+import pandas as pd # Importing Document class if it includes response data handling
+from dotenv import load_dotenv
+
 
 
 app = Flask(__name__)
@@ -40,7 +44,7 @@ def process_json():
     return jsonify(raw_data)
 
 # Route to filter results from the processed data
-@app.route('/filters', methods=['POST'])
+@app.route('/filters', methods=['POST', 'GET'])
 def filter_results():
     # Retrieve the processed data from the incoming JSON file
     processed_data = request.get_json()
@@ -75,11 +79,12 @@ def filter_results():
 @app.route('/upload_pdf', methods=['POST'])
 def upload_pdf():
     # Check if a file is part of the POST request
+    
     if 'pdf' not in request.files:
         return jsonify({"error": "No file provided"}), 400
 
     file = request.files['pdf']
-
+    print(file)
     # Ensure the file is a PDF
     if file.filename == '' or not file.filename.endswith('.pdf'):
         return jsonify({"error": "Invalid file type, must be a PDF"}), 400
@@ -105,6 +110,7 @@ def upload_pdf():
                 """
                 cursor.execute(insert_query, (metadata.get('/Title', 'Untitled'), str(metadata), text_content))
                 conn.commit()
+                print("data base connected")
 
                 # Return the full metadata as part of the JSON response
                 return jsonify({
@@ -122,6 +128,97 @@ def upload_pdf():
     else:
         return jsonify({"error": "No metadata or content found in PDF"}), 400
     
+
+# @app.route('/generate-excel', methods=['POST'])
+# def generate_excel():
+#     print("Method started")
+#     processed_data = request.get_json()
+#     if not processed_data:
+#         return jsonify({"error": "No data provided"}), 400
+
+#     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+#     responses = []
+#     print(OPENAI_API_KEY)
+
+#     for paper in processed_data:
+#         title = paper.get('title')  # Assuming 'title' is a key in your processed_data
+#         paper_content = get_paper_content_from_db(title)
+#         #print(paper_content)
+
+#         # Ensure paper_content is a string
+#         if isinstance(paper_content, bytes):
+#             paper_content = paper_content.decode('utf-8')  # Decode if it's in bytes
+#             print("Inside If")
+#         elif not isinstance(paper_content, str):
+#             return jsonify({"error": f"Invalid paper content type for {title}. Expected string."}), 400
+
+#         # Generate responses based on the paper content
+
+#         paper_responses = process_paper_and_store_responses(paper_content, OPENAI_API_KEY)
+#         responses.extend(paper_responses)  # assuming this returns a list of dictionaries
+#         print("after responses")
+
+#     # Create a DataFrame from the responses
+#     df = pd.DataFrame(responses)
+
+#     # Path where the Excel file will be saved
+#     excel_path = '/Users/anoopreddykunta/Desktop/responses.xlsx'
+#     # Write DataFrame to an Excel file
+#     df.to_excel(excel_path, index=False)
+
+#     # Check if file exists and return it
+#     if os.path.exists(excel_path):
+#         return send_file(excel_path, as_attachment=True, download_name='ResponsesReport.xlsx')
+#     elif not os.path.exists(excel_path):
+#         os.makedirs(excel_path)
+  
+    
+# @app.route('/calculation', methods=['POST'])
+# def calculate():
+#     # Retrieve the processed data from the incoming JSON file
+#     processed_data = request.get_json()
+#     if not processed_data:
+#         return jsonify({"error": "No data provided"}), 400
+
+#     # Fetch the OpenAI API key from environment variables
+#     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+    
+#     # Initialize an empty list to store results for each paper
+#     results = []
+    
+#     # Iterate through each candidate paper's title
+#     for paper in processed_data:
+#         title = paper.get('title')  # Assuming 'title' is a key in your processed_data
+        
+#         # Load the paper content from the database using the title
+#         paper_content = get_paper_content_from_db(title)
+#         print(type(paper_content))
+        
+#         # Ensure paper_content is a string
+#         if isinstance(paper_content, bytes):
+#             paper_content = paper_content.decode('utf-8')  # Decode if it's in bytes
+#         elif not isinstance(paper_content, str):
+#             return jsonify({"error": f"Invalid paper content type for {title}. Expected string."}), 400
+        
+#         # If the paper content is found, process it
+#         if paper_content:
+#             # Call the GPT function with the paper content and get the responses
+#             responses = process_paper_and_store_responses(paper_content, OPENAI_API_KEY)
+            
+#             # Create a structured result dictionary for this paper
+#             paper_result = {
+#                 "title": title,
+#                 "responses": responses
+#             }
+            
+#             # Append the result to the results list
+#             results.append(paper_result)
+
+#     # Return the collected results as a JSON response
+#     return jsonify({
+#         "message": "Calculation completed",
+#         "papers": results
+#     })
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000 )
