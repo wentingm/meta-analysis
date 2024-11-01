@@ -1,0 +1,236 @@
+/* src/components/SimpleDomainFlow.css */
+
+/* General Layout */
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+  
+  /* Title Styles */
+  .title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-align: center;
+    color: #1f2937;
+    margin-bottom: 24px;
+  }
+  
+  /* Domain Buttons Grid */
+  .domain-grid {
+    display: grid;
+    grid-template-columns: 1fr; /* Single-column layout */
+    gap: 16px;
+  }
+  
+  /* Domain Button */
+  .domain-button {
+    width: 100%; /* Full width */
+    display: flex;
+    align-items: center;
+    padding: 16px;
+    background-color: #f9fafb;
+    border-radius: 12px;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    text-align: left;
+  }
+  
+  .domain-button:hover {
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .domain-button-icon {
+    flex-shrink: 0;
+    height: 32px;
+    width: 32px;
+    color: #3b82f6;
+    margin-right: 16px;
+  }
+  
+  .domain-button-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: #374151;
+    text-align: left;
+  }
+  
+  .domain-button-description {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-top: 4px;
+    text-align: left;
+  }
+  
+  /* Back Button */
+  .back-button {
+    display: flex;
+    align-items: center;
+    color: #6b7280;
+    font-weight: 500;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    border: none;
+    background: none;
+  }
+  
+  .back-button:hover {
+    color: #1f2937;
+  }
+  
+  .back-button-icon {
+    height: 20px;
+    width: 20px;
+    margin-right: 8px;
+  }
+  
+  /* Form Section */
+  .form-section {
+    background-color: #ffffff;
+    padding: 24px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+    margin-bottom: 16px;
+  }
+  
+  .form-label {
+    display: block;
+    font-weight: 600;
+    color: #374151;
+    margin-bottom: 8px;
+  }
+  
+  .form-input {
+    width: 98%;
+    margin-top: 12px;
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid #d1d5db;
+    transition: border-color 0.3s ease;
+  }
+  
+  .form-input:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0px 0px 4px rgba(59, 130, 246, 0.5);
+  }
+  
+  /* Action Buttons */
+  .action-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 16px;
+    margin-top: 24px;
+  }
+  
+  .action-button {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    cursor: pointer;
+  }
+  .save-draft {
+    background-color: #f3f4f6;
+    color: #374151;
+    border: 1px solid #f3f4f6;
+  }
+  
+  .save-draft:hover {
+    background-color: #e5e7eb;
+  }
+  
+  .continue {
+    background-color: #3b82f6;
+    color: #ffffff;
+    border: 1px solid #3b82f6;
+  }
+  
+  .continue:hover {
+    background-color: #2563eb;
+  }
+
+/* Main container */
+.define-research-container {
+    max-width: 600px; /* Limit max width for better readability */
+    margin: 0 auto; /* Center container */
+    padding: 24px; /* Padding around the container */
+    background-color: #ffffff; /* White background for better contrast */
+    border-radius: 12px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+  }
+  
+  /* Heading styles */
+  .define-research-heading {
+    font-size: 1.5rem; /* Larger font size */
+    font-weight: 700; /* Bold heading */
+    margin-bottom: 16px; /* Space below heading */
+    color: #374151; /* Dark gray color for text */
+  }
+  
+  /* Description styles */
+  .define-research-description {
+    color: #6b7280; /* Gray color for descriptions */
+    margin-bottom: 24px; /* Space below description */
+  }
+  
+  /* Input field styles */
+  .input-container {
+    margin-bottom: 20px; /* Space below each input */
+  }
+  
+  .input-label {
+    display: block; /* Block display for labels */
+    margin-bottom: 8px; /* Space below label */
+    font-weight: 600; /* Bold label */
+    color: #374151; /* Dark text color */
+  }
+  
+  .input-field {
+    width: 100%; /* Full width input field */
+    padding: 12px; /* Padding inside input */
+    border: 1px solid #d1d5db; /* Light gray border */
+    border-radius: 8px; /* Rounded corners */
+    transition: border-color 0.2s; /* Transition for border color */
+  }
+  
+  .input-field:focus {
+    border-color: #3b82f6; /* Blue border on focus */
+    outline: none; /* Remove default outline */
+  }
+  
+  /* Card styles for pre-configured settings */
+  .card {
+    padding: 16px; /* Padding inside the card */
+    background-color: #f9fafb; /* Light gray background for the card */
+    border-radius: 8px; /* Rounded corners */
+    margin-bottom: 20px; /* Space below card */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); /* Subtle shadow */
+  }
+  
+  /* Button styles */
+  .button {
+    padding: 12px 20px; /* Padding inside buttons */
+    border-radius: 8px; /* Rounded corners */
+    border: none; /* Remove border */
+    color: white; /* White text color */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for background color */
+    outline: none;
+  }
+  
+  .button:hover {
+    background-color: #3b82f6; /* Darker blue on hover */
+  }
+  
+  .save-draft {
+    background-color: #f3f4f6; /* Gray background for save draft button */
+    color: #374151; /* Dark text for visibility */
+    border: 1px solid #f3f4f6;
+  }
+  
+  .save-draft:hover {
+    background-color: #e5e7eb; /* Darker gray on hover */
+  }
+  
