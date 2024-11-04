@@ -3,7 +3,7 @@ from flask_cors import CORS
 import json
 import os
 from api_client import fetch_data
-from chatgpt_client import get_chatgpt_response
+# from chatgpt_client import get_chatgpt_response
 from utils import get_paper_content_from_db
 from werkzeug.utils import secure_filename
 from db_connection import get_db_connection
@@ -13,7 +13,7 @@ from paper_processing import process_paper_and_store_responses
 from document import Document 
 import pandas as pd # Importing Document class if it includes response data handling
 from dotenv import load_dotenv
-
+import requests
 
 
 app = Flask(__name__)
@@ -43,37 +43,37 @@ def process_json():
     # Return a JSON response
     return jsonify(raw_data)
 
-# Route to filter results from the processed data
-@app.route('/filters', methods=['POST', 'GET'])
-def filter_results():
-    # Retrieve the processed data from the incoming JSON file
-    processed_data = request.get_json()
-    if not processed_data:
-        return jsonify({"error": "No data provided"}), 400
+# # Route to filter results from the processed data
+# @app.route('/filters', methods=['POST', 'GET'])
+# def filter_results():
+#     # Retrieve the processed data from the incoming JSON file
+#     processed_data = request.get_json()
+#     if not processed_data:
+#         return jsonify({"error": "No data provided"}), 400
 
-    OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+#     OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
     
-    # Initialize an empty list to store selected papers
-    selected_papers = []
+#     # Initialize an empty list to store selected papers
+#     selected_papers = []
     
-    # Iterate through each candidate paper's title
-    for paper in processed_data:
-        title = paper.get('title')  # Assuming 'title' is a key in your processed_data
-        population = paper.get('population')
-        intervention = paper.get('intervention')
-        comparison = paper.get('comparison')
-        outcome = paper.get('outcome')
-        # Load the paper content from the SQLite database using the title
-        paper_content = get_paper_content_from_db(title)
+#     # Iterate through each candidate paper's title
+#     for paper in processed_data:
+#         title = paper.get('title')  # Assuming 'title' is a key in your processed_data
+#         population = paper.get('population')
+#         intervention = paper.get('intervention')
+#         comparison = paper.get('comparison')
+#         outcome = paper.get('outcome')
+#         # Load the paper content from the SQLite database using the title
+#         paper_content = get_paper_content_from_db(title)
         
-        # If the paper content is found, process it
-        if paper_content:
-            if get_chatgpt_response(paper_content, OPENAI_API_KEY, population, intervention, comparison, outcome):
-                # If the paper meets the criteria, add its title to the selected_papers list
-                selected_papers.append(title)
+#         # If the paper content is found, process it
+#         if paper_content:
+#             if get_chatgpt_response(paper_content, OPENAI_API_KEY, population, intervention, comparison, outcome):
+#                 # If the paper meets the criteria, add its title to the selected_papers list
+#                 selected_papers.append(title)
     
-    # Return the filtered results as a JSON response
-    return jsonify(selected_papers)
+#     # Return the filtered results as a JSON response
+#     return jsonify(selected_papers)
 
 
 @app.route('/upload_pdf', methods=['POST'])
@@ -219,6 +219,80 @@ def upload_pdf():
 #         "message": "Calculation completed",
 #         "papers": results
 #     })
+
+
+from flask import Flask, jsonify, request
+import requests
+import urllib.parse
+
+app = Flask(__name__)
+
+@app.route('/getpapers', methods=['GET'])
+def fetch_data():
+    # Extract query parameters from the request
+    population = request.args.get('population', default="", type=str)
+    intervention = request.args.get('intervention', default="", type=str)
+    comparison = request.args.get('comparison', default="", type=str)
+    outcome = request.args.get('outcome', default="", type=str)
+    
+    # Construct and encode the search query
+    query = f"{population}, {intervention}, {comparison}, {outcome}"
+    encoded_query = urllib.parse.quote(query)
+
+    # Specify which fields to retrieve from the API response
+    fields = "url,title,year,authors,abstract,journal,openAccessPdf"
+
+    # Build the API URL for Semantic Scholar bulk search
+    base_url = "https://api.semanticscholar.org/graph/v1/paper/search/bulk"
+    url = f"{base_url}?query={encoded_query}&fields={fields}"
+    
+    try:
+        # Make initial request to retrieve data
+        response = requests.get(url)
+        response.raise_for_status()
+        r = response.json()
+    except requests.exceptions.RequestException as e:
+        return jsonify({"error": "Failed to retrieve data from Semantic Scholar", "details": str(e)}), 500
+
+    # Initialize counters and storage for retrieved papers
+    retrieved = 0
+    all_papers = []
+    
+    # Loop to retrieve data in batches
+    while True:
+        # Check if 'data' key exists in the response
+        if "data" in r:
+            retrieved += len(r["data"])
+            print(f"Retrieved {retrieved} papers...")
+                
+            # Append each paper to the all_papers list
+            for paper in r["data"]:
+                all_papers.append(paper)
+        
+        # Check for pagination token and stop if none exists
+        token = r.get("token")
+        if not token or retrieved >= 10000:
+            break
+        
+        # Construct the next request URL with token for pagination
+        next_url = f"{base_url}?query={encoded_query}&fields={fields}&token={token}"
+        try:
+            response = requests.get(next_url)
+            response.raise_for_status()
+            r = response.json()
+        except requests.exceptions.RequestException as e:
+            return jsonify({"error": "Failed to retrieve additional pages", "details": str(e)}), 500
+
+    print(f"Done! Retrieved {retrieved} papers total")
+    
+    # Return all papers as a JSON response
+    return jsonify(all_papers)
+
+# To run the Flask app
+# if __name__ == "__main__":
+#     app.run(debug=True)
+
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='127.0.0.1', port=5000 )
