@@ -16,6 +16,7 @@ from dotenv import load_dotenv
 import requests
 
 
+
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 CORS(app)
