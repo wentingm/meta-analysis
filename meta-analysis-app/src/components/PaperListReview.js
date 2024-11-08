@@ -56,7 +56,7 @@ function PaperListReview() {
       </div>
 
       <div className="button-container">
-        <button className="back-button">Back to Search</button>
+        <button className="back-button" onClick={() => navigate('/education-analysis-setup')}><span className="mr-2">←</span>Back to Search</button>
         <button 
           className={`continue-button ${selectedPapers.size === 0 ? 'disabled' : ''}`} 
           disabled={selectedPapers.size === 0}

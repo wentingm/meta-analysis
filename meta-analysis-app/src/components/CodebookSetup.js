@@ -1,8 +1,10 @@
 import React, { useState } from 'react';
 import './CodebookSetup.css'; // Import the CSS file
+import { useNavigate } from 'react-router-dom';
 
 function CodebookSetup({ selectedCount = 0, onBack }) {
   const [expandedSection, setExpandedSection] = useState(null);
+  const navigate = useNavigate();
 
   const codebookElements = {
     studyCharacteristics: {
@@ -195,7 +197,8 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
     <div className="container">
       {/* Header */}
       <div className="header">
-        <button onClick={onBack} className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+        <button onClick={() => { navigate('/paper-list-review'); }} 
+            className="back-button flex items-center text-gray-600 hover:text-gray-900 mb-4">
           <span className="mr-2">←</span>
           Back to Paper Selection
         </button>
@@ -215,7 +218,7 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
         <button className="button save-draft">
           Save Draft
         </button>
-        <button className="button start-extraction">
+        <button onClick={() => { navigate('/analysis-setting'); }} className="button start-extraction">
           Start Data Extraction
         </button>
       </div>
