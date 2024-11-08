@@ -96,7 +96,7 @@ const SimpleDomainFlow = () => {
 
           <div className="action-buttons">
             <button className="action-button save-draft">Save Draft</button>
-            <button className="action-button continue" onClick={() => navigate('/paper-list-review')}>Continue</button>
+            <button className="action-button continue" onClick={() => navigate('/education-analysis-setup')}>Continue</button>
           </div>
         </div>
       </div>
