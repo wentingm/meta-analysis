@@ -1,225 +1,423 @@
 import React, { useState } from 'react';
-import './CodebookSetup.css'; // Import the CSS file
+import '../index.css';
+import { Trash2, Plus, Edit2, Check, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 function CodebookSetup({ selectedCount = 0, onBack }) {
-  const [expandedSection, setExpandedSection] = useState(null);
+  const [expandedSection, setExpandedSection] = useState('outcomes');
+  const [editingField, setEditingField] = useState(null);
   const navigate = useNavigate();
-
-  const codebookElements = {
-    studyCharacteristics: {
-      title: "Study Characteristics",
-      icon: "📚",
-      fields: [
-        { id: 'year', name: 'Publication Year', type: 'number', required: true },
-        { id: 'authors', name: 'Authors', type: 'text', required: true },
-        { id: 'country', name: 'Country of Study', type: 'text', required: false },
-        { id: 'setting', name: 'Study Setting', type: 'select', required: true,
-          options: ['School', 'University', 'Online', 'Mixed'] },
-        { id: 'design', name: 'Study Design', type: 'select', required: true,
-          options: ['RCT', 'Quasi-experimental', 'Pre-post', 'Observational'] }
-      ]
-    },
-    population: {
-      title: "Population Details",
-      icon: "👥",
-      fields: [
-        { id: 'sampleSize', name: 'Total Sample Size', type: 'number', required: true },
-        { id: 'ageRange', name: 'Age Range', type: 'text', required: true },
-        { id: 'gradeLevel', name: 'Grade/Education Level', type: 'select', required: true,
-          options: ['Elementary', 'Middle School', 'High School', 'University'] },
-        { id: 'demographics', name: 'Demographics', type: 'text', required: false }
-      ]
-    },
-    interventionDetails: {
-      title: "Intervention Details",
-      icon: "🎯",
-      fields: [
-        { id: 'duration', name: 'Duration', type: 'text', required: true },
-        { id: 'frequency', name: 'Frequency', type: 'text', required: true },
-        { id: 'format', name: 'Delivery Format', type: 'select', required: true,
-          options: ['Individual', 'Group', 'Online', 'Blended'] },
-        { id: 'provider', name: 'Intervention Provider', type: 'text', required: false }
-      ]
-    },
+  const colorMapping = {
+    blue: 'bg-blue-50',
+    gray: 'bg-gray-50',
+    green: 'bg-green-50'
+  };
+  
+  const [codebookElements, setCodebookElements] = useState({
     outcomes: {
-      title: "Outcome Measures & Results",
-      icon: "📊",
+      title: "Outcome Measures",
+      description: "Configure outcome measures and test results parameters to use in the codebook",
       fields: [
-        { id: 'primaryOutcome', name: 'Primary Outcome', type: 'text', required: true },
-        { id: 'measurementTool', name: 'Measurement Tool', type: 'text', required: true },
-        { id: 'timePoints', name: 'Measurement Time Points', type: 'text', required: true }
+        {
+          id: 'primaryOutcome',
+          name: 'Primary Outcome Measure',
+          type: 'text',
+          required: true,
+          placeholder: 'e.g., Mathematics Achievement Score'
+        },
+        {
+          id: 'measurementTool',
+          name: 'Measurement Tool/Scale',
+          type: 'text',
+          required: true,
+          placeholder: 'e.g., Standardized Math Test'
+        },
+        {
+          id: 'timePoints',
+          name: 'Measurement Time Points',
+          type: 'select',
+          required: true,
+          options: ['Pre-Post', 'Pre-Post-Follow up', 'Multiple time points']
+        }
       ],
       testResults: {
         title: "Test Results",
-        experimentalGroup: [
-          { id: 'expPreMean', name: 'Pre-test Mean', type: 'number', required: true },
-          { id: 'expPreSD', name: 'Pre-test SD', type: 'number', required: true },
-          { id: 'expPostMean', name: 'Post-test Mean', type: 'number', required: true },
-          { id: 'expPostSD', name: 'Post-test SD', type: 'number', required: true },
-          { id: 'expN', name: 'Number of Participants', type: 'number', required: true }
-        ],
-        controlGroup: [
-          { id: 'ctrlPreMean', name: 'Pre-test Mean', type: 'number', required: true },
-          { id: 'ctrlPreSD', name: 'Pre-test SD', type: 'number', required: true },
-          { id: 'ctrlPostMean', name: 'Post-test Mean', type: 'number', required: true },
-          { id: 'ctrlPostSD', name: 'Post-test SD', type: 'number', required: true },
-          { id: 'ctrlN', name: 'Number of Participants', type: 'number', required: true }
-        ],
-        statistics: [
-          { id: 'testType', name: 'Statistical Test', type: 'select', required: true,
-            options: ['t-test', 'F-test', 'ANOVA', 'ANCOVA'] },
-          { id: 'testValue', name: 'Test Value', type: 'number', required: true },
-          { id: 'pValue', name: 'p-value', type: 'number', required: true },
-          { id: 'effectSize', name: 'Effect Size', type: 'number', required: true },
-          { id: 'confidenceInterval', name: 'Confidence Interval', type: 'text', required: true }
+        description: "Enter statistical results for intervention and control groups",
+        sections: [
+          {
+            title: "Intervention Group",
+            color: 'bg-blue-50',
+            fields: [
+              {
+                id: 'int_n',
+                name: 'Number of Participants (n)',
+                type: 'number',
+                required: true,
+                placeholder: '0'
+              },
+              {
+                id: 'int_pre_mean',
+                name: 'Pre-test Mean',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              },
+              {
+                id: 'int_pre_sd',
+                name: 'Pre-test SD',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              },
+              {
+                id: 'int_post_mean',
+                name: 'Post-test Mean',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              },
+              {
+                id: 'int_post_sd',
+                name: 'Post-test SD',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              }
+            ]
+          },
+          {
+            title: "Control Group",
+            color: colorMapping.gray,
+            fields: [
+              {
+                id: 'ctrl_n',
+                name: 'Number of Participants (n)',
+                type: 'number',
+                required: true,
+                placeholder: '0'
+              },
+              {
+                id: 'ctrl_pre_mean',
+                name: 'Pre-test Mean',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              },
+              {
+                id: 'ctrl_pre_sd',
+                name: 'Pre-test SD',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              },
+              {
+                id: 'ctrl_post_mean',
+                name: 'Post-test Mean',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              },
+              {
+                id: 'ctrl_post_sd',
+                name: 'Post-test SD',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              }
+            ]
+          },
+          {
+            title: "Statistical Tests",
+            color: colorMapping.green,
+            fields: [
+              {
+                id: 'test_type',
+                name: 'Statistical Test',
+                type: 'select',
+                required: true,
+                options: ['t-test', 'F-test', 'ANOVA', 'ANCOVA']
+              },
+              {
+                id: 'test_value',
+                name: 'Test Value',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              },
+              {
+                id: 'df',
+                name: 'Degrees of Freedom',
+                type: 'number',
+                required: true,
+                placeholder: '0'
+              },
+              {
+                id: 'p_value',
+                name: 'p-value',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              },
+              {
+                id: 'effect_size',
+                name: 'Effect Size',
+                type: 'number',
+                required: true,
+                placeholder: '0.00'
+              }
+            ]
+          }
         ]
       }
     }
+  });
+
+  const removeField = (sectionTitle, fieldId) => {
+    setCodebookElements(prev => {
+      const newElements = { ...prev };
+      if (sectionTitle === "Basic Information") {
+        newElements.outcomes.fields = newElements.outcomes.fields.filter(f => f.id !== fieldId);
+      } else {
+        const sectionIndex = newElements.outcomes.testResults.sections.findIndex(s => s.title === sectionTitle);
+        if (sectionIndex !== -1) {
+          newElements.outcomes.testResults.sections[sectionIndex].fields = 
+            newElements.outcomes.testResults.sections[sectionIndex].fields.filter(f => f.id !== fieldId);
+        }
+      }
+      return newElements;
+    });
   };
 
-  const CategoryCard = ({ category, data }) => (
-    <div className="category-card">
-      <div 
-        className="category-header"
-        onClick={() => setExpandedSection(expandedSection === category ? null : category)}
-      >
-        <div className="category-title">
-          <span className="text-2xl">{data.icon}</span>
-          <h2 className="text-lg font-semibold">{data.title}</h2>
-        </div>
-        <span className={`transform transition-transform ${expandedSection === category ? 'rotate-180' : ''}`}>▼</span>
-      </div>
+  const [editForm, setEditForm] = useState({
+    name: '',
+    type: 'text',
+    required: true,
+    placeholder: '',
+    options: []
+  });
 
-      {expandedSection === category && (
-        <div className="expanded-section">
-          {category === 'outcomes' ? (
-            <div className="space-y-6">
-              {/* Regular Outcome Fields */}
-              <div className="space-y-4">
-                {data.fields.map((field) => (
-                  <div key={field.id} className="field-group">
-                    <label>{field.name}</label>
-                    <input 
-                      type={field.type}
-                      placeholder={field.name}
-                    />
-                  </div>
+  const startEditing = (field) => {
+    setEditingField(field.id);
+    setEditForm({
+      name: field.name,
+      type: field.type,
+      required: field.required,
+      placeholder: field.placeholder,
+      options: field.options || []
+    });
+  };
+
+  const saveEdit = (sectionTitle, fieldId) => {
+    setCodebookElements(prev => {
+      const newElements = { ...prev };
+      if (sectionTitle === "Basic Information") {
+        const fieldIndex = newElements.outcomes.fields.findIndex(f => f.id === fieldId);
+        if (fieldIndex !== -1) {
+          newElements.outcomes.fields[fieldIndex] = {
+            ...newElements.outcomes.fields[fieldIndex],
+            ...editForm
+          };
+        }
+      } else {
+        const sectionIndex = newElements.outcomes.testResults.sections.findIndex(s => s.title === sectionTitle);
+        if (sectionIndex !== -1) {
+          const fieldIndex = newElements.outcomes.testResults.sections[sectionIndex].fields.findIndex(f => f.id === fieldId);
+          if (fieldIndex !== -1) {
+            newElements.outcomes.testResults.sections[sectionIndex].fields[fieldIndex] = {
+              ...newElements.outcomes.testResults.sections[sectionIndex].fields[fieldIndex],
+              ...editForm
+            };
+          }
+        }
+      }
+      return newElements;
+    });
+    setEditingField(null);
+  };
+
+  const EditableField = ({ field, section }) => {
+    const isEditing = editingField === field.id;
+
+    return (
+      <div key={field.id} className="space-y-1 relative">
+        {!isEditing ? (
+          <>
+            <div className="flex justify-between items-start">
+              <label className="block text-sm font-medium text-gray-700">
+                {field.name}
+                {field.required && <span className="text-red-500 ml-1">*</span>}
+              </label>
+              <div className="flex space-x-2">
+                <button 
+                  onClick={() => startEditing(field)}
+                  className="text-gray-500 hover:text-gray-700"
+                >
+                  <Edit2 size={16} />
+                </button>
+                <button 
+                  onClick={() => removeField(section.title, field.id)}
+                  className="text-red-500 hover:text-red-700"
+                >
+                  <Trash2 size={16} />
+                </button>
+              </div>
+            </div>
+            {field.type === 'select' ? (
+              <select className="w-full border rounded-lg px-3 py-2">
+                <option value="">Select...</option>
+                {field.options?.map(option => (
+                  <option key={option} value={option}>{option}</option>
                 ))}
+              </select>
+            ) : (
+              <input
+                type={field.type}
+                placeholder={field.placeholder}
+                className="w-full border rounded-lg px-3 py-2"
+              />
+            )}
+          </>
+        ) : (
+          <div className="bg-gray-50 p-4 rounded-lg border">
+            <div className="space-y-3">
+              <input
+                type="text"
+                value={editForm.name}
+                onChange={e => setEditForm(prev => ({ ...prev, name: e.target.value }))}
+                className="w-full border rounded-lg px-3 py-2"
+                placeholder="Field name"
+              />
+              <div className="flex space-x-2">
+                <select
+                  value={editForm.type}
+                  onChange={e => setEditForm(prev => ({ ...prev, type: e.target.value }))}
+                  className="border rounded-lg px-3 py-2"
+                >
+                  <option value="text">Text</option>
+                  <option value="number">Number</option>
+                  <option value="select">Select</option>
+                </select>
+                <label className="flex items-center space-x-2">
+                  <input
+                    type="checkbox"
+                    checked={editForm.required}
+                    onChange={e => setEditForm(prev => ({ ...prev, required: e.target.checked }))}
+                  />
+                  <span className="text-sm">Required</span>
+                </label>
               </div>
-
-              {/* Test Results Section */}
-              <div className="field-group">
-                <h3 className="text-lg font-semibold mb-4">{data.testResults.title}</h3>
-                
-                <div className="grid md:grid-cols-2 gap-6">
-                  {/* Experimental Group */}
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-blue-600">Experimental Group</h4>
-                    {data.testResults.experimentalGroup.map((field) => (
-                      <div key={field.id} className="field-group">
-                        <label>{field.name}</label>
-                        <input 
-                          type={field.type}
-                          placeholder={field.name}
-                        />
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Control Group */}
-                  <div className="space-y-4">
-                    <h4 className="font-medium text-blue-600">Control Group</h4>
-                    {data.testResults.controlGroup.map((field) => (
-                      <div key={field.id} className="field-group">
-                        <label>{field.name}</label>
-                        <input 
-                          type={field.type}
-                          placeholder={field.name}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Statistical Results */}
-                <div className="mt-6">
-                  <h4 className="font-medium text-blue-600 mb-4">Statistical Results</h4>
-                  <div className="grid md:grid-cols-2 gap-4">
-                    {data.testResults.statistics.map((field) => (
-                      <div key={field.id} className="field-group">
-                        <label>{field.name}</label>
-                        {field.type === 'select' ? (
-                          <select>
-                            {field.options.map(option => (
-                              <option key={option} value={option}>{option}</option>
-                            ))}
-                          </select>
-                        ) : (
-                          <input 
-                            type={field.type}
-                            placeholder={field.name}
-                          />
-                        )}
-                      </div>
-                    ))}
-                  </div>
-                </div>
+              <input
+                type="text"
+                value={editForm.placeholder}
+                onChange={e => setEditForm(prev => ({ ...prev, placeholder: e.target.value }))}
+                className="w-full border rounded-lg px-3 py-2"
+                placeholder="Placeholder text"
+              />
+              {editForm.type === 'select' && (
+                <input
+                  type="text"
+                  value={editForm.options.join(', ')}
+                  onChange={e => setEditForm(prev => ({ ...prev, options: e.target.value.split(',').map(o => o.trim()) }))}
+                  className="w-full border rounded-lg px-3 py-2"
+                  placeholder="Options (comma-separated)"
+                />
+              )}
+              <div className="flex justify-end space-x-2">
+                <button
+                  onClick={() => setEditingField(null)}
+                  className="px-3 py-1 bg-gray-100 rounded-lg hover:bg-gray-200"
+                >
+                  <X size={16} />
+                </button>
+                <button
+                  onClick={() => saveEdit(section.title, field.id)}
+                  className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                >
+                  <Check size={16} />
+                </button>
               </div>
             </div>
-          ) : (
-            <div className="space-y-4">
-              {data.fields.map((field) => (
-                <div key={field.id} className="field-group">
-                  <label>{field.name}</label>
-                  {field.type === 'select' ? (
-                    <select>
-                      {field.options.map(option => (
-                        <option key={option} value={option}>{option}</option>
-                      ))}
-                    </select>
-                  ) : (
-                    <input 
-                      type={field.type}
-                      placeholder={field.name}
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  const TestResultsSection = ({ section }) => (
+    <div className={`bg-${section.color}-50 rounded-lg p-4 mb-4`}>
+      <div className="flex justify-between items-center mb-3">
+        <h3 className="font-medium">{section.title}</h3>
+        <button className="text-blue-500 hover:text-blue-700 flex items-center">
+          <Plus size={16} className="mr-1" />
+          Add Field
+        </button>
+      </div>
+      <div className="grid grid-cols-2 gap-4">
+        {section.fields.map((field) => (
+          <EditableField key={field.id} field={field} section={section} />
+        ))}
+      </div>
     </div>
   );
 
   return (
-    <div className="container">
+    <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
-      <div className="header">
-        <button onClick={() => { navigate('/paper-list-review'); }} 
-            className="back-button flex items-center text-gray-600 hover:text-gray-900 mb-4">
+      <div className="mb-8">
+        <button onClick={() => { navigate('/paper-list-review'); }}  className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
           <span className="mr-2">←</span>
           Back to Paper Selection
         </button>
-        <h1>Codebook Setup</h1>
-        <p>Configure data extraction elements for {selectedCount} selected papers</p>
+        <h1 className="text-2xl font-bold mb-2">Statistical Results Codebook</h1>
+        <p className="text-gray-600">Configure outcome measures and test results parameters to use in the codebook</p>
       </div>
 
-      {/* Categories */}
-      <div>
-        {Object.entries(codebookElements).map(([category, data]) => (
-          <CategoryCard key={category} category={category} data={data} />
-        ))}
+      {/* Main Content */}
+      <div className="bg-white rounded-lg shadow-sm border">
+        <div className="p-6">
+          {/* Basic Outcome Fields */}
+          <div className="mb-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Basic Information</h2>
+              <button className="text-blue-500 hover:text-blue-700 flex items-center">
+                <Plus size={16} className="mr-1" />
+                Add Field
+              </button>
+            </div>
+            <div className="grid grid-cols-1 gap-6">
+              {codebookElements.outcomes.fields.map((field) => (
+                <EditableField 
+                  key={field.id} 
+                  field={field} 
+                  section={{ title: "Basic Information" }}
+                />
+              ))}
+            </div>
+          </div>
+
+          {/* Test Results */}
+          <div>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Statistical Results</h2>
+              <button className="text-blue-500 hover:text-blue-700 flex items-center">
+                <Plus size={16} className="mr-1" />
+                Add Section
+              </button>
+            </div>
+            {codebookElements.outcomes.testResults.sections.map((section) => (
+              <TestResultsSection key={section.title} section={section} />
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="button-container">
-        <button className="button save-draft">
+      <div className="mt-6 flex justify-end space-x-4">
+        <button className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200">
           Save Draft
         </button>
-        <button onClick={() => { navigate('/analysis-setting'); }} className="button start-extraction">
-          Start Data Extraction
+        <button onClick={() => { navigate('/analysis-setting'); }} className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600">
+          Continue
         </button>
       </div>
     </div>

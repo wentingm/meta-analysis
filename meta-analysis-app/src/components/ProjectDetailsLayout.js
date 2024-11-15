@@ -1,10 +1,30 @@
 import React, { useState } from 'react';
-import { Card, CardContent, CardHeader, CardTitle, CardActions, Typography, Grid, Button, LinearProgress } from '@mui/material';
-import { ArrowBack, Download, CheckCircle, AccessTime, People, Info, TrendingUp, Article, CheckBox, Settings } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/Card";
+import { 
+  ArrowLeft,
+  Bot,
+  Calendar,
+  Download,
+  FileText,
+  Users,
+  BookOpen,
+  CheckCircle,
+  AlertCircle,
+  Target,
+  ArrowRight,
+  Star,
+  BarChart3,
+  TrendingUp,
+  ClipboardCheck,
+  Settings,
+  Info,
+  Clock
+} from 'lucide-react';
 
 const ProjectDetailsLayout = () => {
   const [selectedProjectId, setSelectedProjectId] = useState(4);
-  
+  const navigate = useNavigate();
   const MetricCard = ({ icon: Icon, bgColor, iconColor, label, value, note }) => (
     <div className="flex flex-col space-y-2 p-4 bg-white rounded-lg border border-gray-100">
       <div className="flex items-center space-x-4">
@@ -86,7 +106,7 @@ const ProjectDetailsLayout = () => {
       <div className="min-h-screen bg-gray-50 p-8 space-y-6">
         <div className="flex items-center justify-between mb-4">
           <button
-            onClick={onBack}
+            onClick={() => navigate('/dashboard')}
             className="flex items-center text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="h-5 w-5 mr-2" />
@@ -265,19 +285,19 @@ const ProjectDetailsLayout = () => {
     );
   };
 
-//   return selectedProjectId ? (
-//     <ProjectDetailView 
-//       project={completedProject}
-//       onBack={() => setSelectedProjectId(null)}
-//     />
-//   ) : (
-//     <button 
-//       onClick={() => setSelectedProjectId(4)}
-//       className="p-4 bg-white rounded-lg shadow hover:shadow-md"
-//     >
-//       View Project Details
-//     </button>
-//   );
+  return selectedProjectId ? (
+    <ProjectDetailView 
+      project={completedProject}
+      onBack={() => setSelectedProjectId(null)}
+    />
+  ) : (
+    <button 
+      onClick={() => setSelectedProjectId(4)}
+      className="p-4 bg-white rounded-lg shadow hover:shadow-md"
+    >
+      View Project Details
+    </button>
+  );
 };
 
 export default ProjectDetailsLayout;

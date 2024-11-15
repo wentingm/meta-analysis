@@ -18,13 +18,16 @@ module.exports = {
         },
       },
       {
-        test: /\.css$/, // Optional for CSS files
-        use: ['style-loader', 'css-loader'],
+        test: /\.css$/, // Adding PostCSS for Tailwind
+        use: ['style-loader', 'css-loader', 'postcss-loader'], 
       },
     ],
   },
   resolve: {
     extensions: ['.js', '.jsx'],
+    // alias: {
+    //   '@': path.resolve(__dirname, 'src'),  // Map '@' to 'src'
+    // },
   },
   plugins: [
     new HtmlWebpackPlugin({

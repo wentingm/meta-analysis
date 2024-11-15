@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Alert, AlertDescription } from "@/components/ui/alert";
-import { Brain, Facebook, Linkedin, Mail, Lock, Loader, Chrome } from 'lucide-react';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/Card";
+import { Alert, AlertDescription } from "./ui/Alert";
+import { Brain, Facebook, Linkedin, Mail, Lock, Loader } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const AuthComponent = () => {
   const [isLogin, setIsLogin] = useState(true);
@@ -12,7 +13,7 @@ const AuthComponent = () => {
     password: '',
     confirmPassword: ''
   });
-
+  const navigate = useNavigate();
   // Initialize OAuth SDKs
   useEffect(() => {
     // Initialize Google OAuth
@@ -281,6 +282,7 @@ const AuthComponent = () => {
                 type="submit"
                 className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white p-2 rounded-lg hover:from-blue-700 hover:to-indigo-700 transition-colors font-medium flex items-center justify-center"
                 disabled={loading}
+                onClick={() => { navigate('/dashboard'); }} 
               >
                 {loading ? (
                   <Loader className="h-5 w-5 animate-spin" />
@@ -310,7 +312,7 @@ const AuthComponent = () => {
                 disabled={loading}
                 className="flex flex-col items-center justify-center p-3 hover:bg-gray-50 rounded-lg border w-20 h-20 transition-colors"
               >
-                <Chrome className="h-6 w-6 text-[#4285F4] mb-1" />
+                <img src="/api/placeholder/24/24" alt="Google" className="w-6 h-6 mb-1" />
                 <span className="text-xs text-gray-600">Google</span>
               </button>
 
