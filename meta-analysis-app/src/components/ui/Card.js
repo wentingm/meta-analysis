@@ -26,7 +26,7 @@ export const CardContent = ({ children }) => {
 
 export const CardFooter = ({ children }) => {
   return (
-    <div className="p-4 border-t border-gray-200">
+    <div className="flex items-center p-6 pt-0 flex justify-between text-sm text-gray-500">
       {children}
     </div>
   );

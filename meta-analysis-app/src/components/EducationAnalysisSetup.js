@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; // Import useNavigate
-import './EducationAnalysisSetup.css';
+import '../index.css';
 import {
   ArrowLeft,
   Search,
@@ -16,11 +15,11 @@ import {
   ChevronRight,
   Book
 } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const EducationAnalysisSetup = () => {
   const [searchStatus, setSearchStatus] = useState('ready'); // ready, searching, complete
   const [selectedFilters, setSelectedFilters] = useState([]);
-  const navigate = useNavigate(); // Initialize navigate function
 
   const filters = {
     yearRange: ['Last 5 years', 'Last 10 years', 'Custom range'],
@@ -28,52 +27,52 @@ const EducationAnalysisSetup = () => {
     publicationTypes: ['Peer-reviewed', 'Conference Papers', 'Dissertations'],
     languages: ['English', 'Spanish', 'French']
   };
-
+  const navigate = useNavigate(); 
+  
   const handleBeginAnalysis = () => {
     setSearchStatus('searching');
-    navigate('/paper-list-review'); // Navigate to /paper-list-review
+    navigate('/paper-screening'); 
   };
-
   return (
-    <div className="container">
+    <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
-      <div className="header header-container">
-        <button className="flex items-center header-back-button">
-          <ArrowLeft className="icon" />
+      <div className="mb-8">
+        <button className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+          <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Setup
         </button>
-        <div className="header-title">
-          <Book className="icon-large header-icon" />
+        <div className="flex items-center space-x-4">
+          <Book className="h-8 w-8 text-blue-500" />
           <div>
-            <h1>Educational Meta-Analysis</h1>
-            <p className="header-subtitle">Project-based Learning in Middle Schools</p>
+            <h1 className="text-2xl font-bold">Educational Meta-Analysis</h1>
+            <p className="text-gray-600">Project-based Learning in Middle Schools</p>
           </div>
         </div>
       </div>
 
       {/* Search Progress */}
-      <div className="card">
-        <div className="section-header section-search">
-          <h2>Database Search</h2>
-          <div className="search-info flex items-center space-x-2">
-            <span className="text-sm">3 databases selected</span>
-            <HelpCircle className="help-icon" />
+      <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">Database Search</h2>
+          <div className="flex items-center space-x-2">
+            <span className="text-sm text-gray-500">3 databases selected</span>
+            <HelpCircle className="h-4 w-4 text-gray-400" />
           </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-4">
+        <div className="grid gap-4">
           {['ERIC', 'Google Scholar', 'Semantic Scholar'].map((db) => (
-            <div key={db} className="card">
-              <div className="card-header">
-                <span>{db}</span>
+            <div key={db} className="p-4 rounded-lg border bg-gray-50">
+              <div className="flex items-center justify-between mb-2">
+                <span className="font-medium">{db}</span>
                 {searchStatus === 'complete' && (
-                  <CheckCircle className="icon-success" />
+                  <CheckCircle className="h-4 w-4 text-green-500" />
                 )}
               </div>
-              <div className={`card-text ${searchStatus}`}>
+              <div className="text-sm text-gray-500">
                 {searchStatus === 'searching' ? (
-                  <div className="search-status">
-                    <RefreshCw className="icon animate-spin" />
+                  <div className="flex items-center">
+                    <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                     Searching...
                   </div>
                 ) : searchStatus === 'complete' ? (
@@ -88,134 +87,138 @@ const EducationAnalysisSetup = () => {
       </div>
 
       {/* Search Filters */}
-      <div className="filters-section">
-        <div className="section-header">
-          <Filter className="icon" />
-          <h3>Search Filters</h3>
+      <div className="grid gap-6 mb-8">
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="flex items-center space-x-2 mb-4">
+            <Filter className="h-5 w-5 text-blue-500" />
+            <h3 className="font-semibold">Search Filters</h3>
+          </div>
+          
+          {Object.entries(filters).map(([category, options]) => (
+            <div key={category} className="mb-4">
+              <h4 className="text-sm font-medium text-gray-700 mb-2">
+                {category.replace(/([A-Z])/g, ' $1').trim()}
+              </h4>
+              <div className="space-y-2">
+                {options.map((option) => (
+                  <label key={option} className="flex items-center">
+                    <input
+                      type="checkbox"
+                      className="rounded border-gray-300 text-blue-500 focus:ring-blue-500"
+                      checked={selectedFilters.includes(option)}
+                      onChange={() => {
+                        if (selectedFilters.includes(option)) {
+                          setSelectedFilters(selectedFilters.filter(f => f !== option));
+                        } else {
+                          setSelectedFilters([...selectedFilters, option]);
+                        }
+                      }}
+                    />
+                    <span className="ml-2 text-sm">{option}</span>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
         </div>
 
-        {Object.entries(filters).map(([category, options]) => (
-          <div key={category} className="filter-category">
-            <h4 className="filter-category-title">
-              {category.replace(/([A-Z])/g, ' $1').trim()}
-            </h4>
-            <div className="space-y-2">
-              {options.map((option) => (
-                <label key={option} className="filter-option">
-                  <input
-                    type="checkbox"
-                    className="rounded border-gray-300 text-blue-500 focus:ring-blue-500"
-                    checked={selectedFilters.includes(option)}
-                    onChange={() => {
-                      if (selectedFilters.includes(option)) {
-                        setSelectedFilters(selectedFilters.filter(f => f !== option));
-                      } else {
-                        setSelectedFilters([...selectedFilters, option]);
-                      }
-                    }}
-                  />
-                  <span className="ml-2 text-sm">{option}</span>
-                </label>
-              ))}
+        {/* Analysis Settings */}
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="flex items-center space-x-2 mb-4">
+            <Settings className="h-5 w-5 text-blue-500" />
+            <h3 className="font-semibold">Analysis Settings</h3>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Effect Size Measure
+              </label>
+              <select className="w-full rounded-lg border-gray-300">
+                <option>Hedges' g</option>
+                <option>Cohen's d</option>
+                <option>Risk Ratio</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Analysis Model
+              </label>
+              <select className="w-full rounded-lg border-gray-300">
+                <option>Random Effects</option>
+                <option>Fixed Effects</option>
+                <option>Mixed Effects</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Heterogeneity Analysis
+              </label>
+              <select className="w-full rounded-lg border-gray-300">
+                <option>I² Statistic</option>
+                <option>Q-test</option>
+                <option>Both</option>
+              </select>
             </div>
           </div>
-        ))}
-      </div>
-
-      {/* Analysis Settings */}
-      <div className="filters-section">
-        <div className="section-header">
-          <Settings className="icon" />
-          <h3>Analysis Settings</h3>
         </div>
 
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Effect Size Measure
-            </label>
-            <select className="select-dropdown">
-              <option>Hedges' g</option>
-              <option>Cohen's d</option>
-              <option>Risk Ratio</option>
-            </select>
+        {/* Preview Stats */}
+        <div className="bg-white rounded-lg shadow-sm border p-6">
+          <div className="flex items-center space-x-2 mb-4">
+            <BarChart2 className="h-5 w-5 text-blue-500" />
+            <h3 className="font-semibold">Analysis Preview</h3>
           </div>
 
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Analysis Model
-            </label>
-            <select className="select-dropdown">
-              <option>Random Effects</option>
-              <option>Fixed Effects</option>
-              <option>Mixed Effects</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Heterogeneity Analysis
-            </label>
-            <select className="select-dropdown">
-              <option>I² Statistic</option>
-              <option>Q-test</option>
-              <option>Both</option>
-            </select>
-          </div>
-        </div>
-      </div>
-
-      {/* Preview Stats */}
-      <div className="filters-section">
-        <div className="section-header">
-          <BarChart2 className="icon" />
-          <h3>Analysis Preview</h3>
-        </div>
-
-        <div className="space-y-4">
-          <div>
-            <div className="text-title text-sm text-gray-500 mb-1">Estimated Studies</div>
-            <div className="text-info text-2xl font-semibold">150-200</div>
-          </div>
-
-          <div>
-            <div className="text-title text-sm text-gray-500 mb-1">Time Estimate</div>
-            <div className="text-info text-2xl font-semibold">15-20 min</div>
-          </div>
-
-          <div className="text-more pt-4 border-t">
-            <div className="text-content flex items-center text-sm text-gray-500 mb-2">
-              <AlertCircle className="icon" />
-              Recommendations
+          <div className="space-y-4">
+            <div>
+              <div className="text-sm text-gray-500 mb-1">Estimated Studies</div>
+              <div className="text-2xl font-semibold">150-200</div>
             </div>
-            <ul className="text-list text-sm space-y-2">
-              <li className="flex items-center text-gray-600">
-                <ChevronRight className="icon" />
-                Consider adding date filters
-              </li>
-              <li className="flex items-center text-gray-600">
-                <ChevronRight className="icon" />
-                Include dissertations for broader coverage
-              </li>
-            </ul>
+
+            <div>
+              <div className="text-sm text-gray-500 mb-1">Time Estimate</div>
+              <div className="text-2xl font-semibold">15-20 min</div>
+            </div>
+
+            <div className="pt-4 border-t">
+              <div className="flex items-center text-sm text-gray-500 mb-2">
+                <AlertCircle className="h-4 w-4 mr-1" />
+                Recommendations
+              </div>
+              <ul className="text-sm space-y-2">
+                <li className="flex items-center text-gray-600">
+                  <ChevronRight className="h-4 w-4 mr-1" />
+                  Consider adding date filters
+                </li>
+                <li className="flex items-center text-gray-600">
+                  <ChevronRight className="h-4 w-4 mr-1" />
+                  Include dissertations for broader coverage
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
 
       {/* Action Buttons */}
-      <div className="action-buttons">
-        <button className="save-button">Save Configuration</button>
+      <div className="flex justify-between items-center">
+        <button className="px-4 py-2 text-gray-600 hover:text-gray-900">
+          Save Configuration
+        </button>
         
-        <div className="flex space-x-4 button-wrapper">
-          <button className="export-button">
-            <Download className="icon" />
+        <div className="flex space-x-4">
+          <button className="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors flex items-center">
+            <Download className="h-4 w-4 mr-2" />
             Export Settings
           </button>
           <button 
-            className="begin-analysis-button"
-            onClick={handleBeginAnalysis} // Use the handler for navigation and search state
+            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+            onClick={handleBeginAnalysis}
           >
-            <Search className="icon" />
+            <Search className="h-4 w-4 mr-2" />
             Begin Analysis
           </button>
         </div>
