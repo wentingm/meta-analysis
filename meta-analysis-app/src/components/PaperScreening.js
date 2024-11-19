@@ -1,16 +1,7 @@
 import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent } from './ui/Card';
-import { Input } from 'lucide-react';
-import { Button } from './ui/Button';
-import { Textarea } from 'lucide-react';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Progress
-} from 'lucide-react';
+import { Card, CardHeader, CardTitle, CardContent } from "./ui/Card";
+import Input from "./ui/Input";
+import { Modal, Button } from 'react-bootstrap';
 import { 
   FileText, 
   Search, 
@@ -19,272 +10,187 @@ import {
   AlertCircle,
   ArrowRight,
   Save,
-  Filter
+  Filter,
+  Plus,
+  Edit2,
+  Trash2,
+  Pencil
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const PaperScreening = () => {
-  // Sample paper data - in real app would come from API/database
-  const navigate = useNavigate();
-  const [papers, setPapers] = useState([
-    {
-      id: 1,
-      title: "Meta-analysis of cognitive behavioral therapy",
-      authors: "Smith, J., Johnson, M., Williams, R.",
-      journal: "Journal of Psychology",
-      year: 2020,
-      abstract: "This study examines the effectiveness of CBT across various conditions...",
-      status: "pending",
-      notes: ""
-    },
-    {
-      id: 2,
-      title: "Comparative study of treatment methods",
-      authors: "Brown, A., Davis, L.",
-      journal: "Clinical Research Quarterly",
-      year: 2021,
-      abstract: "A comprehensive comparison of different therapeutic approaches...",
-      status: "pending",
-      notes: ""
-    },
-    // Add more sample papers as needed
-  ]);
-
+export default function PaperScreening() {
+  const navigate = useNavigate(); 
   const [criteria, setCriteria] = useState({
     inclusionCriteria: [
-      "RCT or quasi-experimental design",
-      "Published between 2010-2024",
-      "Adult participants (18+ years)",
-      "Published in English"
+      { id: 1, text: "Reported original data", isEditing: false },
+      { id: 2, text: "Assessed treatment outcomes after participants interact with [your application/tool/medicine etc.]", isEditing: false },
+      { id: 3, text: "Compared outcomes from the experiment group with outcomes from a non-treatment mode from the control/comparison group", isEditing: false },
+      { id: 4, text: "Were publicly available, either online or in library archives", isEditing: false },
+      { id: 5, text: "Reported sufficient data to calculate effect size", isEditing: false },
+      { id: 6, text: "Reported measurable outcomes that can be further analyzed", isEditing: false }
     ],
     exclusionCriteria: [
-      "Case studies or qualitative research",
-      "Non-peer reviewed publications",
-      "Conference abstracts",
-      "Animal studies"
+      { id: 1, text: "Case studies or qualitative research", isEditing: false },
+      { id: 2, text: "Non-peer reviewed publications", isEditing: false },
+      { id: 3, text: "Conference abstracts", isEditing: false },
+      { id: 4, text: "Animal studies", isEditing: false }
     ]
   });
 
-  const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState("all");
-  const [currentPaper, setCurrentPaper] = useState(null);
-
-  const getStatusColor = (status) => {
-    const colors = {
-      included: "text-green-600",
-      excluded: "text-red-600",
-      pending: "text-yellow-600"
-    };
-    return colors[status] || "text-gray-600";
-  };
-
-  const getStatusIcon = (status) => {
-    switch (status) {
-      case 'included':
-        return <CheckCircle2 className="w-5 h-5 text-green-600" />;
-      case 'excluded':
-        return <XCircle className="w-5 h-5 text-red-600" />;
-      case 'pending':
-        return <AlertCircle className="w-5 h-5 text-yellow-600" />;
-      default:
-        return null;
+  const [newCriterion, setNewCriterion] = useState({ inclusion: "", exclusion: "" });
+  const [editingText, setEditingText] = useState("");
+  const [criterionToDelete, setCriterionToDelete] = useState({ type: null, id: null });
+  const [showModal, setShowModal] = useState(false);
+  
+  const handleAddCriterion = (type) => {
+    if (newCriterion[type].trim()) {
+      setCriteria(prev => ({
+        ...prev,
+        [`${type}Criteria`]: [
+          ...prev[`${type}Criteria`],
+          { id: Date.now(), text: newCriterion[type], isEditing: false }
+        ]
+      }));
+      setNewCriterion(prev => ({ ...prev, [type]: "" }));
     }
   };
 
-  const handleUpdateStatus = (paperId, newStatus) => {
-    setPapers(papers.map(paper => 
-      paper.id === paperId ? { ...paper, status: newStatus } : paper
-    ));
+  const handleEditCriterion = (type, id) => {
+    setCriteria(prev => ({
+      ...prev,
+      [`${type}Criteria`]: prev[`${type}Criteria`].map(criterion => {
+        if (criterion.id === id) {
+          setEditingText(criterion.text);
+          return { ...criterion, isEditing: true };
+        }
+        return { ...criterion, isEditing: false };
+      })
+    }));
   };
 
-  const handleUpdateNotes = (paperId, notes) => {
-    setPapers(papers.map(paper => 
-      paper.id === paperId ? { ...paper, notes } : paper
-    ));
+  const handleSaveEdit = (type, id) => {
+    if (!editingText.trim()) return;
+    
+    setCriteria(prev => ({
+      ...prev,
+      [`${type}Criteria`]: prev[`${type}Criteria`].map(criterion => {
+        if (criterion.id === id) {
+          return { ...criterion, text: editingText, isEditing: false };
+        }
+        return criterion;
+      })
+    }));
   };
 
-  const filteredPapers = papers.filter(paper => {
-    const matchesSearch = paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         paper.authors.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStatus = statusFilter === "all" || paper.status === statusFilter;
-    return matchesSearch && matchesStatus;
-  });
+  const handleDeleteCriterion = () => {
+    if (criterionToDelete.type && criterionToDelete.id) {
+      setCriteria(prev => ({
+        ...prev,
+        [`${criterionToDelete.type}Criteria`]: prev[`${criterionToDelete.type}Criteria`]
+          .filter(criterion => criterion.id !== criterionToDelete.id)
+      }));
+      setCriterionToDelete({ type: null, id: null });
+    }
+    setShowModal(false);
+  };
 
-  const screeningProgress = Math.round((papers.filter(p => p.status !== 'pending').length / papers.length) * 100);
+  const CriterionList = ({ type, icon: Icon, color }) => (
+    <section className="bg-white rounded-xl p-6 shadow-sm border">
+      <h3 className={`text-lg font-semibold mb-4 flex items-center gap-2 text-${color}-700`}>
+        <Icon className="w-5 h-5" />
+        {type === 'inclusion' ? 'Inclusion' : 'Exclusion'} Criteria
+      </h3>
+      
+      <ul className="space-y-3 mb-4 p-0">
+        {criteria[`${type}Criteria`].map((criterion) => (
+          <li key={criterion.id} className="group">
+            <div className="flex items-start justify-between p-3 rounded-lg border bg-gray-50 hover:bg-gray-100 transition-colors">
+              <div className="flex items-start gap-2 flex-grow">
+                <div className={`w-1.5 h-1.5 rounded-full bg-${color}-500 mt-2 flex-shrink-0`} />
+                <span className="text-sm">{criterion.text}</span>
+              </div>
+              <div className="flex items-center gap-2 ml-4">
+                <Button
+                  variant="no-outline-primary"
+                  size="sm"
+                  onClick={() => handleEditCriterion(type, criterion.id)}
+                  className="p-1.5 h-8 w-8 rounded-full text-gray-500"
+                >
+                  <Pencil className="w-4 h-4" />
+                </Button>
+                <Button
+                  variant="no-outline-danger"
+                  size="sm"
+                  className="p-1.5 h-8 w-8 rounded-full text-red-500"
+                  onClick={() => {
+                    setCriterionToDelete({ type, id: criterion.id });
+                    setShowModal(true);
+                  }}
+                >
+                  <Trash2 className="w-4 h-4" />
+                </Button>
+              </div>
+            </div>
+          </li>
+        ))}
+      </ul>
+      <div classname="flex items-center gap-2 mt-4">
+        <Input
+        placeholder = {`Add new ${type === 'inclusion' ? 'Inclusion' : 'Exclusion'} Criteria`}></Input>
+        <Button
+            variant="no-outline-primary"
+            size="sm"
+            className="p-1.5 h-8 w-8 rounded-full text-gray-500"
+        > + Add
+        </Button>
+      </div>
+    </section>
+  );
 
   return (
     <div className="max-w-6xl mx-auto p-6">
       <Card className="border-t-4 border-t-purple-500 shadow-lg">
-        <CardHeader className="pb-4">
-          <CardTitle className="flex items-center justify-between">
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
             <div className="flex items-center gap-2">
-              <FileText className="w-6 h-6 text-purple-500" />
-              <span>Paper Selection Criteria</span>
-            </div>
-            <div className="text-sm font-normal flex items-center gap-2">
-              <span>Screening Progress:</span>
-              <Progress value={screeningProgress} className="w-32 h-2" />
-              <span>{screeningProgress}%</span>
+            <FileText className="w-6 h-6 text-purple-500" />
+            Paper Selection Criteria
             </div>
           </CardTitle>
         </CardHeader>
-
-        <CardContent className="space-y-6">
-          {/* Criteria Section */}
+        <CardContent>
           <div className="grid grid-cols-2 gap-6">
-            <section className="bg-white rounded-xl p-6 shadow-sm border">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-green-700">
-                <CheckCircle2 className="w-5 h-5" />
-                Inclusion Criteria
-              </h3>
-              <ul className="space-y-2">
-                {criteria.inclusionCriteria.map((criterion, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-green-500 mt-2" />
-                    <span className="text-sm">{criterion}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
-
-            <section className="bg-white rounded-xl p-6 shadow-sm border">
-              <h3 className="text-lg font-semibold mb-4 flex items-center gap-2 text-red-700">
-                <XCircle className="w-5 h-5" />
-                Exclusion Criteria
-              </h3>
-              <ul className="space-y-2">
-                {criteria.exclusionCriteria.map((criterion, index) => (
-                  <li key={index} className="flex items-start gap-2">
-                    <div className="w-1.5 h-1.5 rounded-full bg-red-500 mt-2" />
-                    <span className="text-sm">{criterion}</span>
-                  </li>
-                ))}
-              </ul>
-            </section>
+            <CriterionList type="inclusion" icon={CheckCircle2} color="green" />
+            <CriterionList type="exclusion" icon={XCircle} color="red" />
           </div>
 
-          {/* Search and Filter */}
-          <div className="flex items-center gap-4 bg-gray-50 p-4 rounded-lg">
-            <div className="relative flex-grow">
-              <Search className="w-4 h-4 absolute left-3 top-3 text-gray-400" />
-              <Input
-                placeholder="Search papers by title or author..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="pl-9"
-              />
-            </div>
-            <div className="flex items-center gap-2">
-              <Filter className="w-4 h-4 text-gray-400" />
-              <Select value={statusFilter} onValueChange={setStatusFilter}>
-                <SelectTrigger className="w-[140px]">
-                  <SelectValue placeholder="Filter by status" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Papers</SelectItem>
-                  <SelectItem value="pending">Pending</SelectItem>
-                  <SelectItem value="included">Included</SelectItem>
-                  <SelectItem value="excluded">Excluded</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          {/* Papers List */}
-          <div className="space-y-4">
-            {filteredPapers.map(paper => (
-              <div key={paper.id} className="bg-white rounded-lg p-4 shadow-sm border hover:border-purple-200 transition-colors">
-                <div className="flex items-start justify-between gap-4">
-                  <div className="flex-grow">
-                    <h4 className="font-medium text-lg mb-1">{paper.title}</h4>
-                    <p className="text-sm text-gray-600 mb-2">{paper.authors}</p>
-                    <p className="text-sm text-gray-500">{paper.journal}, {paper.year}</p>
-                    
-                    {currentPaper === paper.id && (
-                      <div className="mt-4 space-y-4">
-                        <p className="text-sm text-gray-700">{paper.abstract}</p>
-                        <Textarea
-                          placeholder="Add screening notes..."
-                          value={paper.notes}
-                          onChange={(e) => handleUpdateNotes(paper.id, e.target.value)}
-                          className="w-full h-24"
-                        />
-                      </div>
-                    )}
-                  </div>
-                  
-                  <div className="flex items-center gap-2">
-                    <Button
-                      variant="outline"
-                      size="sm"
-                      onClick={() => setCurrentPaper(currentPaper === paper.id ? null : paper.id)}
-                      className="text-gray-600"
-                    >
-                      {currentPaper === paper.id ? 'Less' : 'More'}
-                    </Button>
-                    <Select
-                      value={paper.status}
-                      onValueChange={(value) => handleUpdateStatus(paper.id, value)}
-                    >
-                      <SelectTrigger className="w-[130px]">
-                        <SelectValue placeholder="Set status">
-                          <div className="flex items-center gap-2">
-                            {getStatusIcon(paper.status)}
-                            <span className={getStatusColor(paper.status)}>
-                              {paper.status.charAt(0).toUpperCase() + paper.status.slice(1)}
-                            </span>
-                          </div>
-                        </SelectValue>
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="pending">
-                          <div className="flex items-center gap-2">
-                            <AlertCircle className="w-4 h-4 text-yellow-600" />
-                            Pending
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="included">
-                          <div className="flex items-center gap-2">
-                            <CheckCircle2 className="w-4 h-4 text-green-600" />
-                            Included
-                          </div>
-                        </SelectItem>
-                        <SelectItem value="excluded">
-                          <div className="flex items-center gap-2">
-                            <XCircle className="w-4 h-4 text-red-600" />
-                            Excluded
-                          </div>
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {/* Action Buttons */}
-          <div className="flex justify-end items-center space-x-4 pt-4">
-            <Button
-              variant="outline"
-              className="flex items-center gap-2 hover:bg-purple-50 hover:text-purple-600 hover:border-purple-200"
-              onClick={() => console.log('Saving screening progress...')}
-            >
+          <div className="flex justify-end gap-4 mt-6 pt-4 border-t">
+            <Button variant="outline" className="flex items-center gap-2">
               <Save className="w-4 h-4" />
               Save Progress
             </Button>
-            <Button
-              className="flex items-center gap-2 bg-purple-500 hover:bg-purple-600"
-              onClick={() => navigate('/paper-list-review')}
-            >
+            <Button className="flex items-center gap-2"
+            onClick={() => navigate('/codebook-setup')}>
               Continue to Codebook
               <ArrowRight className="w-4 h-4" />
             </Button>
           </div>
         </CardContent>
       </Card>
+      <Modal show={showModal} onHide={() => setShowModal(false)} centered>
+        <Modal.Header closeButton>
+          <Modal.Title>Delete Criterion</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>Are you sure you want to delete this criterion? This action cannot be undone.</Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowModal(false)}>
+            Cancel
+          </Button>
+          <Button variant="danger" onClick={handleDeleteCriterion}>
+            Delete
+          </Button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
-};
-
-export default PaperScreening;
+}
