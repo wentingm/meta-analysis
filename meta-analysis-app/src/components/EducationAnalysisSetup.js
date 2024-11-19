@@ -1,25 +1,50 @@
 import React, { useState } from 'react';
-import '../index.css';
 import {
   ArrowLeft,
   Search,
   FileText,
-  BarChart2,
   Filter,
-  Settings,
   Download,
   HelpCircle,
   RefreshCw,
   CheckCircle,
-  AlertCircle,
-  ChevronRight,
-  Book
+  Book,
+  ExternalLink
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 const EducationAnalysisSetup = () => {
-  const [searchStatus, setSearchStatus] = useState('ready'); // ready, searching, complete
+  const [searchStatus, setSearchStatus] = useState('ready');
   const [selectedFilters, setSelectedFilters] = useState([]);
+  const [selectedDatabases, setSelectedDatabases] = useState([]);
+
+  const databases = [
+    {
+      name: 'Semantic Scholar',
+      url: 'https://www.semanticscholar.org/',
+      description: 'AI-powered research paper database'
+    },
+    {
+      name: 'Google Scholar',
+      url: 'https://scholar.google.ca/',
+      description: 'Comprehensive academic search engine'
+    },
+    {
+      name: 'ERIC',
+      url: 'https://eric.ed.gov/',
+      description: 'Education Resources Information Center'
+    },
+    {
+      name: 'Open Access Journals',
+      url: 'https://doaj.org/',
+      description: 'Directory of Open Access Journals'
+    },
+    {
+      name: 'ScienceOpen',
+      url: 'https://www.scienceopen.com/',
+      description: 'Research and publishing network'
+    }
+  ];
 
   const filters = {
     yearRange: ['Last 5 years', 'Last 10 years', 'Custom range'],
@@ -27,17 +52,26 @@ const EducationAnalysisSetup = () => {
     publicationTypes: ['Peer-reviewed', 'Conference Papers', 'Dissertations'],
     languages: ['English', 'Spanish', 'French']
   };
-  const navigate = useNavigate(); 
-  
+
+  const toggleDatabase = (dbName) => {
+    setSelectedDatabases(prev => 
+      prev.includes(dbName)
+        ? prev.filter(name => name !== dbName)
+        : [...prev, dbName]
+    );
+  };
+  const navigate = useNavigate();
   const handleBeginAnalysis = () => {
-    setSearchStatus('searching');
-    navigate('/paper-screening'); 
+    if (selectedDatabases.length > 0) {
+      setSearchStatus('searching');
+    }
+    navigate('/paper-screening');
   };
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <button className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+        <button onClick={() => { navigate('/create-project'); }} className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Setup
         </button>
@@ -55,28 +89,58 @@ const EducationAnalysisSetup = () => {
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Database Search</h2>
           <div className="flex items-center space-x-2">
-            <span className="text-sm text-gray-500">3 databases selected</span>
+            <span className="text-sm text-gray-500">
+              {selectedDatabases.length} databases selected
+            </span>
             <HelpCircle className="h-4 w-4 text-gray-400" />
           </div>
         </div>
 
         <div className="grid gap-4">
-          {['ERIC', 'Google Scholar', 'Semantic Scholar'].map((db) => (
-            <div key={db} className="p-4 rounded-lg border bg-gray-50">
+          {databases.map((db) => (
+            <div 
+              key={db.name}
+              className={`p-4 rounded-lg border transition-colors cursor-pointer ${
+                selectedDatabases.includes(db.name)
+                  ? 'bg-blue-50 border-blue-200'
+                  : 'bg-gray-50 border-gray-200 hover:bg-gray-100'
+              }`}
+              onClick={() => toggleDatabase(db.name)}
+            >
               <div className="flex items-center justify-between mb-2">
-                <span className="font-medium">{db}</span>
-                {searchStatus === 'complete' && (
-                  <CheckCircle className="h-4 w-4 text-green-500" />
-                )}
+                <div className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={selectedDatabases.includes(db.name)}
+                    onChange={() => toggleDatabase(db.name)}
+                    className="rounded border-gray-300 text-blue-500 focus:ring-blue-500 mr-3"
+                  />
+                  <span className="font-medium">{db.name}</span>
+                </div>
+                <a 
+                  href={db.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={(e) => e.stopPropagation()}
+                  className="text-blue-500 hover:text-blue-600"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                </a>
               </div>
-              <div className="text-sm text-gray-500">
-                {searchStatus === 'searching' ? (
-                  <div className="flex items-center">
+              <div className="text-sm text-gray-500 ml-7">
+                {db.description}
+              </div>
+              <div className="text-sm text-gray-500 mt-2 ml-7">
+                {searchStatus === 'searching' && selectedDatabases.includes(db.name) ? (
+                  <div className="flex items-center text-blue-500">
                     <RefreshCw className="h-4 w-4 mr-2 animate-spin" />
                     Searching...
                   </div>
-                ) : searchStatus === 'complete' ? (
-                  "Search complete"
+                ) : searchStatus === 'complete' && selectedDatabases.includes(db.name) ? (
+                  <div className="flex items-center text-green-500">
+                    <CheckCircle className="h-4 w-4 mr-2" />
+                    Search complete
+                  </div>
                 ) : (
                   "Ready to search"
                 )}
@@ -87,13 +151,13 @@ const EducationAnalysisSetup = () => {
       </div>
 
       {/* Search Filters */}
-      <div className="grid gap-6 mb-8">
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <div className="flex items-center space-x-2 mb-4">
-            <Filter className="h-5 w-5 text-blue-500" />
-            <h3 className="font-semibold">Search Filters</h3>
-          </div>
-          
+      <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
+        <div className="flex items-center space-x-2 mb-4">
+          <Filter className="h-5 w-5 text-blue-500" />
+          <h3 className="font-semibold">Search Filters</h3>
+        </div>
+        
+        <div className="grid">
           {Object.entries(filters).map(([category, options]) => (
             <div key={category} className="mb-4">
               <h4 className="text-sm font-medium text-gray-700 mb-2">
@@ -121,86 +185,6 @@ const EducationAnalysisSetup = () => {
             </div>
           ))}
         </div>
-
-        {/* Analysis Settings */}
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <div className="flex items-center space-x-2 mb-4">
-            <Settings className="h-5 w-5 text-blue-500" />
-            <h3 className="font-semibold">Analysis Settings</h3>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Effect Size Measure
-              </label>
-              <select className="w-full rounded-lg border-gray-300">
-                <option>Hedges' g</option>
-                <option>Cohen's d</option>
-                <option>Risk Ratio</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Analysis Model
-              </label>
-              <select className="w-full rounded-lg border-gray-300">
-                <option>Random Effects</option>
-                <option>Fixed Effects</option>
-                <option>Mixed Effects</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Heterogeneity Analysis
-              </label>
-              <select className="w-full rounded-lg border-gray-300">
-                <option>I² Statistic</option>
-                <option>Q-test</option>
-                <option>Both</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        {/* Preview Stats */}
-        <div className="bg-white rounded-lg shadow-sm border p-6">
-          <div className="flex items-center space-x-2 mb-4">
-            <BarChart2 className="h-5 w-5 text-blue-500" />
-            <h3 className="font-semibold">Analysis Preview</h3>
-          </div>
-
-          <div className="space-y-4">
-            <div>
-              <div className="text-sm text-gray-500 mb-1">Estimated Studies</div>
-              <div className="text-2xl font-semibold">150-200</div>
-            </div>
-
-            <div>
-              <div className="text-sm text-gray-500 mb-1">Time Estimate</div>
-              <div className="text-2xl font-semibold">15-20 min</div>
-            </div>
-
-            <div className="pt-4 border-t">
-              <div className="flex items-center text-sm text-gray-500 mb-2">
-                <AlertCircle className="h-4 w-4 mr-1" />
-                Recommendations
-              </div>
-              <ul className="text-sm space-y-2">
-                <li className="flex items-center text-gray-600">
-                  <ChevronRight className="h-4 w-4 mr-1" />
-                  Consider adding date filters
-                </li>
-                <li className="flex items-center text-gray-600">
-                  <ChevronRight className="h-4 w-4 mr-1" />
-                  Include dissertations for broader coverage
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
       </div>
 
       {/* Action Buttons */}
@@ -215,11 +199,15 @@ const EducationAnalysisSetup = () => {
             Export Settings
           </button>
           <button 
-            className="px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors flex items-center"
+            className={`px-6 py-3 rounded-lg transition-colors flex items-center ${
+              selectedDatabases.length > 0
+                ? 'bg-blue-500 text-white hover:bg-blue-600'
+                : 'bg-gray-200 text-gray-500 cursor-not-allowed'
+            }`}
             onClick={handleBeginAnalysis}
           >
             <Search className="h-4 w-4 mr-2" />
-            Begin Analysis
+            Begin Search
           </button>
         </div>
       </div>

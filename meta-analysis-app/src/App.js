@@ -14,6 +14,7 @@ import ProjectDetailsLayout from './components/ProjectDetailsLayout';
 
 
 import AuthComponent from './components/AuthComponent';
+import StatisticalAnalysisDashboard from './components/StatisticalAnalysisDashboard';
 
 
 const App = () => {
@@ -30,7 +31,8 @@ const App = () => {
           <Route path="/analysis-setting" element={<MetaAnalysisSettings />} />
           <Route path="/paper-screening" element={<PaperScreening />} />
           <Route path="/project-dashboard" element={<ProjectDetailsLayout />} />
-
+          <Route path="/statistical-analysis-dashboard" element={<StatisticalAnalysisDashboard />} />
+          
         </Routes>
       </div>
     </Router>

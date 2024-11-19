@@ -1,18 +1,103 @@
 import React, { useState } from 'react';
-import '../index.css';
 import { Trash2, Plus, Edit2, Check, X } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+const AddFieldForm = ({ onAdd, onCancel }) => {
+  const [formData, setFormData] = useState({
+    name: '',
+    type: 'text',
+    required: true,
+    placeholder: '',
+    options: []
+  });
+
+  const handleSubmit = () => {
+    if (!formData.name) return;
+    onAdd({
+      ...formData,
+      id: formData.name.toLowerCase().replace(/\s+/g, '_') + '_' + Math.random().toString(36).substr(2, 5)
+    });
+  };
+
+  return (
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+      <div className="bg-white rounded-lg p-6 max-w-md w-full mx-4">
+        <div className="flex justify-between items-center mb-4">
+          <h3 className="text-lg font-semibold">Add New Field</h3>
+          <button onClick={onCancel} className="text-gray-500 hover:text-gray-700">
+            <X size={20} />
+          </button>
+        </div>
+        <div className="space-y-4">
+          <input
+            type="text"
+            placeholder="Field Name"
+            value={formData.name}
+            onChange={e => setFormData(prev => ({ ...prev, name: e.target.value }))}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+          <select
+            value={formData.type}
+            onChange={e => setFormData(prev => ({ ...prev, type: e.target.value }))}
+            className="w-full border rounded-lg px-3 py-2"
+          >
+            <option value="text">Text</option>
+            <option value="number">Number</option>
+            <option value="select">Select</option>
+          </select>
+          <label className="flex items-center space-x-2">
+            <input
+              type="checkbox"
+              checked={formData.required}
+              onChange={e => setFormData(prev => ({ ...prev, required: e.target.checked }))}
+            />
+            <span>Required Field</span>
+          </label>
+          <input
+            type="text"
+            placeholder="Example Value"
+            value={formData.placeholder}
+            onChange={e => setFormData(prev => ({ ...prev, placeholder: e.target.value }))}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+          {formData.type === 'select' && (
+            <input
+              type="text"
+              placeholder="Options (comma-separated)"
+              value={formData.options.join(', ')}
+              onChange={e => setFormData(prev => ({
+                ...prev,
+                options: e.target.value.split(',').map(o => o.trim()).filter(Boolean)
+              }))}
+              className="w-full border rounded-lg px-3 py-2"
+            />
+          )}
+          <div className="flex justify-end space-x-2 mt-4">
+            <button
+              onClick={onCancel}
+              className="px-4 py-2 border rounded-lg hover:bg-gray-50"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleSubmit}
+              disabled={!formData.name}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 disabled:opacity-50"
+            >
+              Add Field
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+};
+
 function CodebookSetup({ selectedCount = 0, onBack }) {
+  const navigate = useNavigate();
   const [expandedSection, setExpandedSection] = useState('outcomes');
   const [editingField, setEditingField] = useState(null);
-  const navigate = useNavigate();
-  const colorMapping = {
-    blue: 'bg-blue-50',
-    gray: 'bg-gray-50',
-    green: 'bg-green-50'
-  };
-  
+  const [addingToSection, setAddingToSection] = useState(null);
   const [codebookElements, setCodebookElements] = useState({
     outcomes: {
       title: "Outcome Measures",
@@ -41,12 +126,10 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
         }
       ],
       testResults: {
-        title: "Test Results",
-        description: "Enter statistical results for intervention and control groups",
         sections: [
           {
             title: "Intervention Group",
-            color: 'bg-blue-50',
+            color: "blue",
             fields: [
               {
                 id: 'int_n',
@@ -87,7 +170,7 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
           },
           {
             title: "Control Group",
-            color: colorMapping.gray,
+            color: "gray",
             fields: [
               {
                 id: 'ctrl_n',
@@ -128,7 +211,7 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
           },
           {
             title: "Statistical Tests",
-            color: colorMapping.green,
+            color: "green",
             fields: [
               {
                 id: 'test_type',
@@ -172,6 +255,26 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
     }
   });
 
+  const handleAddField = (newField) => {
+    setCodebookElements(prev => {
+      const newElements = { ...prev };
+      if (addingToSection === "Basic Information") {
+        newElements.outcomes.fields = [...newElements.outcomes.fields, newField];
+      } else {
+        const sectionIndex = newElements.outcomes.testResults.sections
+          .findIndex(s => s.title === addingToSection);
+        if (sectionIndex !== -1) {
+          newElements.outcomes.testResults.sections[sectionIndex].fields = [
+            ...newElements.outcomes.testResults.sections[sectionIndex].fields,
+            newField
+          ];
+        }
+      }
+      return newElements;
+    });
+    setAddingToSection(null);
+  };
+
   const removeField = (sectionTitle, fieldId) => {
     setCodebookElements(prev => {
       const newElements = { ...prev };
@@ -188,166 +291,48 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
     });
   };
 
-  const [editForm, setEditForm] = useState({
-    name: '',
-    type: 'text',
-    required: true,
-    placeholder: '',
-    options: []
-  });
-
-  const startEditing = (field) => {
-    setEditingField(field.id);
-    setEditForm({
-      name: field.name,
-      type: field.type,
-      required: field.required,
-      placeholder: field.placeholder,
-      options: field.options || []
-    });
-  };
-
-  const saveEdit = (sectionTitle, fieldId) => {
-    setCodebookElements(prev => {
-      const newElements = { ...prev };
-      if (sectionTitle === "Basic Information") {
-        const fieldIndex = newElements.outcomes.fields.findIndex(f => f.id === fieldId);
-        if (fieldIndex !== -1) {
-          newElements.outcomes.fields[fieldIndex] = {
-            ...newElements.outcomes.fields[fieldIndex],
-            ...editForm
-          };
-        }
-      } else {
-        const sectionIndex = newElements.outcomes.testResults.sections.findIndex(s => s.title === sectionTitle);
-        if (sectionIndex !== -1) {
-          const fieldIndex = newElements.outcomes.testResults.sections[sectionIndex].fields.findIndex(f => f.id === fieldId);
-          if (fieldIndex !== -1) {
-            newElements.outcomes.testResults.sections[sectionIndex].fields[fieldIndex] = {
-              ...newElements.outcomes.testResults.sections[sectionIndex].fields[fieldIndex],
-              ...editForm
-            };
-          }
-        }
-      }
-      return newElements;
-    });
-    setEditingField(null);
-  };
-
-  const EditableField = ({ field, section }) => {
-    const isEditing = editingField === field.id;
-
-    return (
-      <div key={field.id} className="space-y-1 relative">
-        {!isEditing ? (
-          <>
-            <div className="flex justify-between items-start">
-              <label className="block text-sm font-medium text-gray-700">
-                {field.name}
-                {field.required && <span className="text-red-500 ml-1">*</span>}
-              </label>
-              <div className="flex space-x-2">
-                <button 
-                  onClick={() => startEditing(field)}
-                  className="text-gray-500 hover:text-gray-700"
-                >
-                  <Edit2 size={16} />
-                </button>
-                <button 
-                  onClick={() => removeField(section.title, field.id)}
-                  className="text-red-500 hover:text-red-700"
-                >
-                  <Trash2 size={16} />
-                </button>
-              </div>
+  const EditableField = ({ field, section }) => (
+    <div key={field.id} className="space-y-1 relative bg-white rounded-lg p-3 border">
+      <div className="space-y-2">
+        <div className="flex justify-between items-start">
+          <div>
+            <h3 className="text-lg text-gray-900">{field.name}</h3>
+            <div className="text-sm text-gray-500 mt-1">
+              Type: {field.type}
+              {field.required && <span className="text-red-500 ml-2">Required</span>}
             </div>
-            {field.type === 'select' ? (
-              <select className="w-full border rounded-lg px-3 py-2">
-                <option value="">Select...</option>
-                {field.options?.map(option => (
-                  <option key={option} value={option}>{option}</option>
-                ))}
-              </select>
-            ) : (
-              <input
-                type={field.type}
-                placeholder={field.placeholder}
-                className="w-full border rounded-lg px-3 py-2"
-              />
+            {field.type === 'select' && field.options && (
+              <div className="text-sm text-gray-500 mt-1">
+                Options: {field.options.join(', ')}
+              </div>
             )}
-          </>
-        ) : (
-          <div className="bg-gray-50 p-4 rounded-lg border">
-            <div className="space-y-3">
-              <input
-                type="text"
-                value={editForm.name}
-                onChange={e => setEditForm(prev => ({ ...prev, name: e.target.value }))}
-                className="w-full border rounded-lg px-3 py-2"
-                placeholder="Field name"
-              />
-              <div className="flex space-x-2">
-                <select
-                  value={editForm.type}
-                  onChange={e => setEditForm(prev => ({ ...prev, type: e.target.value }))}
-                  className="border rounded-lg px-3 py-2"
-                >
-                  <option value="text">Text</option>
-                  <option value="number">Number</option>
-                  <option value="select">Select</option>
-                </select>
-                <label className="flex items-center space-x-2">
-                  <input
-                    type="checkbox"
-                    checked={editForm.required}
-                    onChange={e => setEditForm(prev => ({ ...prev, required: e.target.checked }))}
-                  />
-                  <span className="text-sm">Required</span>
-                </label>
+            {field.placeholder && (
+              <div className="text-sm text-gray-500 mt-1">
+                Example: {field.placeholder}
               </div>
-              <input
-                type="text"
-                value={editForm.placeholder}
-                onChange={e => setEditForm(prev => ({ ...prev, placeholder: e.target.value }))}
-                className="w-full border rounded-lg px-3 py-2"
-                placeholder="Placeholder text"
-              />
-              {editForm.type === 'select' && (
-                <input
-                  type="text"
-                  value={editForm.options.join(', ')}
-                  onChange={e => setEditForm(prev => ({ ...prev, options: e.target.value.split(',').map(o => o.trim()) }))}
-                  className="w-full border rounded-lg px-3 py-2"
-                  placeholder="Options (comma-separated)"
-                />
-              )}
-              <div className="flex justify-end space-x-2">
-                <button
-                  onClick={() => setEditingField(null)}
-                  className="px-3 py-1 bg-gray-100 rounded-lg hover:bg-gray-200"
-                >
-                  <X size={16} />
-                </button>
-                <button
-                  onClick={() => saveEdit(section.title, field.id)}
-                  className="px-3 py-1 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
-                >
-                  <Check size={16} />
-                </button>
-              </div>
-            </div>
+            )}
           </div>
-        )}
+          <div className="flex space-x-2">
+            <button 
+              onClick={() => removeField(section.title, field.id)}
+              className="text-red-500 hover:text-red-700"
+            >
+              <Trash2 size={16} />
+            </button>
+          </div>
+        </div>
       </div>
-    );
-  };
+    </div>
+  );
 
   const TestResultsSection = ({ section }) => (
-    <div className={`bg-${section.color}-50 rounded-lg p-4 mb-4`}>
+    <div className="bg-white rounded-lg p-4 mb-4 border">
       <div className="flex justify-between items-center mb-3">
-        <h3 className="font-medium">{section.title}</h3>
-        <button className="text-blue-500 hover:text-blue-700 flex items-center">
+        <h3 className="font-medium text-lg">{section.title}</h3>
+        <button 
+          onClick={() => setAddingToSection(section.title)}
+          className="text-blue-500 hover:text-blue-700 flex items-center"
+        >
           <Plus size={16} className="mr-1" />
           Add Field
         </button>
@@ -364,12 +349,12 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <button onClick={() => { navigate('/paper-list-review'); }}  className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+        <button onClick={onBack} className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
           <span className="mr-2">←</span>
           Back to Paper Selection
         </button>
-        <h1 className="text-2xl font-bold mb-2">Statistical Results Codebook</h1>
-        <p className="text-gray-600">Configure outcome measures and test results parameters to use in the codebook</p>
+        <h1 className="text-2xl font-bold mb-2">Statistical Results Codebook Setup</h1>
+        <p className="text-gray-600">Configure the variables and parameters that will be used in your codebook</p>
       </div>
 
       {/* Main Content */}
@@ -379,12 +364,15 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
           <div className="mb-8">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Basic Information</h2>
-              <button className="text-blue-500 hover:text-blue-700 flex items-center">
+              <button 
+                onClick={() => setAddingToSection("Basic Information")}
+                className="text-blue-500 hover:text-blue-700 flex items-center"
+              >
                 <Plus size={16} className="mr-1" />
                 Add Field
               </button>
             </div>
-            <div className="grid grid-cols-1 gap-6">
+            <div className="grid grid-cols-2 gap-4">
               {codebookElements.outcomes.fields.map((field) => (
                 <EditableField 
                   key={field.id} 
@@ -399,10 +387,6 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
           <div>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Statistical Results</h2>
-              <button className="text-blue-500 hover:text-blue-700 flex items-center">
-                <Plus size={16} className="mr-1" />
-                Add Section
-              </button>
             </div>
             {codebookElements.outcomes.testResults.sections.map((section) => (
               <TestResultsSection key={section.title} section={section} />
@@ -420,6 +404,14 @@ function CodebookSetup({ selectedCount = 0, onBack }) {
           Continue
         </button>
       </div>
+
+      {/* Add Field Modal */}
+      {addingToSection && (
+        <AddFieldForm
+          onAdd={handleAddField}
+          onCancel={() => setAddingToSection(null)}
+        />
+      )}
     </div>
   );
 }

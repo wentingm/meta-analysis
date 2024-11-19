@@ -27,7 +27,7 @@ const DashboardLayout = () => {
   const navigate = useNavigate();
   const handleClick = () => {
     const projectId = "123";
-    navigate('/project-dashboard');
+    navigate('/statistical-analysis-dashboard');
   };
   const [user] = useState({
     name: "Dr. Jane Smith",

@@ -21,6 +21,7 @@ import {
     Settings as SettingsIcon, 
     Tune as TuneIcon
 } from '@mui/icons-material';
+import { useNavigate } from 'react-router-dom';
 
 const MetaAnalysisSettings = () => {
     const [settings, setSettings] = useState({
@@ -45,7 +46,7 @@ const MetaAnalysisSettings = () => {
     const handleSaveSettings = () => {
         console.log('Saving settings:', settings);
     };
-
+    const navigate = useNavigate();
     const handleContinue = () => {
         setSettings(prev => ({ ...prev, isRunning: true, progress: 0 }));
         const interval = setInterval(() => {
@@ -57,6 +58,7 @@ const MetaAnalysisSettings = () => {
                 return { ...prev, progress: prev.progress + 10 };
             });
         }, 500);
+        navigate('/paper-list-review'); 
     };
 
     const SectionHeader = ({ icon: Icon, title }) => (
