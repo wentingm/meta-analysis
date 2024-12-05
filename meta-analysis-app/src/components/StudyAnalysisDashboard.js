@@ -5,7 +5,6 @@ import {
   ComposedChart, Line
 } from 'recharts';
 import { FileSearch, Filter, Download, ArrowUpDown } from 'lucide-react';
-import './StudyAnalysisDashboard.css';
 
 // Sample data - in real app this would come from your backend
 const generateSampleData = () => {

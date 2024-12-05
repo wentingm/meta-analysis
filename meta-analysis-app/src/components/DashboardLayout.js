@@ -117,10 +117,28 @@ const DashboardLayout = () => {
   const getStatusColor = (status) => {
     switch (status) {
       case "Completed": return "bg-green-100 text-green-800";
-      case "In Progress": return "bg-blue-100 text-blue-800";
+      case "In Progress": return "text-blue-600 hover:text-blue-800";
       case "Planning": return "bg-yellow-100 text-yellow-800";
       default: return "bg-gray-100 text-gray-800";
     }
+  };
+
+  const getStatusDisplay = (status, project) => {
+    if (status === "In Progress") {
+      return (
+        <button 
+          onClick={() => navigate('/project-overview')}
+          className={`inline-flex items-center text-sm font-medium ${getStatusColor(status)}`}
+        >
+          Project Setup
+        </button>
+      );
+    }
+    return (
+      <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(status)}`}>
+        {status}
+      </span>
+    );
   };
 
   const filteredProjects = projects
@@ -221,7 +239,7 @@ const DashboardLayout = () => {
               <h1 className="text-2xl font-bold text-gray-900">Research Dashboard</h1>
               <p className="text-gray-600">AI-Enhanced Meta-Analysis Projects</p>
             </div>
-            <button onClick={() => navigate('/create-project')} className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700">
+            <button onClick={() => navigate('/select-domain')} className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700">
               <Plus className="h-5 w-5 mr-2" />
               New Project
             </button>
@@ -274,9 +292,7 @@ const DashboardLayout = () => {
                       <CardTitle className="text-lg font-bold">{project.title}</CardTitle>
                       <CardDescription className="mt-1">{project.description}</CardDescription>
                     </div>
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${getStatusColor(project.status)}`}>
-                      {project.status}
-                    </span>
+                    {getStatusDisplay(project.status, project)}
                   </div>
                 </CardHeader>
                 <CardContent>
