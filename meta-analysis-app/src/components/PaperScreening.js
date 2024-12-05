@@ -134,14 +134,17 @@ export default function PaperScreening() {
           </li>
         ))}
       </ul>
-      <div classname="flex items-center gap-2 mt-4">
+      <div className="flex items-center gap-2 mt-4">
         <Input
-        placeholder = {`Add new ${type === 'inclusion' ? 'Inclusion' : 'Exclusion'} Criteria`}></Input>
+        placeholder = {`Add new ${type === 'inclusion' ? 'Inclusion' : 'Exclusion'} Criteria`}
+        className="w-64 flex-grow rounded-md px-3 py-2"> 
+        </Input>
         <Button
             variant="no-outline-primary"
             size="sm"
-            className="p-1.5 h-8 w-8 rounded-full text-gray-500"
-        > + Add
+            className="p-1.5 h-8 w-auto rounded-full text-gray-500 flex items-center justify-center"
+        >
+            <span className="text-sm">+ Add</span>
         </Button>
       </div>
     </section>

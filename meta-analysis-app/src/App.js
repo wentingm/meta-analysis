@@ -15,6 +15,9 @@ import ProjectDetailsLayout from './components/ProjectDetailsLayout';
 
 import AuthComponent from './components/AuthComponent';
 import StatisticalAnalysisDashboard from './components/StatisticalAnalysisDashboard';
+import ProjectSetup from './components/ProjectSetup';
+import PicoFlow from './components/PicoFlow';
+import ProjectSetupOverview from './components/ProjectSetupOverview';
 
 
 const App = () => {
@@ -24,7 +27,8 @@ const App = () => {
         <Routes>
           <Route path="/" element={<AuthComponent />} />
           <Route path="/dashboard" element={<DashboardLayout />} />
-          <Route path="/create-project" element={<SimpleDomainFlow />} />
+          <Route path="/select-domain" element={<SimpleDomainFlow />} />
+          <Route path="/pico" element={<PicoFlow />} />
           <Route path="/codebook-setup" element={<CodebookSetup />} />
           <Route path="/education-analysis-setup" element={<EducationAnalysisSetup />} />
           <Route path="/paper-list-review" element={<PaperListReview />} />
@@ -32,7 +36,8 @@ const App = () => {
           <Route path="/paper-screening" element={<PaperScreening />} />
           <Route path="/project-dashboard" element={<ProjectDetailsLayout />} />
           <Route path="/statistical-analysis-dashboard" element={<StatisticalAnalysisDashboard />} />
-          
+          <Route path="/project-setup" element={<ProjectSetup />} />  
+          <Route path="/project-overview" element={<ProjectSetupOverview />} />  
         </Routes>
       </div>
     </Router>
