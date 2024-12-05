@@ -296,7 +296,7 @@ const MetaAnalysisSettings = () => {
               Save
             </Button>
             <Button
-              onClick={() => navigate('/paper-list-review')}
+              onClick={() => navigate('/project-overview')}
               className="flex items-center gap-2 bg-blue-500 hover:bg-blue-600"
             >
               Continue
