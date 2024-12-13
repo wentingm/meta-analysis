@@ -39,7 +39,7 @@ const ProjectSetup = () => {
   const handleSaveAndContinue = () => {
     console.log("Navigating to /pico with state:", projectData);
     if (isFormValid) {
-      navigate('/pico', {
+      navigate('/pico-flow', {
         state: {
           title: projectData.title,
           description: projectData.description,

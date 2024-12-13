@@ -71,7 +71,7 @@ const EducationAnalysisSetup = () => {
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <button onClick={() => { navigate('/select-domain'); }} className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+        <button onClick={() => { navigate('/pico-flow'); }} className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Setup
         </button>
@@ -206,8 +206,7 @@ const EducationAnalysisSetup = () => {
             }`}
             onClick={handleBeginAnalysis}
           >
-            <Search className="h-4 w-4 mr-2" />
-            Begin Search
+            Save and Continue
           </button>
         </div>
       </div>
