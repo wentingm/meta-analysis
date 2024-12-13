@@ -18,6 +18,8 @@ import StatisticalAnalysisDashboard from './components/StatisticalAnalysisDashbo
 import ProjectSetup from './components/ProjectSetup';
 import PicoFlow from './components/PicoFlow';
 import ProjectSetupOverview from './components/ProjectSetupOverview';
+import SinglePagePicoFlow from './components/SinglePagePicoFlow.js';
+
 
 
 const App = () => {
@@ -37,7 +39,9 @@ const App = () => {
           <Route path="/project-dashboard" element={<ProjectDetailsLayout />} />
           <Route path="/statistical-analysis-dashboard" element={<StatisticalAnalysisDashboard />} />
           <Route path="/project-setup" element={<ProjectSetup />} />  
-          <Route path="/project-overview" element={<ProjectSetupOverview />} />  
+          <Route path="/project-overview" element={<ProjectSetupOverview />} /> 
+          <Route path="/pico-flow" element={<SinglePagePicoFlow />} />  
+
         </Routes>
       </div>
     </Router>

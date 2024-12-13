@@ -61,7 +61,7 @@ const SimpleDomainFlow = () => {
             <button
               key={domain.id}
               onClick={() => {
-                navigate('/project-setup', {
+                navigate('/pico-flow', {
                   state: {
                     id: domain.id,
                     name: domain.name,

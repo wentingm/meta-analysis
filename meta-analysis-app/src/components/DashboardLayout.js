@@ -239,7 +239,7 @@ const DashboardLayout = () => {
               <h1 className="text-2xl font-bold text-gray-900">Research Dashboard</h1>
               <p className="text-gray-600">AI-Enhanced Meta-Analysis Projects</p>
             </div>
-            <button onClick={() => navigate('/select-domain')} className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700">
+            <button onClick={() => navigate('/project-setup')} className="inline-flex items-center px-4 py-2 bg-gradient-to-r from-blue-600 to-indigo-600 text-white rounded-lg hover:from-blue-700 hover:to-indigo-700">
               <Plus className="h-5 w-5 mr-2" />
               New Project
             </button>
