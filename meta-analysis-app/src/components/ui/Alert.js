@@ -15,3 +15,12 @@ export const AlertDescription = ({ children }) => {
     </div>
   );
 };
+
+export const AlertTitle = ({ children }) => {
+  return (
+    <h4 className="text-lg font-bold text-gray-900">
+      {children}
+    </h4>
+  );
+};
+

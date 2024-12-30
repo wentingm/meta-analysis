@@ -19,6 +19,14 @@ import ProjectSetup from './components/ProjectSetup';
 import PicoFlow from './components/PicoFlow';
 import ProjectSetupOverview from './components/ProjectSetupOverview';
 import SinglePagePicoFlow from './components/SinglePagePicoFlow.js';
+import PaperPoolOverview from './components/PaperPoolOverview';
+import SelectionCriteriaResults from './components/SelectionCriteriaResults';
+import CodebookExtraction from './components/CodebookExtraction';
+import BatchExtraction from './components/BatchExtraction';
+import ProcessingResults from './components/ProcessingResults';
+import StatisticalAnalysis from './components/StatisticalAnalysis';
+import ProjectSummary from './components/ProjectSummary';
+import EducationAnalysisSettings from './components/EducationAnalysisSettings';
 
 
 
@@ -32,6 +40,7 @@ const App = () => {
           <Route path="/select-domain" element={<SimpleDomainFlow />} />
           <Route path="/pico" element={<PicoFlow />} />
           <Route path="/codebook-setup" element={<CodebookSetup />} />
+          <Route path="/education-analysis-settings" element={<EducationAnalysisSettings />} />
           <Route path="/education-analysis-setup" element={<EducationAnalysisSetup />} />
           <Route path="/paper-list-review" element={<PaperListReview />} />
           <Route path="/analysis-setting" element={<MetaAnalysisSettings />} />
@@ -41,7 +50,13 @@ const App = () => {
           <Route path="/project-setup" element={<ProjectSetup />} />  
           <Route path="/project-overview" element={<ProjectSetupOverview />} /> 
           <Route path="/pico-flow" element={<SinglePagePicoFlow />} />  
-
+          <Route path="/paperpool-overview" element={<PaperPoolOverview />} />  
+          <Route path="/selection-criteria-results" element={<SelectionCriteriaResults />} />  
+          <Route path="/codebook-extraction" element={<CodebookExtraction />} />  
+          <Route path="/batch-extraction" element={<BatchExtraction />} />  
+          <Route path="/processing-results" element={<ProcessingResults />} />  
+          <Route path="/statistical-analysis" element={<StatisticalAnalysis />} />  
+          <Route path="/project-summary" element={<ProjectSummary />} />  
         </Routes>
       </div>
     </Router>

@@ -361,7 +361,7 @@ const SinglePagePicoFlow = () => {
           </button>
           <button 
             className="px-6 py-2 bg-blue-500 text-white rounded-lg"
-            onClick={() => navigate('/education-analysis-setup')}
+            onClick={() => navigate('/education-analysis-settings')}
           >
             Save Research Criteria
           </button>
