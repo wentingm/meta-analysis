@@ -1,7 +1,8 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import {
   ArrowLeft,
   Search,
+  FileText,
   Filter,
   Download,
   HelpCircle,
@@ -12,83 +13,10 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
-const EducationAnalysisSetup = () => {
+const EducationAnalysisSettings = () => {
   const [searchStatus, setSearchStatus] = useState('ready');
   const [selectedFilters, setSelectedFilters] = useState([]);
   const [selectedDatabases, setSelectedDatabases] = useState([]);
-  const [yearRange, setYearRange] = useState([2019, 2024]);
-  const [isDragging, setIsDragging] = useState(null);
-  const [showTooltips, setShowTooltips] = useState([false, false]);
-  
-  const sliderRef = useRef(null);
-  const MIN_YEAR = 1900;
-  const MAX_YEAR = 2024;
-  const RANGE = MAX_YEAR - MIN_YEAR;
-
-  const calculatePercentage = (year) => ((year - MIN_YEAR) / RANGE) * 100;
-  
-  const getYearFromPosition = (clientX) => {
-    const rect = sliderRef.current.getBoundingClientRect();
-    const percentage = (clientX - rect.left) / rect.width;
-    const year = Math.round(MIN_YEAR + (RANGE * percentage));
-    return Math.min(Math.max(year, MIN_YEAR), MAX_YEAR);
-  };
-
-  const handleMouseDown = (index) => (e) => {
-    e.preventDefault();
-    setIsDragging(index);
-    const newTooltips = [...showTooltips];
-    newTooltips[index] = true;
-    setShowTooltips(newTooltips);
-  };
-
-  const handleMouseUp = () => {
-    setIsDragging(null);
-    setShowTooltips([false, false]);
-  };
-
-  const handleMouseMove = (e) => {
-    if (isDragging === null) return;
-    
-    const newYear = getYearFromPosition(e.clientX);
-    setYearRange(prev => {
-      const newRange = [...prev];
-      newRange[isDragging] = newYear;
-      
-      if (isDragging === 0 && newRange[0] > newRange[1]) {
-        newRange[0] = newRange[1];
-      } else if (isDragging === 1 && newRange[1] < newRange[0]) {
-        newRange[1] = newRange[0];
-      }
-      
-      return newRange;
-    });
-  };
-
-  const handleMouseEnter = (index) => () => {
-    const newTooltips = [...showTooltips];
-    newTooltips[index] = true;
-    setShowTooltips(newTooltips);
-  };
-
-  const handleMouseLeave = (index) => () => {
-    if (isDragging !== index) {
-      const newTooltips = [...showTooltips];
-      newTooltips[index] = false;
-      setShowTooltips(newTooltips);
-    }
-  };
-
-  useEffect(() => {
-    if (isDragging !== null) {
-      document.addEventListener('mouseup', handleMouseUp);
-      document.addEventListener('mousemove', handleMouseMove);
-      return () => {
-        document.removeEventListener('mouseup', handleMouseUp);
-        document.removeEventListener('mousemove', handleMouseMove);
-      };
-    }
-  }, [isDragging]);
 
   const databases = [
     {
@@ -107,11 +35,6 @@ const EducationAnalysisSetup = () => {
       description: 'Education Resources Information Center'
     },
     {
-      name: 'PubMed',
-      url: 'https://pubmed.ncbi.nlm.nih.gov/',
-      description: 'Biomedical literature and life sciences database'
-    },
-    {
       name: 'Open Access Journals',
       url: 'https://doaj.org/',
       description: 'Directory of Open Access Journals'
@@ -124,6 +47,7 @@ const EducationAnalysisSetup = () => {
   ];
 
   const filters = {
+    yearRange: ['Last 5 years', 'Last 10 years', 'Custom range'],
     studyTypes: ['Randomized Control Trials', 'Quasi-experimental', 'Observational'],
     publicationTypes: ['Peer-reviewed', 'Conference Papers', 'Dissertations'],
     languages: ['English', 'Spanish', 'French']
@@ -138,15 +62,16 @@ const EducationAnalysisSetup = () => {
   };
   const navigate = useNavigate();
   const handleBeginAnalysis = () => {
-      if (selectedDatabases.length > 0) {
-        setSearchStatus('searching');
-      }
-      navigate('/paper-list-review');
-    };
+    if (selectedDatabases.length > 0) {
+      setSearchStatus('searching');
+    }
+    navigate('/paper-screening');
+  };
   return (
     <div className="max-w-6xl mx-auto p-6">
+      {/* Header */}
       <div className="mb-8">
-        <button className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+        <button onClick={() => { navigate('/pico-flow'); }} className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
           <ArrowLeft className="h-4 w-4 mr-2" />
           Back to Setup
         </button>
@@ -159,6 +84,7 @@ const EducationAnalysisSetup = () => {
         </div>
       </div>
 
+      {/* Search Progress */}
       <div className="bg-white rounded-lg shadow-sm border p-6 mb-6">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-lg font-semibold">Database Search</h2>
@@ -224,90 +150,14 @@ const EducationAnalysisSetup = () => {
         </div>
       </div>
 
+      {/* Search Filters */}
       <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
         <div className="flex items-center space-x-2 mb-4">
           <Filter className="h-5 w-5 text-blue-500" />
           <h3 className="font-semibold">Search Filters</h3>
         </div>
         
-        <div className="grid gap-6">
-          <div className="mb-4">
-            <h4 className="text-sm font-medium text-gray-700 mb-4">Year Range</h4>
-            <div className="space-y-6">
-              <div className="flex items-center space-x-4">
-                <div className="flex-1">
-                  <label className="text-xs text-gray-500 mb-1 block">Start Year</label>
-                  <input
-                    type="number"
-                    value={yearRange[0]}
-                    onChange={(e) => {
-                      const newYear = Math.min(parseInt(e.target.value), yearRange[1]);
-                      setYearRange([newYear, yearRange[1]]);
-                    }}
-                    min={MIN_YEAR}
-                    max={yearRange[1]}
-                    className="w-full p-2 border rounded text-sm"
-                  />
-                </div>
-                <div className="flex-1">
-                  <label className="text-xs text-gray-500 mb-1 block">End Year</label>
-                  <input
-                    type="number"
-                    value={yearRange[1]}
-                    onChange={(e) => {
-                      const newYear = Math.max(parseInt(e.target.value), yearRange[0]);
-                      setYearRange([yearRange[0], newYear]);
-                    }}
-                    min={yearRange[0]}
-                    max={MAX_YEAR}
-                    className="w-full p-2 border rounded text-sm"
-                  />
-                </div>
-              </div>
-              
-              <div 
-                className="relative h-2 bg-gray-200 rounded cursor-pointer mt-8"
-                ref={sliderRef}
-              >
-                <div
-                  className="absolute h-full bg-blue-500 rounded"
-                  style={{
-                    left: `${calculatePercentage(yearRange[0])}%`,
-                    right: `${100 - calculatePercentage(yearRange[1])}%`
-                  }}
-                />
-                {[0, 1].map(index => (
-                  <div
-                    key={index}
-                    className="relative"
-                  >
-                    <div
-                      className="absolute top-1/2 -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-white border-2 border-blue-500 rounded-full cursor-grab hover:bg-blue-50"
-                      style={{
-                        left: `${calculatePercentage(yearRange[index])}%`,
-                        zIndex: isDragging === index ? 30 : 20
-                      }}
-                      onMouseDown={handleMouseDown(index)}
-                      onMouseEnter={handleMouseEnter(index)}
-                      onMouseLeave={handleMouseLeave(index)}
-                    >
-                      {showTooltips[index] && (
-                        <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 px-2 py-1 bg-gray-900 text-white text-xs rounded whitespace-nowrap">
-                          {yearRange[index]}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                ))}
-              </div>
-              
-              <div className="flex justify-between text-xs text-gray-500">
-                <span>{MIN_YEAR}</span>
-                <span>{MAX_YEAR}</span>
-              </div>
-            </div>
-          </div>
-
+        <div className="grid">
           {Object.entries(filters).map(([category, options]) => (
             <div key={category} className="mb-4">
               <h4 className="text-sm font-medium text-gray-700 mb-2">
@@ -337,6 +187,7 @@ const EducationAnalysisSetup = () => {
         </div>
       </div>
 
+      {/* Action Buttons */}
       <div className="flex justify-between items-center">
         <button className="px-4 py-2 text-gray-600 hover:text-gray-900">
           Save Configuration
@@ -355,8 +206,7 @@ const EducationAnalysisSetup = () => {
             }`}
             onClick={handleBeginAnalysis}
           >
-            <Search className="h-4 w-4 mr-2" />
-            Begin Search
+            Save and Continue
           </button>
         </div>
       </div>
@@ -364,4 +214,4 @@ const EducationAnalysisSetup = () => {
   );
 };
 
-export default EducationAnalysisSetup;
+export default EducationAnalysisSettings;

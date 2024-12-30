@@ -204,6 +204,19 @@ const ProjectSetupOverview = () => {
           </div>
         );
 
+        case 'databases':
+        return (
+          <div className="space-y-4">
+            <button
+              onClick={() => navigate('/education-analysis-setup')}
+              className="flex items-center px-4 py-2 text-sm text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100"
+            >
+              <Search className="h-4 w-4 mr-2" />
+              Continue to Database Search
+            </button>
+          </div>
+        );
+
       // [Previous cases remain the same...]
       default:
         return (
