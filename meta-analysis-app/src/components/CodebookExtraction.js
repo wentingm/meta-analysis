@@ -398,6 +398,16 @@ function CodebookExtraction() {
               <ArrowRight className="w-4 h-4 ml-2" />
             </button>
           </div>
+          <div className="flex justify-between items-center mt-8">
+          <button onClick={() => { navigate('/selection-criteria-results'); }} className="flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+            <ArrowLeft className="w-4 h-4 mr-2" />
+            Back to Selection Criteria
+          </button>
+          <button onClick={() => { navigate('/batch-extraction'); }} className="flex items-center px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+            Continue to Batch Extraction
+            <ArrowRight className="w-4 h-4 ml-2" />
+          </button>
+        </div>
         </>
       )}
     </div>
