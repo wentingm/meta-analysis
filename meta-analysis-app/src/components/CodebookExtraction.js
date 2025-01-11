@@ -286,7 +286,11 @@ function CodebookExtraction() {
           </div>
 
           {/* Navigation */}
-          <div className="flex justify-end">
+          <div className="flex justify-between items-center">
+          <button onClick={() => { navigate('/selection-criteria-results'); }} className="flex items-center px-6 py-3 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Selection Results
+           </button>
             <button
               onClick={() => setReviewStep('extraction')}
               disabled={!codebookAcknowledged}
