@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Play, Pause, Download, RefreshCw, CheckCircle, XCircle, AlertCircle, FileText } from 'lucide-react';
+import { Play, Pause, Download, RefreshCw, CheckCircle, XCircle, AlertCircle, FileText, ArrowLeft } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from './ui/Alert';
 import { useNavigate } from 'react-router-dom';
 
@@ -69,6 +69,12 @@ function BatchExtraction() {
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
+      <button 
+        onClick={() => { navigate('/codebook-extraction'); }}
+        className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Data Extraction
+        </button>
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-2">Batch Data Extraction</h1>
         <p className="text-gray-600">
@@ -130,6 +136,12 @@ function BatchExtraction() {
               >
                 <Download className="w-4 h-4 mr-2" />
                 Export Data
+              </button>
+              <button
+                onClick={() => { navigate('/processing-results'); }}
+                className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
+              >
+                Continue
               </button>
             </div>
           </div>

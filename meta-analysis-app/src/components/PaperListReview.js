@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileDown, Eye, Check, Database, ExternalLink } from 'lucide-react';
+import { FileDown, Eye, Check, Database, ExternalLink, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 function PaperListReview() {
@@ -111,6 +111,12 @@ function PaperListReview() {
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
+      <button 
+        onClick={() => { navigate('/education-analysis-setup'); }}
+        className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Educational Analysis
+      </button>
       <div className="mb-8">
         <h1 className="text-2xl font-bold mb-2">Review Selected Papers</h1>
         <p className="text-gray-600">

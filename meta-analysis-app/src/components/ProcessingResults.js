@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
-import { AlertCircle, CheckCircle, Clock, AlertTriangle, XCircle, Download, Filter } from 'lucide-react';
+import { AlertCircle, CheckCircle, Clock, AlertTriangle, XCircle, Download, Filter, ArrowLeft } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from './ui/Alert';
 import { useNavigate } from 'react-router-dom';
 
@@ -66,6 +66,12 @@ const ProcessingResults = () => {
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
+      <button 
+        onClick={() => { navigate('/batch-extraction'); }}
+        className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+          <ArrowLeft className="w-4 h-4 mr-2" />
+          Back to Batch Extraction
+      </button>
       <div className="mb-8 flex justify-between items-start">
         <div>
           <h1 className="text-2xl font-bold mb-2">Processing Results</h1>
@@ -75,10 +81,7 @@ const ProcessingResults = () => {
         </div>
         <button 
           className="flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-lg font-semibold shadow-sm"
-          onClick={() => {
-            // Add statistical analysis logic here
-            console.log('Running statistical analysis...');
-          }}
+          onClick={() => { navigate('/statistical-analysis'); }}
         >
           Run Statistical Analysis
         </button>
@@ -321,10 +324,7 @@ const ProcessingResults = () => {
       <div className="mt-8 flex justify-center">
         <button 
           className="flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors text-lg font-semibold shadow-sm"
-          onClick={() => {
-            // Add statistical analysis logic here
-            console.log('Running statistical analysis...');
-          }}
+          onClick={() => { navigate('/statistical-analysis'); }}
         >
           Run Statistical Analysis
         </button>

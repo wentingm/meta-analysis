@@ -9,7 +9,9 @@ const ProjectSummary = () => {
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <button className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+        <button 
+        onClick={() => { navigate('/statistical-analysis'); }}
+        className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Analysis
         </button>
@@ -21,10 +23,17 @@ const ProjectSummary = () => {
               Systematic review of AI integration in educational assessment and analytics
             </p>
           </div>
-          <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
-            <Download className="w-4 h-4 mr-2" />
-            Export Summary
-          </button>
+          <div className="flex align-center space-x-3">
+            <button 
+              onClick={() => { navigate('/dashboard'); }}
+              className="flex items-center px-6 py-3 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+              Go To Dashboard
+            </button>
+            <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
+              <Download className="w-4 h-4 mr-2" />
+              Export Summary
+            </button>
+          </div>
         </div>
       </div>
 

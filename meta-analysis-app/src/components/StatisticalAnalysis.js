@@ -70,7 +70,9 @@ const StatisticalAnalysis = () => {
     <div className="max-w-6xl mx-auto p-6">
       {/* Header */}
       <div className="mb-8">
-        <button className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
+        <button 
+        onClick={() => { navigate('/processing-results'); }}
+        className="flex items-center text-gray-600 hover:text-gray-900 mb-4">
           <ArrowLeft className="w-4 h-4 mr-2" />
           Back to Results
         </button>
@@ -83,7 +85,9 @@ const StatisticalAnalysis = () => {
             </p>
           </div>
           <div className="flex items-center space-x-3">
-            <button className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
+            <button 
+            onClick={() => { navigate('/project-summary'); }}
+            className="flex items-center px-4 py-2 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors">
               View Summary
             </button>
             <button className="flex items-center px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors">
