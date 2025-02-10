@@ -2,30 +2,30 @@ name: CI Pipeline
 
 on:
   push:
-    branches:
-      - be3  # Runs the workflow when code is pushed to the be3 branch
+    branches: [ main, be3 ]
   pull_request:
-    branches:
-      - main  # Also runs when a PR is made to merge branch into main
+    branches: [ main ]
 
 jobs:
   build:
-    runs-on: ubuntu-latest  # The workflow runs in an Ubuntu virtual machine
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3  # Pulls the latest code from the repo
+        uses: actions/checkout@v3
 
       - name: Set up Python
-        uses: actions/setup-python@v3  # Installs Python on the runner
+        uses: actions/setup-python@v3
         with:
-          python-version: "3.11"  # Specifies the Python version to use
+          python-version: "3.11"
 
       - name: Install dependencies
         run: |
+          cd backend
           python -m pip install --upgrade pip
-          pip install poetry
-          poetry install
+          pip install -r requirements.txt
 
-      - name: Run tests
-        run: poetry run pytest  # Executes tests using pytest to verify the code
+      - name: Run Tests
+        run: |
+          cd backend
+          pytest
