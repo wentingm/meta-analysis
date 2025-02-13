@@ -16,7 +16,7 @@ model.to(device)
 def infer_scibert(text: str):
     try:
         # Tokenize the input text
-        inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=512)
+        inputs = tokenize_text(text)
 
         # Move input tensors to the same device as the model
         inputs = {key: value.to(device) for key, value in inputs.items()}
