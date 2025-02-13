@@ -41,7 +41,7 @@ router = APIRouter()
 @router.get("/papers/search")
 def search_papers(input: str = Query(..., description="Search query for papers")):
     encoded_input = quote_plus(input)
-    fields = "title,authors,year"
+    fields = "title,authors,year,abstract"
     api_url = f"https://api.semanticscholar.org/graph/v1/paper/search?query={encoded_input}&fields={fields}"
     print("Requesting:", api_url)  # Debugging output
     
