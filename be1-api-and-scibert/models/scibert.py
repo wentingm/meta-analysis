@@ -1,12 +1,12 @@
 # models/scibert.py
-from transformers import AutoTokenizerForSequenceClassification, AutoModel
+from transformers import AutoTokenizer, AutoModel
 import torch
 
 # Load SciBERT model and tokenizer once during application startup
 MODEL_NAME = "allenai/scibert_scivocab_uncased"
 BATCH_SIZE = 8
 MAX_LENGTH = 512
-tokenizer = AutoTokenizerForSequenceClassification.from_pretrained(MODEL_NAME)
+tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 model = AutoModel.from_pretrained(MODEL_NAME)
 
 # Move model to GPU if available (optional)
