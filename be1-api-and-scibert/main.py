@@ -9,7 +9,7 @@ app.include_router(scibert.router, prefix="/api")
 app.include_router(semanticscholar.router, prefix="/api")
 
 
-app.get("/")
+@app.get("/")
 def testing():
     return { "response": 200 }
 
