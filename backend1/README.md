@@ -9,7 +9,7 @@ Get papers from the API and filter using SciBERT using more specifications.
 2. **Activate virtual environment**
     * Linux: ```source env/bin/activate```
     * Windows: ```activate```
-3. **Install Dependencies:** ```python3 install -r requirements.txt```
+3. **Install Dependencies:** ```pip install -r requirements.txt```
 4. **Run Application:**
     * Run development mode using uvicorn: ```uvicorn main:app --reload```
     * Run development mode using fastapi: ```fastapi dev main.py```
