@@ -4,11 +4,9 @@ Get papers from the API and filter using SciBERT using more specifications.
 * Semantic Scholar Integration
 * SciBERT
 
-## Instructions
+## Instructions (Linux)
 1. **Use python virtual environment:** ```python -m venv env```
-2. **Activate virtual environment**
-    * Linux: ```source env/bin/activate```
-    * Windows: ```activate```
+2. **Activate virtual environment:** ```source env/bin/activate```
 3. **Install Dependencies:** ```pip install -r requirements.txt```
 4. **Run Application:**
     * Run development mode using uvicorn: ```uvicorn main:app --reload```
