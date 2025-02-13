@@ -1,11 +1,13 @@
 # models/scibert.py
-from transformers import AutoTokenizer, AutoModelForSequenceClassification
+from transformers import AutoTokenizerForSequenceClassification, AutoModel
 import torch
 
 # Load SciBERT model and tokenizer once during application startup
 MODEL_NAME = "allenai/scibert_scivocab_uncased"
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME)
+BATCH_SIZE = 8
+MAX_LENGTH = 512
+tokenizer = AutoTokenizerForSequenceClassification.from_pretrained(MODEL_NAME)
+model = AutoModel.from_pretrained(MODEL_NAME)
 
 # Move model to GPU if available (optional)
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -31,3 +33,18 @@ def infer_scibert(text: str):
     except Exception as e:
         return {"error": str(e)}
 
+def validate_params(batch_size, max_length):
+    assert batch_size > 0, "Batch size must be positive"
+    assert 0 < max_length <= 512, "Sequence length must be between 1 and 512"
+
+def tokenize_text(texts):
+    return tokenizer(
+        texts, 
+        padding="max_length", 
+        truncation=True, 
+        max_length=MAX_LENGTH, 
+        return_tensors="pt"
+    )
+
+
+validate_params(BATCH_SIZE, MAX_LENGTH)
