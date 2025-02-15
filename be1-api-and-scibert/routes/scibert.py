@@ -1,29 +1,17 @@
-# routes/scibert_routes.py
 from fastapi import APIRouter
-from models.scibert import infer_scibert, validate_params, tokenize_text, model
-import torch
-from concurrent.futures import ThreadPoolExecutor
+from controllers import infer_text_controller, predict_controller, predict_batch_controller
 
-executor = ThreadPoolExecutor(max_workers=4)
+scibert_api = APIRouter()
 
 
-# Create a router for SciBERT
-router = APIRouter()
+@scibert_api.get("/infer")
+def infer_text_router(text: str):
+  return infer_text_controller(text)
 
-# Define SciBERT inference endpoint
-@router.post("/infer")
-async def infer_text(text: str):
-    result = infer_scibert(text)
-    return result
+@scibert_api.get("/predict")
+def predict_route(text: str):
+  return predict_controller(text)
 
-@router.post("/predict")
-def predict(text: str):
-    inputs = tokenize_text([text])
-    with torch.no_grad():
-        outputs = model(**inputs)
-    return {"embedding": outputs.last_hidden_state.tolist()}
-
-@router.post("/predict-batch")
-def predict_batch(texts: list):
-    results = list(executor.map(lambda text: predict(text), texts))
-    return {"results": results}
+@scibert_api.get("/predict-batch")
+def predict_batch_route(text: str):
+  return predict_batch_controller(text)
