@@ -19,7 +19,7 @@ const EducationAnalysisSetup = () => {
   const [yearRange, setYearRange] = useState([2019, 2024]);
   const [isDragging, setIsDragging] = useState(null);
   const [showTooltips, setShowTooltips] = useState([false, false]);
-  
+
   const sliderRef = useRef(null);
   const MIN_YEAR = 1900;
   const MAX_YEAR = 2024;

@@ -1,5 +1,7 @@
 # About
-Get papers from the API and filter using SciBERT using more specifications.
+Get papers from the API and filter using SciBERT using more specifications.  
+By: Kyle Huang
+
 ## Features
 * Semantic Scholar Integration
 * SciBERT

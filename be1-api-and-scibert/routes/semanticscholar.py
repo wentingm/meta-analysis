@@ -1,53 +1,24 @@
-"""
-Semantic Scholar Integration
+from fastapi import APIRouter
+from controllers.semanticscholar import search_papers_controller, screen_papers_controller, analyze_papers_controller, extract_papers_controller
 
-API endpoint: api.semanticscholar.org
-Rate limit: 100 requests/5min
-Key metadata:
+semantic_scholar_api = APIRouter()
 
-Title, authors, year
-Abstract
-Citations
-DOI
+@semantic_scholar_api.get("/testing")
+def testing():
+  return {"message": "success"}
 
-GET /api/papers
-- Search and filter papers
-- Pagination support
-- Basic sorting
+@semantic_scholar_api.get("/papers")
+def search_papers_route(query: str, year: str = None):
+  return search_papers_controller(query, year)
 
-POST /api/screen
-- Submit paper for screening
-- Receive screening results
-- Confidence scores
+@semantic_scholar_api.post("/screen")
+def screen_papers_route(inclusion: list = None, exclusion: list = None):
+  return screen_papers_controller(inclusion, exclusion)
 
-GET /api/analysis
-- Retrieve analysis results
-- Forest plot data
-- Basic statistics
+@semantic_scholar_api.get("/analysis")
+def analyze_papers_controller():
+  return analyze_papers_controller()
 
-POST /api/extract
-- Submit paper for data extraction
-- Receive extracted data
-- Validation results
-"""
-from fastapi import APIRouter, Query
-from fastapi.responses import Response, PlainTextResponse
-import requests
-from urllib.parse import urlparse, parse_qs, quote_plus
-
-
-router = APIRouter()
-
-@router.get("/papers/search")
-def search_papers(input: str = Query(..., description="Search query for papers")):
-    encoded_input = quote_plus(input)
-    fields = "title,authors,year"
-    api_url = f"https://api.semanticscholar.org/graph/v1/paper/search?query={encoded_input}&fields={fields}"
-    print("Requesting:", api_url)  # Debugging output
-    
-    response = requests.get(api_url)  # No need for `params`
-    
-    if response.status_code == 200:
-        return response.json()  # Return the actual response from Semantic Scholar API
-    else:
-        return {"error": "Failed to fetch papers", "status_code": response.status_code}
+@semantic_scholar_api.post("/extract")
+def extract_papers_controller():
+  return extract_papers_controller()
