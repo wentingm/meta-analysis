@@ -24,16 +24,6 @@ GET /api/papers
 Parameters
 query: what the user wants to search
 year: date range of the papers searched
-
-Fields returned:
-
-
-API call examples:
-1. http://127.0.0.1:8000/api/search?query=deep learning
-    query="deep learning"
-2. http://127.0.0.1:8000/api/search?query=deep learning&years=2017-2024
-    query="deep learning"
-    year="2017-2024"
 """
 def search_papers(api_uri, year: str = None):
     try:

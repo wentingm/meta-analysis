@@ -82,8 +82,9 @@ def build_semantic_scholar_url_ai(pop, inter, comp, outcome, keywords=None):
     """
     query = generate_semantic_scholar_query(pop, inter, comp, outcome, keywords)
     encoded_query = url_parser.quote(query)
+    fields = "title,authors,year,abstract,venue,openAccessPdf,influentialCitationCount,citations,references,referenceCount,publicationTypes,publicationDate,fieldsOfStudy,s2FieldsOfStudy,isOpenAccess,corpusId"
 
-    api_url = f"https://api.semanticscholar.org/graph/v1/paper/search?query={encoded_query}"
+    api_url = f"https://api.semanticscholar.org/graph/v1/paper/search?query={encoded_query}&fields={fields}"
     return api_url
 
 

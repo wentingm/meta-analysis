@@ -2,6 +2,8 @@ from services.scibert import infer_text
 from fastapi import HTTPException
 from utils.standard import extract_paper_data
 from data.scibert_config import config
+from utils.standard import extract_text_from_pico
+from models.pico_request import PICORequest, PICORequest2
 
 
 THRESHOLD = config["similarity_score_threshold"]
@@ -13,8 +15,13 @@ Parameters:
 Returns:
     text
 """
-def infer_text_controller(pico_sentence: str, paper_data: str, THRESHOLD=0.65):
-    paper_text = extract_paper_data(paper_data)
+def infer_text_controller(data: PICORequest):
+    if not isinstance(data.pico_dict, dict) or not data.pico_dict:
+        raise HTTPException(status_code=400, detail="pico_dict - Invalid input. Expected a JSON.")
+
+    pico_sentence = extract_text_from_pico(data.pico_dict)
+    paper_text = extract_paper_data(data.paper_data)
+
     return infer_text(pico_sentence, paper_text, THRESHOLD)
 
 
@@ -25,13 +32,17 @@ Parameters:
 Returns:
     List of texts
 """
-def infer_text_batch_controller(pico_sentence: str, paper_data_list: list):
-    if not isinstance(paper_data_list, list) or not paper_data_list:
-        raise HTTPException(status_code=400, detail="Invalid input. Expected a list of metadata JSONs or texts.")
+def infer_text_batch_controller(data: PICORequest2):
+    if not isinstance(data.paper_data_list, list) or not data.paper_data_list:
+        raise HTTPException(status_code=400, detail="paper_data_list - Invalid input. Expected a list of metadata JSONs or texts.")
+
+    if not isinstance(data.pico_dict, dict) or not data.pico_dict:
+        raise HTTPException(status_code=400, detail="pico_dict - Invalid input. Expected a JSON.")
 
     results = []
-    for paper_data in paper_data_list:
+    for paper_data in data.paper_data_list:
         try:
+            pico_sentence = extract_text_from_pico(data.pico_dict)
             paper_text = extract_paper_data(paper_data)
             results.append(infer_text_controller(pico_sentence, paper_text, THRESHOLD))
         except Exception as e:
