@@ -1,7 +1,7 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoModel
 import torch
-import torch.nn.functional as F
 from data.scibert_config import config
+from scipy.spatial.distance import cosine
 
 MODEL_NAME = config["huggingface_pretrained_nlp_model"]
 MAX_LENGTH = config["MAX_LENGTH"]
@@ -32,19 +32,30 @@ Parameters:
 Returns:
     torch.Tensor: SciBERT embeddings (vector representation of the paper).
 """
-def get_embeddings(text: str):
-    try:
-        inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=MAX_LENGTH)
-        inputs = {key: value.to(device) for key, value in inputs.items()}  # Move to GPU if available
+def generate_embeddings(text: str):
+    # Tokenize the text
+    inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=512).to(device)
+    
+    # Get the embeddings from SciBERT
+    with torch.no_grad():
+        outputs = model(**inputs)
+    
+    # Use the embeddings from the [CLS] token
+    embeddings = outputs.last_hidden_state[:, 0, :].squeeze()
+    return embeddings
 
-        with torch.no_grad():
-            outputs = embedding_model(**inputs)
 
-        return outputs.last_hidden_state.mean(dim=1)  # Average pooling
+"""
+Calculate the cosine similarity between two embeddings.
+Parameters:
+    embedding1: embedding
+    embedding2: embedding
+Returns:
+    int: cosine similarity value
+"""
+def calculate_cosine_similarity(embedding1, embedding2):
 
-    except Exception as e:
-        return {"error": str(e)}
-
+    return 1 - cosine(embedding1.cpu().numpy(), embedding2.cpu().numpy())
 
 """
 Tokenize input text using SciBERT tokenizer.
