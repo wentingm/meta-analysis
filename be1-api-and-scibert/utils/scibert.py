@@ -10,11 +10,13 @@ MAX_LENGTH = config["MAX_LENGTH"]
 # Load SciBERT model and tokenizer once during application startup
 tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
 
-# Load classification model (only if you have a fine-tuned checkpoint)
-try:
-    model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
-except:
-    print("Warning: The model is not fine-tuned for classification. Consider using a fine-tuned checkpoint.")
+model = AutoModel.from_pretrained(MODEL_NAME)
+
+# # Load classification model (only if you have a fine-tuned checkpoint)
+# try:
+#     model = AutoModelForSequenceClassification.from_pretrained(MODEL_NAME, num_labels=2)
+# except:
+#     print("Warning: The model is not fine-tuned for classification. Consider using a fine-tuned checkpoint.")
 
 # Load SciBERT for embeddings
 embedding_model = AutoModel.from_pretrained(MODEL_NAME)
@@ -33,16 +35,21 @@ Returns:
     torch.Tensor: SciBERT embeddings (vector representation of the paper).
 """
 def generate_embeddings(text: str):
+    if not isinstance(text, str) or not text.strip():  # Check for empty string
+        raise ValueError(f"Invalid input for tokenization: {repr(text)}")  
+
     # Tokenize the text
     inputs = tokenizer(text, return_tensors="pt", truncation=True, padding=True, max_length=512).to(device)
-    
-    # Get the embeddings from SciBERT
+
+    # Get embeddings from AutoModel (not AutoModelForSequenceClassification)
     with torch.no_grad():
-        outputs = model(**inputs)
-    
-    # Use the embeddings from the [CLS] token
+        outputs = embedding_model(**inputs)
+
+    # Extract CLS token embedding
     embeddings = outputs.last_hidden_state[:, 0, :].squeeze()
     return embeddings
+
+
 
 
 """

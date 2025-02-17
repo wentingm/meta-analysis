@@ -56,10 +56,15 @@ GET /papers?pop=K-12+students&inter=Intelligent+Tutoring+Systems&comp=Traditiona
 **Method**: `POST`  
 **Description**: This endpoint accepts a PICO sentence and paper data (abstract/full text) and returns a classification (Relevant/Not Relevant) and a similarity score.
 **Request Parameters:**
-- **pop** (str): The population in PICO (e.g., "K-12 students").  
-- **inter** (str): The intervention in PICO (e.g., "Intelligent Tutoring Systems").  
-- **comp** (str): The comparison in PICO (e.g., "Traditional Teaching Methods").  
-- **outcome** (str): The outcome in PICO (e.g., "Improvement in post-test or exam results").  
+- **pico_dict** (dict):
+```
+{
+  pop (str): The population in PICO (e.g., "K-12 students"),  
+  inter (str): The intervention in PICO (e.g., "Intelligent Tutoring Systems"),  
+  comp (str): The comparison in PICO (e.g., "Traditional Teaching Methods"),  
+  outcome (str): The outcome in PICO (e.g., "Improvement in post-test or exam results").  
+}
+```
 - **paper_data** (str): The text or metadata of the paper to classify (either plain text or JSON).
 - **THRESHOLD** (float, optional, default: 0.65): The similarity threshold for classifying papers as relevant or not.
 
@@ -92,10 +97,15 @@ GET /papers?pop=K-12+students&inter=Intelligent+Tutoring+Systems&comp=Traditiona
 **Method**: `POST` 
 **Description:** This endpoint accepts a list of papers and PICO information, and returns a list of classifications (Relevant/Not Relevant) and similarity scores for each paper.
 **Request Parameters:**
-- **pop** (str): The population in PICO (e.g., "K-12 students").  
-- **inter** (str): The intervention in PICO (e.g., "Intelligent Tutoring Systems").  
-- **comp** (str): The comparison in PICO (e.g., "Traditional Teaching Methods").  
-- **outcome** (str): The outcome in PICO (e.g., "Improvement in post-test or exam results").  
+- **pico_dict** (dict):
+```
+{
+  pop (str): The population in PICO (e.g., "K-12 students"),  
+  inter (str): The intervention in PICO (e.g., "Intelligent Tutoring Systems"),  
+  comp (str): The comparison in PICO (e.g., "Traditional Teaching Methods"),  
+  outcome (str): The outcome in PICO (e.g., "Improvement in post-test or exam results").  
+}
+```
 - **data_list** (list): A list of paper data (abstracts or full text).
 - **THRESHOLD** (float, optional, default: 0.65): The similarity threshold for classifying papers as relevant or not.
 
