@@ -35,12 +35,8 @@ API call examples:
     query="deep learning"
     year="2017-2024"
 """
-def search_papers(query: str, year: str = None):
+def search_papers(api_uri, year: str = None):
     try:
-        encoded_query = quote_plus(query)
-        fields = "title,authors,year,abstract,venue,openAccessPdf,influentialCitationCount,citations,references,referenceCount,publicationTypes,publicationDate,fieldsOfStudy,s2FieldsOfStudy,isOpenAccess,corpusId"
-        api_uri = f"https://api.semanticscholar.org/graph/v1/paper/search?query={encoded_query}&fields={fields}"
-
         if year:
             api_uri += f"&year={year}"
 

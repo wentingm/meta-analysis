@@ -1,50 +1,37 @@
-# models/scibert.py
-from transformers import AutoTokenizer, AutoModel
-import torch
+from utils.scibert import model, device, tokenize_text, torch, F
 
-# Load SciBERT model and tokenizer once during application startup
-MODEL_NAME = "allenai/scibert_scivocab_uncased"
-BATCH_SIZE = 8
-MAX_LENGTH = 512
-tokenizer = AutoTokenizer.from_pretrained(MODEL_NAME)
-model = AutoModel.from_pretrained(MODEL_NAME)
 
-# Move model to GPU if available (optional)
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-model.to(device)
-
-def infer_scibert(text: str):
+"""
+Perform inference to classify a paper (Relevant/Not Relevant).
+Parameters:
+    text (str): The input text (abstract/full text).
+Returns:
+    dict: Classification result (Relevant/Not Relevant) with confidence scores.
+"""
+def infer_text(text: str):
     try:
-        # Tokenize the input text
         inputs = tokenize_text(text)
 
         # Move input tensors to the same device as the model
         inputs = {key: value.to(device) for key, value in inputs.items()}
 
-        # Perform inference without updating gradients
         with torch.no_grad():
             outputs = model(**inputs)
 
-        # Get the class with the highest score (argmax)
-        prediction = outputs.logits.argmax().item()
+        # Get the logits (raw scores)
+        logits = outputs.logits
 
-        return {"prediction": prediction}
+        # Apply softmax to get probabilities
+        probs = F.softmax(logits, dim=-1)
+
+        # Get the predicted class (0 = Not Relevant, 1 = Relevant)
+        prediction = torch.argmax(probs, dim=-1).item()
+        confidence = probs[0, prediction].item()
+
+        return {
+            "prediction": "Relevant" if prediction == 1 else "Not Relevant",
+            "confidence": round(confidence, 4),
+        }
 
     except Exception as e:
         return {"error": str(e)}
-
-def validate_params(batch_size, max_length):
-    assert batch_size > 0, "Batch size must be positive"
-    assert 0 < max_length <= 512, "Sequence length must be between 1 and 512"
-
-def tokenize_text(texts):
-    return tokenizer(
-        texts, 
-        padding="max_length", 
-        truncation=True, 
-        max_length=MAX_LENGTH, 
-        return_tensors="pt"
-    )
-
-
-validate_params(BATCH_SIZE, MAX_LENGTH)

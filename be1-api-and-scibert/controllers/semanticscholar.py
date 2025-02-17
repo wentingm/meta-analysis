@@ -1,16 +1,23 @@
 from fastapi import APIRouter, HTTPException, Query
 from fastapi.responses import Response, PlainTextResponse
 from services.semanticscholar import search_papers
-# from models import screen_papers, analyze_papers, extract_papers
+from utils.standard import build_semantic_scholar_url # manually creates search query
+from services.openai import build_semantic_scholar_url_ai # AI-created search query
 
 
 """
+Search using Scholarly Semantic API based on PICO, year, and additional keywords
 Parameters
-query: what the user wants to search
-year: date range of the papers searched
+    pop, inter, comp, outcome: Population Intervention Comparison Outcome (PICO)
+    year: date range of the papers searched
+    add_keywords: additional keywords
 """
-def search_papers_controller(query: str, year: str = None):
-    # Search using Scholarly Semantic API based on query and year 
+def search_papers_controller(pop, inter, comp, outcome, year: str = None, add_keywords = None):
+    query = build_semantic_scholar_url(pop, inter, comp, outcome, add_keywords)
+
+    if not query:
+        raise HTTPException(status_code=400, detail="Invalid input. Expected JSON or string.")        
+
     try:
         return search_papers(query, year)
     except Exception as e:

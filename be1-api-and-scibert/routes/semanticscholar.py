@@ -1,15 +1,18 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, Query
 from controllers.semanticscholar import search_papers_controller, screen_papers_controller, analyze_papers_controller, extract_papers_controller
 
 semantic_scholar_api = APIRouter()
 
-@semantic_scholar_api.get("/testing")
-def testing():
-  return {"message": "success"}
-
 @semantic_scholar_api.get("/papers")
-def search_papers_route(query: str, year: str = None):
-  return search_papers_controller(query, year)
+def search_papers_route(
+    pop: str = Query(..., description="Population (PICO)"),
+    inter: str = Query(..., description="Intervention (PICO)"),
+    comp: str = Query(..., description="Comparison (PICO)"),
+    outcome: str = Query(..., description="Outcome (PICO)"),
+    year: str = Query(None, description="Year range (optional)"),
+    add_keywords: str = Query(None, description="Additional keywords (optional)"),
+):
+  return search_papers_controller(pop, inter, comp, outcome, year, add_keywords)
 
 @semantic_scholar_api.post("/screen")
 def screen_papers_route(inclusion: list = None, exclusion: list = None):
