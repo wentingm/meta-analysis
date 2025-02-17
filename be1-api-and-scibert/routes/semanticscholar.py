@@ -3,6 +3,7 @@ from controllers.semanticscholar import search_papers_controller, screen_papers_
 
 semantic_scholar_api = APIRouter()
 
+# Search for papers using PICO
 @semantic_scholar_api.get("/papers")
 def search_papers_route(
     pop: str = Query(..., description="Population (PICO)"),

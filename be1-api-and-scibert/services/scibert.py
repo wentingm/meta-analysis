@@ -1,37 +1,28 @@
-from utils.scibert import model, device, tokenize_text, torch, F
+from utils.scibert import generate_embeddings, calculate_cosine_similarity
 
 
 """
-Perform inference to classify a paper (Relevant/Not Relevant).
+Classifies the paper based on the cosine similarity between the PICO sentence and paper text.
 Parameters:
-    text (str): The input text (abstract/full text).
+    pico_sentence (str): The PICO sentence to compare with the paper.
+    paper_text (str): The text of the paper (abstract or full text).
+    threshold (float): The similarity threshold for classification.
 Returns:
-    dict: Classification result (Relevant/Not Relevant) with confidence scores.
+    dict: Classification result with similarity score.
 """
-def infer_text(text: str):
-    try:
-        inputs = tokenize_text(text)
+def infer_text(pico_sentence: str, paper_text: str, threshold=0.65):
 
-        # Move input tensors to the same device as the model
-        inputs = {key: value.to(device) for key, value in inputs.items()}
-
-        with torch.no_grad():
-            outputs = model(**inputs)
-
-        # Get the logits (raw scores)
-        logits = outputs.logits
-
-        # Apply softmax to get probabilities
-        probs = F.softmax(logits, dim=-1)
-
-        # Get the predicted class (0 = Not Relevant, 1 = Relevant)
-        prediction = torch.argmax(probs, dim=-1).item()
-        confidence = probs[0, prediction].item()
-
-        return {
-            "prediction": "Relevant" if prediction == 1 else "Not Relevant",
-            "confidence": round(confidence, 4),
-        }
-
-    except Exception as e:
-        return {"error": str(e)}
+    # Generate embeddings for the PICO sentence and paper text
+    pico_embedding = generate_embeddings(pico_sentence)
+    paper_embedding = generate_embeddings(paper_text)
+    
+    # Calculate the cosine similarity
+    similarity = calculate_cosine_similarity(pico_embedding, paper_embedding)
+    
+    # Classify based on threshold
+    prediction = "Relevant" if similarity >= threshold else "Not Relevant"
+    
+    return {
+        "prediction": prediction,
+        "similarity_score": round(similarity, 4),
+    }
