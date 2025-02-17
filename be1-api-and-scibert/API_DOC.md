@@ -72,10 +72,12 @@ GET /papers?pop=K-12+students&inter=Intelligent+Tutoring+Systems&comp=Traditiona
 
 ```json
 {
-  "pop": "K-12 students",
-  "inter": "Intelligent Tutoring Systems",
-  "comp": "Traditional Teaching Methods",
-  "outcome": "Improvement in post-test results",
+  "data": {
+    "pop": "K-12 students",
+    "inter": "Intelligent Tutoring Systems",
+    "comp": "Traditional Teaching Methods",
+    "outcome": "Improvement in post-test results",
+  },
   "paper_data": "This paper investigates the impact of Intelligent Tutoring Systems on K-12 student performance in math and science.",
   "THRESHOLD": 0.75
 }
@@ -113,10 +115,12 @@ GET /papers?pop=K-12+students&inter=Intelligent+Tutoring+Systems&comp=Traditiona
 
 ```json
 {
-  "pop": "K-12 students",
-  "inter": "Intelligent Tutoring Systems",
-  "comp": "Traditional Teaching Methods",
-  "outcome": "Improvement in post-test results",
+  "data": {
+    "pop": "K-12 students",
+    "inter": "Intelligent Tutoring Systems",
+    "comp": "Traditional Teaching Methods",
+    "outcome": "Improvement in post-test results",
+  },
   "data_list": [
     "This paper explores the impact of Intelligent Tutoring Systems on K-12 students.",
     "A study on the effectiveness of traditional teaching methods in primary education."
