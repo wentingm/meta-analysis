@@ -1,13 +1,24 @@
+aiohappyeyeballs==2.4.6
+aiohttp==3.11.12
+aiosignal==1.3.2
 anaconda-anon-usage @ file:///croot/anaconda-anon-usage_1710965072196/work
 anaconda-client @ file:///croot/anaconda-client_1708640631824/work
 anaconda-cloud-auth @ file:///croot/anaconda-cloud-auth_1713991386423/work
 anaconda-navigator @ file:///croot/anaconda-navigator_1721727695300/work
 annotated-types==0.7.0
 anyio==4.8.0
+argon2-cffi==23.1.0
+argon2-cffi-bindings==21.2.0
+arrow==1.3.0
 asttokens==2.4.1
+async-lru==2.0.4
+async-timeout==5.0.1
 attrs @ file:///croot/attrs_1695717823297/work
 autocommand==2.2.2
+babel==2.17.0
 backports.tarfile==1.2.0
+beautifulsoup4==4.13.3
+bleach==6.2.0
 blinker==1.8.2
 boltons @ file:///croot/boltons_1677628692245/work
 Brotli @ file:///croot/brotli-split_1714483155106/work
@@ -25,9 +36,11 @@ conda-repo-cli @ file:///croot/conda-repo-cli_1709246574569/work
 conda-token @ file:///croot/conda-token_1718995751285/work
 conda_package_streaming @ file:///croot/conda-package-streaming_1718136078615/work
 cryptography @ file:///croot/cryptography_1694444244250/work
+datasets==3.3.0
 debugpy==1.8.5
 decorator==5.1.1
 defusedxml @ file:///tmp/build/80754af9/defusedxml_1615228127516/work
+dill==0.3.8
 distro==1.9.0
 dnspython==2.7.0
 email_validator==2.2.0
@@ -37,7 +50,9 @@ fastapi==0.115.8
 fastapi-cli==0.0.7
 fastjsonschema @ file:///opt/conda/conda-bld/python-fastjsonschema_1661371079312/work
 filelock==3.17.0
-fsspec==2025.2.0
+fqdn==1.5.1
+frozenlist==1.5.0
+fsspec==2024.12.0
 googleapis-common-protos==1.65.0
 greenlet==3.1.1
 grpcio==1.65.5
@@ -54,6 +69,7 @@ iniconfig==2.0.0
 ipykernel==6.29.5
 ipython==8.27.0
 ipywidgets==8.1.3
+isoduration==20.11.0
 itsdangerous==2.2.0
 jaraco.classes @ file:///tmp/build/80754af9/jaraco.classes_1620983179379/work
 jaraco.context==6.0.1
@@ -62,12 +78,24 @@ jaraco.text==3.12.1
 jedi==0.19.1
 jeepney @ file:///tmp/build/80754af9/jeepney_1627537048313/work
 Jinja2==3.1.5
+jiter==0.8.2
+joblib==1.4.2
+json5==0.10.0
 jsonpatch @ file:///croot/jsonpatch_1714483231291/work
 jsonpointer==2.1
 jsonschema @ file:///croot/jsonschema_1699041609003/work
 jsonschema-specifications @ file:///croot/jsonschema-specifications_1699032386549/work
+jupyter==1.1.1
+jupyter-console==6.6.3
+jupyter-events==0.12.0
+jupyter-lsp==2.2.5
 jupyter_client==8.6.2
 jupyter_core==5.7.2
+jupyter_server==2.15.0
+jupyter_server_terminals==0.5.3
+jupyterlab==4.3.5
+jupyterlab_pygments==0.3.0
+jupyterlab_server==2.27.3
 jupyterlab_widgets==3.0.13
 keyring @ file:///croot/keyring_1709632513808/work
 libmambapy @ file:///croot/mamba-split_1694187754698/work/libmambapy
@@ -77,12 +105,19 @@ MarkupSafe==3.0.2
 matplotlib-inline==0.1.7
 mdurl==0.1.2
 menuinst @ file:///croot/menuinst_1723567589013/work
+mistune==3.1.1
 more-itertools @ file:///croot/more-itertools_1700662129964/work
 mpmath==1.3.0
+multidict==6.1.0
+multiprocess==0.70.16
 navigator-updater @ file:///croot/navigator-updater_1718030385782/work
+nbclient==0.10.2
+nbconvert==7.16.6
 nbformat @ file:///croot/nbformat_1694616755618/work
 nest-asyncio==1.6.0
 networkx==3.4.2
+notebook==7.3.2
+notebook_shim==0.2.4
 numpy==2.2.2
 nvidia-cublas-cu12==12.1.3.1
 nvidia-cuda-cupti-cu12==12.1.105
@@ -97,9 +132,12 @@ nvidia-cusparselt-cu12==0.6.2
 nvidia-nccl-cu12==2.20.5
 nvidia-nvjitlink-cu12==12.4.127
 nvidia-nvtx-cu12==12.1.105
-openai==1.37.0
+openai==1.63.0
 ordered-set==4.1.0
+overrides==7.7.0
 packaging==24.2
+pandas==2.2.3
+pandocfilters==1.5.1
 parso==0.8.4
 pexpect==4.9.0
 pillow==10.3.0
@@ -112,12 +150,15 @@ platformdirs==4.2.2
 playwright==1.50.0
 pluggy==1.5.0
 ply==3.11
+prometheus_client==0.21.1
 prompt_toolkit==3.0.47
+propcache==0.2.1
 protobuf==5.28.0
 protoc-gen-openapiv2==0.0.1
 psutil==6.0.0
 ptyprocess==0.7.0
 pure_eval==0.2.3
+pyarrow==19.0.0
 pycosat @ file:///croot/pycosat_1714510623388/work
 pycparser @ file:///tmp/build/80754af9/pycparser_1636541352034/work
 pydantic==2.10.6
@@ -135,6 +176,7 @@ pytest-base-url==2.1.0
 pytest-playwright==0.5.1
 python-dateutil==2.9.0.post0
 python-dotenv==1.0.1
+python-json-logger==3.2.1
 python-multipart==0.0.20
 python-slugify==8.0.4
 pytz @ file:///croot/pytz_1713974312559/work
@@ -145,22 +187,31 @@ referencing @ file:///croot/referencing_1699012038513/work
 regex==2024.11.6
 requests==2.32.3
 requests-toolbelt @ file:///croot/requests-toolbelt_1690874004362/work
+rfc3339-validator==0.1.4
+rfc3986-validator==0.1.1
 rich==13.9.4
 rich-toolkit==0.13.2
 rpds-py @ file:///croot/rpds-py_1698945930462/work
 ruamel.yaml @ file:///croot/ruamel.yaml_1666304550667/work
 ruamel.yaml.clib @ file:///croot/ruamel.yaml.clib_1666302247304/work
 safetensors==0.5.2
+scikit-learn==1.6.1
+scipy==1.15.1
 SecretStorage @ file:///croot/secretstorage_1678709481048/work
 semver @ file:///croot/semver_1709243621175/work
+Send2Trash==1.8.3
 shellingham==1.5.4
 sip @ file:///croot/sip_1698675935381/work
 six @ file:///tmp/build/80754af9/six_1644875935023/work
 sniffio==1.3.1
+soupsieve==2.6
 stack-data==0.6.3
 starlette==0.45.3
 sympy==1.13.1
+terminado==0.18.1
 text-unidecode==1.3
+threadpoolctl==3.5.0
+tinycss2==1.4.0
 tokenizers==0.21.0
 tomli==2.0.1
 torch==2.3.1
@@ -174,16 +225,23 @@ triton==2.3.1
 truststore @ file:///croot/truststore_1695244293384/work
 typeguard==4.3.0
 typer==0.15.1
+types-python-dateutil==2.9.0.20241206
 typing_extensions==4.12.2
 tzdata==2024.1
 ujson @ file:///croot/ujson_1717597529825/work
+uri-template==1.3.0
 urllib3==2.3.0
 uvicorn==0.34.0
 uvloop==0.21.0
 watchfiles==1.0.4
 wcwidth==0.2.13
+webcolors==24.11.1
+webencodings==0.5.1
+websocket-client==1.8.0
 websockets==14.2
 Werkzeug==3.0.3
 widgetsnbextension==4.0.13
+xxhash==3.5.0
+yarl==1.18.3
 zipp @ file:///croot/zipp_1704206909481/work
 zstandard @ file:///croot/zstandard_1714677652653/work
