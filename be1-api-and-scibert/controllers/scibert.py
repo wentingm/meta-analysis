@@ -1,29 +1,66 @@
-# routes/scibert_routes.py
-from fastapi import APIRouter
-from models.scibert import infer_scibert, validate_params, tokenize_text, model
-import torch
-from concurrent.futures import ThreadPoolExecutor
-
-executor = ThreadPoolExecutor(max_workers=4)
+from services.scibert import infer_text
+from fastapi import HTTPException
+from utils.standard import extract_text_from_dict
+from utils.scibert import get_embeddings
 
 
-# Create a router for SciBERT
-router = APIRouter()
+"""
+Classifies scientific papers based on metadata or plain text.
+Args:
+    data: string or JSON
+Returns:
+    text
+"""
+def infer_text_controller(data):
+    if isinstance(data, dict):  # Metadata JSON
+        text = extract_text_from_dict(data)
+    elif isinstance(data, str):  # Plain text
+        text = data
+    else:
+        raise HTTPException(status_code=400, detail="Invalid input. Expected JSON or string.")
 
-# Define SciBERT inference endpoint
-@router.post("/infer")
-async def infer_text_controller(text: str):
-    result = infer_scibert(text)
-    return result
+    if not text:
+        raise HTTPException(status_code=400, detail="No valid text found in metadata.")
 
-@router.post("/predict")
-def predict_controller(text: str):
-    inputs = tokenize_text([text])
-    with torch.no_grad():
-        outputs = model(**inputs)
-    return {"embedding": outputs.last_hidden_state.tolist()}
+    return infer_text(text)
 
-@router.post("/predict-batch")
-def predict_batch_controller(texts: list):
-    results = list(executor.map(lambda text: predict(text), texts))
-    return {"results": results}
+
+"""
+Generates SciBERT embeddings from metadata or plain text.
+Args:
+    data: string or JSON
+Returns:
+    text
+"""
+def get_embeddings_controller(data):
+    if isinstance(data, dict):  # Metadata JSON
+        text = extract_text_from_dict(data)
+    elif isinstance(data, str):  # Plain text
+        text = data
+    else:
+        raise HTTPException(status_code=400, detail="Invalid input. Expected JSON or string.")
+
+    if not text:
+        raise HTTPException(status_code=400, detail="No valid text found in metadata.")
+
+    return get_embeddings(text).tolist()
+
+"""
+Processes multiple metadata JSONs in batch mode.
+Args:
+    List[data]: List of strings/JSONs
+Returns:
+    List of texts
+"""
+def infer_text_batch_controller(data_list: list):
+    if not isinstance(data_list, list) or not data_list:
+        raise HTTPException(status_code=400, detail="Invalid input. Expected a list of metadata JSONs.")
+
+    results = []
+    for data in data_list:
+        try:
+            results.append(infer_text_controller(data))
+        except Exception as e:
+            results.append({"error": str(e)})
+
+    return results
