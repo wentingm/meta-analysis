@@ -1,0 +1,18 @@
+[project]
+name = "meta-analysis"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Mason Wong",email = "masonjw1@uci.edu"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi (>=0.115.8,<0.116.0)",
+    "pytest (>=8.3.4,<9.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
