@@ -1,7 +1,8 @@
 from sentence_transformers import SentenceTransformer, util
+from data.scibert_config import config
 
 # Load pre-trained Sentence-BERT model
-model = SentenceTransformer('all-MiniLM-L6-v2')
+model = SentenceTransformer(config["huggingface_pretrained_nlp_model"])
 
 """
 Classifies the paper based on the cosine similarity between the PICO sentence and paper text.
@@ -16,26 +17,15 @@ def infer_text(pico_sentence: str, paper_text: str, threshold=0.65):
     # Generate embeddings for the PICO sentence and paper text
     pico_embedding = model.encode(pico_sentence, convert_to_tensor=True)
     paper_embedding = model.encode(paper_text, convert_to_tensor=True)
-    
-    # Debug: Check if embeddings are generated
-    print(f"PICO embedding: {pico_embedding[:5]}...")  # Print first few elements
-    print(f"Paper embedding: {paper_embedding[:5]}...")  # Print first few elements
 
     # Calculate the cosine similarity
     similarity_score = util.pytorch_cos_sim(pico_embedding, paper_embedding)
-    
-    # Debug: Check the similarity score tensor
-    print(f"Similarity score tensor: {similarity_score}")
 
     if similarity_score is None or similarity_score.size() == (0, 0):
-        print("Error: Similarity score is empty!")
         return {}
 
     similarity_score_float = similarity_score.item()  # Convert tensor to float
     similarity_score_formatted = round(similarity_score_float, 4)  # Round to 4 decimal places
-    
-    # Debug: Print the similarity score
-    print(f"Similarity score (float): {similarity_score_formatted}")
 
     # Classify based on threshold
     binary_result = 1 if similarity_score_formatted >= threshold else 0
