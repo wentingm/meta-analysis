@@ -1,30 +1,33 @@
-name: Backend CI Pipeline
+name: Backend CI/CD Pipeline
+
 on:
   push:
     branches:
-      - be3  # Runs the workflow when code is pushed to the be3 branch
-  pull_request:
-    branches:
-      - main  # Also runs when a PR is made to merge branch into main
+      - be3 
+
 jobs:
-  build:
-    runs-on: ubuntu-latest  # The workflow runs in an Ubuntu virtual machine
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3  # Pulls the latest code from the repo
-      - name: Set up Python
-        uses: actions/setup-python@v3  # Installs Python on the runner
-        with:
-          python-version: "3.11"  # Specifies the Python version to use
-      - name: Install dependencies
-        run: |
-          cd backend
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          pip install pytest
-      - name: Run tests
-        run: |
-          cd backend
-          python -m pytest
+        uses: actions/checkout@v3
 
-# testing
+      - name: Log in to Azure
+        uses: azure/login@v1
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
+      - name: Log in to Azure Container Registry
+        run: az acr login --name metaanalysisacr
+
+      - name: Build and Push Docker Image
+        run: |
+          docker build -t metaanalysisacr.azurecr.io/backend:latest backend/
+          docker push metaanalysisacr.azurecr.io/backend:latest
+
+      - name: Deploy to Azure App Service
+        run: |
+          az webapp config container set --name meta-analysis-backend \
+          --resource-group meta-analysis-resource-group \
+          --docker-custom-image-name metaanalysisacr.azurecr.io/backend:latest
