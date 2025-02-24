@@ -1,6 +1,6 @@
 from transformers import AutoTokenizer, AutoModelForSequenceClassification, AutoModel
 import torch
-from data.scibert_config import config
+from data.bert_config import config
 from scipy.spatial.distance import cosine
 
 MODEL_NAME = config["huggingface_pretrained_nlp_model"]

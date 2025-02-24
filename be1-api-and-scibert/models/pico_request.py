@@ -9,5 +9,5 @@ class PICORequest(BaseModel):
 
 class PICORequest2(BaseModel):
     pico_dict: dict
-    data_list: List[Union[dict, str]]  # List of papers (dict or str)
+    paper_data_list: List[Union[dict, str]]  # List of papers (dict or str)
     THRESHOLD: float = 0.65

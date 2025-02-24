@@ -1,6 +1,6 @@
 import uvicorn # Running server
 from fastapi import FastAPI # Web framework
-from routes.scibert import scibert_api
+from routes.bert import bert_api
 from routes.semanticscholar import semantic_scholar_api
 from dotenv import load_dotenv
 import os
@@ -9,7 +9,7 @@ load_dotenv() # load env variables
 app = FastAPI() # Web Framework for building APIs
 
 # Include routes
-app.include_router(scibert_api, prefix="/api")
+app.include_router(bert_api, prefix="/api")
 app.include_router(semantic_scholar_api, prefix="/api")
 
 # Test server if it's running

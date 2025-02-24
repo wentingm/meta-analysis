@@ -7,7 +7,7 @@ By: Kyle Huang
 * SciBERT
 
 ## Instructions (Linux)
-1. **Use python virtual environment:** ```python -m venv env```
+1. **Use python virtual environment:** ```python -m venv venv```
 2. **Activate virtual environment:** ```source env/bin/activate```
 3. **Install Dependencies:** ```pip install -r requirements.txt```
 4. **Run Application:**
