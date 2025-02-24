@@ -3,7 +3,7 @@ name: Backend CI/CD Pipeline
 on:
   push:
     branches:
-      - be3 
+      - main  
 
 jobs:
   build-and-deploy:
@@ -26,8 +26,6 @@ jobs:
           docker build -t metaanalysisacr.azurecr.io/backend:latest backend/
           docker push metaanalysisacr.azurecr.io/backend:latest
 
-      - name: Deploy to Azure App Service
+      - name: Restart Web App to Apply New Image
         run: |
-          az webapp config container set --name meta-analysis-backend \
-          --resource-group meta-analysis-resource-group \
-          --docker-custom-image-name metaanalysisacr.azurecr.io/backend:latest
+          az webapp restart --name meta-analysis-backend --resource-group meta-analysis-resource-group
