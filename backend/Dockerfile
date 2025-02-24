@@ -1,17 +1,26 @@
-# Use a Python base image
+# Use an official Python runtime as a base image
 FROM python:3.11
 
-# Set the working directory
+# Set the working directory inside the container
 WORKDIR /app
 
-# Copy project files
+# Install necessary system dependencies (for pyodbc & database drivers)
+RUN apt-get update && apt-get install -y \
+    unixodbc \
+    unixodbc-dev \
+    odbcinst \
+    libodbc1 \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy project files into the container
 COPY . /app
 
-# Install dependencies
-RUN pip install --no-cache-dir -r requirements.txt
+# Upgrade pip and install dependencies
+RUN pip install --no-cache-dir --upgrade pip \
+    && pip install --no-cache-dir -r requirements.txt
 
 # Expose the port Flask runs on
 EXPOSE 5000
 
-# Run the application
-CMD ["python", "app.py"]
+# Run the Flask app using Gunicorn (recommended for production)
+CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
