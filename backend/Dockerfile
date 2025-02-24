@@ -10,6 +10,7 @@ RUN apt-get update && apt-get install -y \
     unixodbc-dev \
     odbcinst \
     libodbc1 \
+    libodbc2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Copy project files into the container
@@ -22,5 +23,9 @@ RUN pip install --no-cache-dir --upgrade pip \
 # Expose the port Flask runs on
 EXPOSE 5000
 
-# Run the Flask app using Gunicorn (recommended for production)
+# Set environment variables (optional)
+ENV FLASK_APP=app.py
+ENV FLASK_ENV=production
+
+# Run the Flask app using Gunicorn
 CMD ["gunicorn", "-b", "0.0.0.0:5000", "app:app"]
