@@ -29,3 +29,5 @@ jobs:
       - name: Restart Web App to Apply New Image
         run: |
           az webapp restart --name meta-analysis-backend --resource-group meta-analysis-resource-group
+
+          
