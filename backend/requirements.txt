@@ -16,3 +16,4 @@ python-dotenv==1.0.0       # To manage environment variables from a .env file
 PyPDF2==3.0.1              # To handle PDF processing
 pyodbc==4.0.39             # To connect to the Azure SQL Database using ODBC
 gunicorn
+pandas
