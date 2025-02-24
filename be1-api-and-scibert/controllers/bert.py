@@ -1,7 +1,7 @@
-from services.scibert import infer_text
+from services.bert import predict_text
 from fastapi import HTTPException
 from utils.standard import extract_paper_data
-from data.scibert_config import config
+from data.bert_config import config
 from utils.standard import extract_text_from_pico
 from models.pico_request import PICORequest, PICORequest2
 
@@ -15,14 +15,14 @@ Parameters:
 Returns:
     text
 """
-def infer_text_controller(data: PICORequest):
+def predict_text_controller(data: PICORequest):
     if not isinstance(data.pico_dict, dict) or not data.pico_dict:
         raise HTTPException(status_code=400, detail="pico_dict - Invalid input. Expected a JSON.")
 
     pico_sentence = extract_text_from_pico(data.pico_dict)
     paper_text = extract_paper_data(data.paper_data)
 
-    return infer_text(pico_sentence, paper_text, THRESHOLD)
+    return predict_text(pico_sentence, paper_text, THRESHOLD)
 
 
 """
@@ -32,7 +32,7 @@ Parameters:
 Returns:
     List of texts
 """
-def infer_text_batch_controller(data: PICORequest2):
+def predict_text_batch_controller(data: PICORequest2):
     if not isinstance(data.paper_data_list, list) or not data.paper_data_list:
         raise HTTPException(status_code=400, detail="paper_data_list - Invalid input. Expected a list of metadata JSONs or texts.")
 
@@ -44,7 +44,7 @@ def infer_text_batch_controller(data: PICORequest2):
         try:
             pico_sentence = extract_text_from_pico(data.pico_dict)
             paper_text = extract_paper_data(paper_data)
-            results.append(infer_text_controller(pico_sentence, paper_text, THRESHOLD))
+            results.append(predict_text(pico_sentence, paper_text, THRESHOLD))
         except Exception as e:
             results.append({"error": str(e)})
 

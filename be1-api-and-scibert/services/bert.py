@@ -1,5 +1,5 @@
 from sentence_transformers import SentenceTransformer, util
-from data.scibert_config import config
+from data.bert_config import config
 
 # Load pre-trained Sentence-BERT model
 model = SentenceTransformer(config["huggingface_pretrained_nlp_model"])
@@ -13,7 +13,7 @@ Parameters:
 Returns:
     dict: Classification result with similarity score.
 """
-def infer_text(pico_sentence: str, paper_text: str, threshold=0.65):
+def predict_text(pico_sentence: str, paper_text: str, threshold=0.65):
     # Generate embeddings for the PICO sentence and paper text
     pico_embedding = model.encode(pico_sentence, convert_to_tensor=True)
     paper_embedding = model.encode(paper_text, convert_to_tensor=True)
@@ -56,7 +56,7 @@ def infer_text(pico_sentence: str, paper_text: str, threshold=0.65):
 # Returns:
 #     dict: Classification result with similarity score.
 # """
-# def infer_text(pico_sentence: str, paper_text: str, threshold=0.65):
+# def predict_text(pico_sentence: str, paper_text: str, threshold=0.65):
 #     # Generate embeddings for the PICO sentence and paper text
 #     pico_embedding = generate_embeddings(pico_sentence)
 #     paper_embedding = generate_embeddings(paper_text)

@@ -52,7 +52,7 @@ GET /papers?pop=K-12+students&inter=Intelligent+Tutoring+Systems&comp=Traditiona
 
 ---
 
-**Endpoint**: `/infer`  
+**Endpoint**: `/predict`  
 **Method**: `POST`  
 **Description**: This endpoint accepts a PICO sentence and paper data (abstract/full text) and returns a classification (Relevant/Not Relevant) and a similarity score.
 **Request Parameters:**
@@ -95,7 +95,7 @@ GET /papers?pop=K-12+students&inter=Intelligent+Tutoring+Systems&comp=Traditiona
 
 ---
 
-**Endpoint**: `/infer-batch`  
+**Endpoint**: `/predict-batch`  
 **Method**: `POST` 
 **Description:** This endpoint accepts a list of papers and PICO information, and returns a list of classifications (Relevant/Not Relevant) and similarity scores for each paper.
 **Request Parameters:**
