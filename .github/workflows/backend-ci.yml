@@ -3,7 +3,7 @@ name: Backend CI/CD Pipeline
 on:
   push:
     branches:
-      - main  
+      - be3
 
 jobs:
   build-and-deploy:
@@ -30,4 +30,3 @@ jobs:
         run: |
           az webapp restart --name meta-analysis-backend --resource-group meta-analysis-resource-group
 
-          
