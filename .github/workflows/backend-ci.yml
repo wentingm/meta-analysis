@@ -13,6 +13,23 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up Python
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          cd backend
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+
+      - name: Run tests with pytest
+        run: |
+          cd backend
+          python -m pytest
+
       - name: Log in to Azure
         uses: azure/login@v1
         with:
@@ -29,4 +46,3 @@ jobs:
       - name: Restart Web App to Apply New Image
         run: |
           az webapp restart --name meta-analysis-backend --resource-group meta-analysis-resource-group
-
