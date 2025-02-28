@@ -12,14 +12,14 @@ Parameters
     year: date range of the papers searched
     add_keywords: additional keywords
 """
-def search_papers_controller(pop, inter, comp, outcome, year: str = None, add_keywords = None):
-    query = build_semantic_scholar_url(pop, inter, comp, outcome, add_keywords)
+def search_papers_controller(pop, inter, comp, outcome, add_keywords = None, year: str = None):
+    api_url = build_semantic_scholar_url(pop, inter, comp, outcome, add_keywords, year)
 
-    if not query:
+    if not api_url:
         raise HTTPException(status_code=400, detail="Invalid input. Expected JSON or string.")        
 
     try:
-        return search_papers(query, year)
+        return search_papers(api_url)
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

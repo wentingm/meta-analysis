@@ -25,11 +25,8 @@ Parameters
 query: what the user wants to search
 year: date range of the papers searched
 """
-def search_papers(api_uri, year: str = None):
+def search_papers(api_uri):
     try:
-        if year:
-            api_uri += f"&year={year}"
-
         response = requests.get(api_uri, timeout=10)
 
         if response.status_code == 200:
