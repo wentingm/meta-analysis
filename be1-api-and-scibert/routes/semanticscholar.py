@@ -17,7 +17,7 @@ def search_papers_route(
 
 @semantic_scholar_api.post("/screen")
 def screen_papers_route(inclusion: list = None, exclusion: list = None):
-  return screen_papers_controller(inclusion, exclusion)
+  return screen_papers_controller(criteria)
 
 @semantic_scholar_api.get("/analysis")
 def analyze_papers_controller():
