@@ -33,7 +33,7 @@ def screen_papers_controller(inclusion: list = None, exclusion: list = None):
     # if not isinstance(inclusion, list) or not isinstance(exclusion, list):
     #     raise HTTPException(status_code=400, detail="Invalid input format. Must be lists.")
     
-    # result = screen_papers_model(inclusion, exclusion)
+    # result = screen_papers_model(criteria)
     # return result
     return {"error": 500}
 
