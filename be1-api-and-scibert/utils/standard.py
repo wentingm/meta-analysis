@@ -36,7 +36,6 @@ def extract_text_from_paper_metadata(paper_metadata: dict | PaperMetadata) -> st
     return f"{title}. {abstract}. {keywords}"
 
 
-
 """
 Form a text from PICO dict.
 Parameters:
@@ -59,51 +58,30 @@ Parameters:
 Returns:
     string: text
 """
-def build_semantic_scholar_url(pop, inter, comp, outcome, add_keywords: str = None) -> str:    
+def build_semantic_scholar_url(pop: str, inter: str, comp: str, outcome: str, add_keywords: str = None, year: str = None) -> str:    
     if not pop or not inter or not comp or not outcome:
         return ""
 
-    # Use a set to remove duplicates
-    search_terms = set()
-
-    search_terms.add(pop)
-    search_terms.add(inter)
-    search_terms.add(comp)
-    search_terms.add(outcome)
-    
-    # Start building the base query
-    query = ""
-    if len(search_terms) == 4:
-        query += f"({pop}) + ({inter} | {comp}) + ({outcome})"
-    else:
-        query += ") + (".join(search_terms)  # Concatenate terms with ' + ' and sort for consistency
-        query = '(' + query + ')'
-
+    # Extract distinct keywords and format it
+    keyword_list = [pop, inter, comp, outcome]
     if add_keywords:
-        query += f"+ ({add_keywords})"
+        keyword_list.append(add_keywords)
+    keywords = list(set([kw.strip().replace(" ","+").replace(","," | ") for kw in keyword_list]))
+    query = '(' + ") + (".join(keywords) +' )'
+    
+    # Encode query
+    encoded_query = url_parser.quote(query)
 
-    # Clean up multiple spaces in the final query string
-    encoded_query = url_parser.quote(clean_text(query))
-    fields = "title,authors,year,abstract,venue,openAccessPdf,influentialCitationCount,citations,references,referenceCount,publicationTypes,publicationDate,fieldsOfStudy,s2FieldsOfStudy,isOpenAccess,corpusId"
+    # Fields of what to extract from the paper's metadata
+    fields = "url,title,year,authors,abstract,journal,openAccessPdf"
+    # fields = "title,authors,year,abstract,venue,openAccessPdf,influentialCitationCount,citations,references,referenceCount,publicationTypes,publicationDate,fieldsOfStudy,s2FieldsOfStudy,isOpenAccess,corpusId"
 
-    api_url = f"https://api.semanticscholar.org/graph/v1/paper/search?query={encoded_query}&fields={fields}"
+    base_url = "https://api.semanticscholar.org/graph/v1/paper/search/bulk"
+    api_url = f"{base_url}?query={encoded_query}&fields={fields}"
+    if year:
+        api_url += f"year={year}"
 
     return api_url
-
-
-"""
-Clean text by replacing commas or "or" into " | " and remove leading spaces
-Parameters:
-    text: text
-Returns:
-    string: text
-"""
-def clean_text(text: str) -> str:
-    pattern1 = r"\b(or|[,*])\b" # Matches commas or "or"
-    text = re.sub(pattern1, " | ", text)
-    pattern2 = r"\s{2,}"  # Matches two or more spaces
-    text = re.sub(pattern2, " ", text)
-    return text.strip()
 
 
 """
