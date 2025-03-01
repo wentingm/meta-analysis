@@ -5,7 +5,7 @@ semantic_scholar_api = APIRouter()
 
 # Search for papers using PICO
 @semantic_scholar_api.get("/papers")
-def search_papers_route(
+async def search_papers_route(
     pop: str = Query(..., description="Population (PICO)"),
     inter: str = Query(..., description="Intervention (PICO)"),
     comp: str = Query(..., description="Comparison (PICO)"),
@@ -13,10 +13,10 @@ def search_papers_route(
     year: str = Query(None, description="Year range (optional)"),
     add_keywords: str = Query(None, description="Additional keywords (optional)"),
 ):
-  return search_papers_controller(pop, inter, comp, outcome, year, add_keywords)
+  return await search_papers_controller(pop, inter, comp, outcome, year, add_keywords)
 
 @semantic_scholar_api.post("/screen")
-def screen_papers_route(inclusion: list = None, exclusion: list = None):
+def screen_papers_route(criteria: dict):
   return screen_papers_controller(criteria)
 
 @semantic_scholar_api.get("/analysis")

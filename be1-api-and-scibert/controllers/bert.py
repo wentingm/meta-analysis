@@ -1,4 +1,4 @@
-from services.bert import predict_text, predict_text_cross_encoder
+from services.bert import predict_text, predict_text_cross_encoder, predict_text_alt
 from fastapi import HTTPException
 from utils.standard import extract_paper_data
 from data.bert_config import config
@@ -22,7 +22,10 @@ def predict_text_controller(data: PICORequest):
     pico_sentence = extract_text_from_pico(data.pico_dict)
     paper_text = extract_paper_data(data.paper_data)
 
-    return predict_text_cross_encoder(pico_sentence, paper_text, THRESHOLD)
+    if not pico_sentence or not paper_text:
+        return {"prediction": 0, "similarity_score": 0.0}
+
+    return predict_text(pico_sentence, paper_text, THRESHOLD)
 
 
 """

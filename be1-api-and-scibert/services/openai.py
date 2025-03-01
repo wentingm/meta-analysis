@@ -38,5 +38,5 @@ Validation rules:
   - Range validation
   - Required fields
 """
-def analyscreen_papers_modelze_paper(criteria):
+def analyze_paper(criteria):
   pass

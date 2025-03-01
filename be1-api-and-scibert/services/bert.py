@@ -3,7 +3,7 @@ from data.bert_config import config
 import torch
 from torch.nn import functional as F
 import re
-
+import numpy as np
 
 # Check if GPU is available, if not use CPU
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
@@ -28,7 +28,7 @@ Returns:
 def get_normalized_embedding(text):
     embedding = model.encode(text, convert_to_tensor=True)
     return F.normalize(embedding, p=2, dim=0)  # Changed dim to 0 for 1D tensors
-
+    
 
 """
 Classifies the paper based on the cosine similarity between the PICO sentence and paper text.
@@ -40,6 +40,7 @@ Returns:
     dict: Classification result with similarity score.
 Comments:
     Less accurate, but faster.
+    Score=0.6537
 """
 def predict_text(pico_sentence: str, paper_text: str, threshold=0.65):
     # Generate normalized embeddings for the PICO sentence and paper text
@@ -67,11 +68,11 @@ Parameters:
 Returns:
     dict: Classification result with the maximum similarity score.
 Comments:
-    More accurate, but more costly
+    More accurate, but more costly.
+    Score=0.8353
 """
 def predict_text_cross_encoder(pico_sentence: str, paper_text: str, threshold=0.65):
     # Split paper text into chunks based on punctuation
-    # paper_chunks = split_text_into_chunks(paper_text, max_chunk_size=MAX_LEN)
     paper_chunks = re.split(r'(?<=[.!?]) +', paper_text)
 
     max_similarity = 0
