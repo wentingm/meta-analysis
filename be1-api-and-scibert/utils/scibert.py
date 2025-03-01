@@ -61,7 +61,6 @@ Returns:
     int: cosine similarity value
 """
 def calculate_cosine_similarity(embedding1, embedding2):
-
     return 1 - cosine(embedding1.cpu().numpy(), embedding2.cpu().numpy())
 
 """

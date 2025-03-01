@@ -1,7 +1,4 @@
-import requests
-from urllib.parse import quote_plus
-
-
+import httpx
 
 """
 Semantic Scholar API
@@ -22,12 +19,13 @@ GET /api/papers
   - Basic sorting
 
 Parameters
-query: what the user wants to search
-year: date range of the papers searched
+  query: what the user wants to search
+  year: date range of the papers searched
 """
-def search_papers(api_uri):
+async def search_papers(api_uri):
     try:
-        response = requests.get(api_uri, timeout=10)
+        async with httpx.AsyncClient() as client:
+            response = await client.get(api_uri, timeout=10)
 
         if response.status_code == 200:
             return response.json()
@@ -35,7 +33,7 @@ def search_papers(api_uri):
             return {"error": "Rate limit exceeded. Try again later.", "status_code": 429}
         else:
             return {"error": "Failed to fetch papers", "status_code": response.status_code}
-    except requests.RequestException as e:
+    except httpx.RequestError as e:
         return {"error": "Request failed", "details": str(e)}
 
 """
@@ -44,12 +42,10 @@ POST /api/screen
   - Receive screening results
   - Confidence scores
 
-Paramters
-inclusion: Inclusion criteria
-exlusion: exclusion criteria
-
+Paramter
+  criteria: dict = { inclusions: list, exclusions: list }
 """
-def screen_papers(inclusion: list, exclusion: list):
+def screen_papers(criteria):
     return {"error": 500}
 
 
