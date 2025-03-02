@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
+
 const EducationAnalysisSetup = () => {
   const [searchStatus, setSearchStatus] = useState('ready');
   const [selectedFilters, setSelectedFilters] = useState([]);
@@ -137,12 +138,12 @@ const EducationAnalysisSetup = () => {
     );
   };
   const navigate = useNavigate();
-  const handleBeginAnalysis = () => {
-      if (selectedDatabases.length > 0) {
-        setSearchStatus('searching');
-      }
-      navigate('/paper-list-review');
-    };
+
+  const handleBeginAnalysis = async () => {
+    setSearchStatus('searching')
+    navigate("/paper-list-review");
+  };
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="mb-8">
