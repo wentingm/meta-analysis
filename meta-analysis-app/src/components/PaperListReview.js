@@ -1,51 +1,102 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FileDown, Eye, Check, Database, ExternalLink, ArrowLeft } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 
 function PaperListReview() {
   const [selectedPapers, setSelectedPapers] = useState(new Set());
   const [currentPage, setCurrentPage] = useState(1);
+  const [loading, setLoading] = useState('false')
+  const [papers, setPapers] = useState([])
   const [sortBy, setSortBy] = useState('relevance');
+  const [picoData, setPicoData] = useState({})
   const papersPerPage = 10;
+  const semanticScholarSearchBaseURL = "http://127.0.0.1:8000/api/papers"
+
+  // fetch from db for planning data
+  useEffect(() => {
+    // dummy data
+    setPicoData({
+      pop: "students,k-12 students",
+      inter: "Intelligent Tutoring Systems",
+      comp: "Intelligent Tutoring Systems",
+      outcome: "post-test,exam results",
+      year: "",
+      add_keywords: ""
+    })
+  }, [])
+  
+  useEffect(() => {
+    if (!picoData) {
+      return;
+    }
+
+    const fetchData = async () => {
+      setLoading(true);
+
+      try {
+        const queryParams = new URLSearchParams({
+          pop: picoData.pop,
+          inter: picoData.inter,
+          comp: picoData.comp,
+          outcome: picoData.outcome,
+          ...(picoData.add_keywords?.length ? { add_keywords: picoData.add_keywords.join(",") } : {}),
+          ...(picoData.year ? { year: picoData.year } : {}),
+        });
+
+        const api_url = `${semanticScholarSearchBaseURL}?${queryParams.toString()}`;
+        const response = await fetch(api_url);
+        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+        const semanticScholarData = await response.json();
+        setPapers(semanticScholarData.data || []);
+        console.log(papers)
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, [picoData])
 
   // Simulate database status - in real app, this would come from your backend
   const paperDatabase = new Set([1, 3, 5, 7, 9]); // Papers already in database
 
   // Generate larger paper list with additional metadata
-  const papers = Array.from({ length: 50 }, (_, index) => ({
-    id: index + 1,
-    title: [
-      "The Impact of Project-Based Learning on Middle School Student Achievement",
-      "Implementing Project-Based Learning in Digital Environments",
-      "Student Engagement Through Project-Based Learning Methods",
-      "A Comparative Study of Traditional vs Project-Based Learning",
-      "Long-term Effects of Project-Based Learning on Academic Performance"
-    ][index % 5] + ` (Study ${index + 1})`,
-    authors: [
-      "Johnson, M., Smith, K.",
-      "Wilson, R., Brown, J.",
-      "Davis, A., Miller, P.",
-      "Anderson, L., Taylor, M.",
-      "Thompson, S., White, R."
-    ][index % 5],
-    year: 2018 + (index % 5),
-    journal: [
-      "Educational Research Quarterly",
-      "Teaching and Learning Research",
-      "Journal of Educational Methods",
-      "International Journal of Education",
-      "Educational Psychology Review"
-    ][index % 5],
-    database: ["ERIC", "Semantic Scholar", "Google Scholar"][index % 3],
-    abstract: "This study examines the effectiveness of project-based learning approaches...",
-    relevance: ["High", "Medium", "High", "Medium", "High"][index % 5],
-    fullTextAvailable: index % 4 !== 0,
-    citations: Math.floor(Math.random() * 100),
-    doi: `10.1234/journal.${index + 1}`,
-    inDatabase: paperDatabase.has(index + 1),
-    pdfUrl: index % 4 !== 0 ? `/sample/paper${index + 1}.pdf` : null,
-    viewUrl: `/view/paper${index + 1}`
-  }));
+  // const papers = Array.from({ length: 50 }, (_, index) => ({
+  //   id: index + 1,
+  //   title: [
+  //     "The Impact of Project-Based Learning on Middle School Student Achievement",
+  //     "Implementing Project-Based Learning in Digital Environments",
+  //     "Student Engagement Through Project-Based Learning Methods",
+  //     "A Comparative Study of Traditional vs Project-Based Learning",
+  //     "Long-term Effects of Project-Based Learning on Academic Performance"
+  //   ][index % 5] + ` (Study ${index + 1})`,
+  //   authors: [
+  //     "Johnson, M., Smith, K.",
+  //     "Wilson, R., Brown, J.",
+  //     "Davis, A., Miller, P.",
+  //     "Anderson, L., Taylor, M.",
+  //     "Thompson, S., White, R."
+  //   ][index % 5],
+  //   year: 2018 + (index % 5),
+  //   journal: [
+  //     "Educational Research Quarterly",
+  //     "Teaching and Learning Research",
+  //     "Journal of Educational Methods",
+  //     "International Journal of Education",
+  //     "Educational Psychology Review"
+  //   ][index % 5],
+  //   database: ["ERIC", "Semantic Scholar", "Google Scholar"][index % 3],
+  //   abstract: "This study examines the effectiveness of project-based learning approaches...",
+  //   relevance: ["High", "Medium", "High", "Medium", "High"][index % 5],
+  //   fullTextAvailable: index % 4 !== 0,
+  //   citations: Math.floor(Math.random() * 100),
+  //   doi: `10.1234/journal.${index + 1}`,
+  //   inDatabase: paperDatabase.has(index + 1),
+  //   pdfUrl: index % 4 !== 0 ? `/sample/paper${index + 1}.pdf` : null,
+  //   viewUrl: `/view/paper${index + 1}`
+  // }));
 
   // Pagination calculations
   const totalPages = Math.ceil(papers.length / papersPerPage);
@@ -194,7 +245,7 @@ function PaperListReview() {
             <div className="flex items-start justify-between">
               <div className="flex-1">
                 <div className="flex items-start justify-between mb-2">
-                  <h3 className="text-lg">{paper.title}</h3>
+                  <h3 className="text-lg">{paper.title | "Missing Title"}</h3>
                   <div className="flex items-center space-x-2 ml-4">
                     {paper.inDatabase && (
                       <span className="flex items-center text-green-600 bg-green-50 px-2 py-1 rounded text-xs">
@@ -205,34 +256,34 @@ function PaperListReview() {
                   </div>
                 </div>
                 <div className="flex items-center space-x-4 text-sm text-gray-500 mb-2">
-                  <span>{paper.authors}</span>
+                  <span>{paper.authors | "Missing Authors"}</span>
                   <span>•</span>
-                  <span>{paper.year}</span>
+                  <span>{paper.year | "Missing Year"}</span>
                   <span>•</span>
-                  <span>{paper.journal}</span>
+                  <span>{paper.journal | "Missing Journal"}</span>
                   <span>•</span>
-                  <span>{paper.citations} citations</span>
+                  <span>{paper.citations | "Missing Citations"} citations</span>
                   <a href={`https://doi.org/${paper.doi}`} 
                      target="_blank" 
                      rel="noopener noreferrer"
                      className="text-blue-600 hover:text-blue-800 flex items-center"
                      onClick={(e) => e.stopPropagation()}>
                     <ExternalLink className="w-3 h-3 mr-1" />
-                    {paper.doi}
+                    {paper.doi | "Missing DOI"}
                   </a>
                 </div>
-                <p className="text-sm text-gray-600 mb-3">{paper.abstract}</p>
+                <p className="text-sm text-gray-600 mb-3">{paper.abstract | "Missing Abstract"}</p>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center space-x-3">
                     <span className="px-2 py-1 bg-blue-100 text-blue-700 rounded text-xs">
-                      {paper.database}
+                      {paper.database | "Missing Database"}
                     </span>
                     <span className={`px-2 py-1 rounded text-xs ${
                       paper.relevance === 'High' 
                         ? 'bg-green-100 text-green-700' 
                         : 'bg-yellow-100 text-yellow-700'
                     }`}>
-                      {paper.relevance} Relevance
+                      {paper.relevance | "Missing Relevance"} Relevance
                     </span>
                   </div>
                   <div className="flex items-center space-x-2">

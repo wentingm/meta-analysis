@@ -13,10 +13,8 @@ Parameters
 """
 async def search_papers_controller(pop, inter, comp, outcome, add_keywords = None, year: str = None):
     api_url = build_semantic_scholar_url(pop, inter, comp, outcome, add_keywords, year)
-
     if not api_url:
         raise HTTPException(status_code=400, detail="Invalid input. Expected JSON or string.")        
-
     try:
         return await search_papers(api_url)
     except Exception as e:

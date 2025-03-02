@@ -13,7 +13,7 @@ async def search_papers_route(
     year: str = Query(None, description="Year range (optional)"),
     add_keywords: str = Query(None, description="Additional keywords (optional)"),
 ):
-  return await search_papers_controller(pop, inter, comp, outcome, year, add_keywords)
+  return await search_papers_controller(pop, inter, comp, outcome, add_keywords, year)
 
 @semantic_scholar_api.post("/screen")
 def screen_papers_route(criteria: dict):

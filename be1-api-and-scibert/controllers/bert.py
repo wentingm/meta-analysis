@@ -1,4 +1,4 @@
-from services.bert import predict_text, predict_text_cross_encoder, predict_text_alt
+from services.bert import predict_text, predict_text_cross_encoder
 from fastapi import HTTPException
 from utils.standard import extract_paper_data
 from data.bert_config import config

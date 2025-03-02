@@ -1,5 +1,6 @@
 import uvicorn # Running server
 from fastapi import FastAPI # Web framework
+from fastapi.middleware.cors import CORSMiddleware
 from routes.bert import bert_api
 from routes.semanticscholar import semantic_scholar_api
 from dotenv import load_dotenv
@@ -7,6 +8,15 @@ import os
 
 load_dotenv() # load env variables
 app = FastAPI() # Web Framework for building APIs
+
+# Allow requests from your frontend (localhost:3000) or all origins (*)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
 
 # Include routes
 app.include_router(bert_api, prefix="/api")

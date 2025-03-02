@@ -23,18 +23,22 @@ Parameters
   year: date range of the papers searched
 """
 async def search_papers(api_uri):
-    try:
-        async with httpx.AsyncClient() as client:
-            response = await client.get(api_uri, timeout=10)
+  try:
+    async with httpx.AsyncClient() as client:
+      response = await client.get(api_uri, timeout=10)
+    json_response = response.json()
 
-        if response.status_code == 200:
-            return response.json()
-        elif response.status_code == 429:
-            return {"error": "Rate limit exceeded. Try again later.", "status_code": 429}
-        else:
-            return {"error": "Failed to fetch papers", "status_code": response.status_code}
-    except httpx.RequestError as e:
-        return {"error": "Request failed", "details": str(e)}
+    # Check if the response contains an error message
+    if "error" in json_response or json_response.get("status_code") == 400:
+      return {
+        "total": 0,
+        "data": []
+      }
+
+    return json_response  # Return valid results
+  except httpx.RequestError as e:
+      return {"error": "Request failed", "details": str(e)}
+
 
 """
 POST /api/screen
@@ -42,7 +46,7 @@ POST /api/screen
   - Receive screening results
   - Confidence scores
 
-Paramter
+Parameter
   criteria: dict = { inclusions: list, exclusions: list }
 """
 def screen_papers(criteria):
