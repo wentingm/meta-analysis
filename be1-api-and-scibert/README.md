@@ -1,6 +1,6 @@
 # About
 
-Get papers from the API and filter using SciBERT using more specifications.
+Search papers using Semantic Scholar API using PICO input from user and screen using SciBert for similarity text and LLMs for more specific filterings.
 By: Kyle Huang
 
 ## Features
@@ -69,4 +69,5 @@ services:
       - "8000:8000"
     restart: always
 ```
-* Command: ```docker-compose up -d```
+
+* Command: ``docker-compose up -d``
