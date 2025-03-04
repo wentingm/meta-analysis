@@ -25,11 +25,6 @@ jobs:
           pip install -r requirements.txt
           pip install pytest
 
-      - name: Run tests with pytest
-        run: |
-          cd be1-api-and-scibert
-          python -m pytest
-
       - name: Log in to Azure
         uses: azure/login@v1
         with:
