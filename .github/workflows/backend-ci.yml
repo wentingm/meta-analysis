@@ -20,14 +20,14 @@ jobs:
 
       - name: Install dependencies
         run: |
-          cd backend
+          cd be1-api-and-scibert
           python -m pip install --upgrade pip
           pip install -r requirements.txt
           pip install pytest
 
       - name: Run tests with pytest
         run: |
-          cd backend
+          cd be1-api-and-scibert
           python -m pytest
 
       - name: Log in to Azure
@@ -40,7 +40,7 @@ jobs:
 
       - name: Build and Push Docker Image
         run: |
-          docker build -t metaanalysisacr.azurecr.io/backend:latest backend/
+          docker build -t metaanalysisacr.azurecr.io/backend:latest be1-api-and-scibert/
           docker push metaanalysisacr.azurecr.io/backend:latest
 
       - name: Restart Web App to Apply New Image
